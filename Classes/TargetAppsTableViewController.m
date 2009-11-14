@@ -1,13 +1,13 @@
 //
 //  TargetAppsTableViewController.m
-//  PhotoToolchainTestApp
+//  PhotoAppChainTestApp
 //
 //  Created by Hendrik Kueck on 09-11-10.
 //  Copyright 2009 Pocket Pixels Inc. All rights reserved.
 //
 
 #import "TargetAppsTableViewController.h"
-#import "PhotoToolchainManager.h"
+#import "PhotoAppChainManager.h"
 
 @implementation TargetAppsTableViewController
 
@@ -105,8 +105,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* selectedAppName = [targetAppNames objectAtIndex:indexPath.row];
-    PhotoToolchainManager* toolchain = [PhotoToolchainManager sharedPhotoToolchainManager];
-    [toolchain invokeApplication:selectedAppName withImage:self.currentImage];
+    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
+    [appchain invokeApplication:selectedAppName withImage:self.currentImage];
 }
 
 

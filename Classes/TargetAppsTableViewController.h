@@ -1,6 +1,6 @@
 //
 //  TargetAppsTableViewController.h
-//  PhotoToolchainTestApp
+//  PhotoAppChainTestApp
 //
 //  Created by Hendrik Kueck on 09-11-10.
 //  Copyright 2009 Pocket Pixels Inc. All rights reserved.
