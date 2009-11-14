@@ -12,46 +12,72 @@
 
 @implementation PhotoToolchainTestAppAppDelegate
 
+@synthesize rootViewController;
 @synthesize window;
-@synthesize viewController;
+@synthesize navigationController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
     // Simply accessing the toolchain manager here triggers a background update of the list of supported apps
-    // (if necessary). 
+    // (if necessary). So do this first thing. 
     PhotoToolchainManager* toolchain = [PhotoToolchainManager sharedPhotoToolchainManager];
-    if (launchOptions == nil) {
-        [self applicationDidFinishLaunching:application];
+
+    // If you are not sure about your app's bundle ID, this prints it:
+    // (required for the entry in the plist stored on the server)
+    NSLog(@"App BundleID: %@", [[NSBundle mainBundle] bundleIdentifier]);
+    
+    if (launchOptions) {
+        NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
+        if ([[launchURL scheme] isEqualToString:@"phototoolchaintestapp-photoappchain"]) {
+            // launched from another app
+            
+            // Let the app chain manager parse the launch options
+            // This is only necessary for the "return to previous app" functionality
+            [toolchain parseAppLaunchOptions:launchOptions];
+                        
+            // basic app setup
+            [window addSubview:navigationController.view];
+            [window makeKeyAndVisible];
+                        
+            // get the image that was passed from previous app
+            UIImage *image = [toolchain popPassedInImage];
+            [rootViewController performSelector:@selector(setImage:) withObject:image afterDelay:0.0];
+            
+            // display bundle ID of calling app in Test App UI
+            NSString* previousAppBundleID = [launchOptions objectForKey:@"UIApplicationLaunchOptionsSourceApplicationKey"];
+            [rootViewController performSelector:@selector(setPreviousAppBundleID:) withObject:previousAppBundleID afterDelay:0.0];
+            return YES;
+        }
+        else {
+            // unknown URL scheme
+            return NO;
+        }
     }
     else {
-        NSLog(@"Launched with options: %@", launchOptions);
-        [window addSubview:viewController.view];
-        [window makeKeyAndVisible];
-        UIImage *image = [toolchain popPassedInImage];
-        if (image) viewController.image = image;
-        else viewController.image = [UIImage imageNamed:@"TestImage.png"];
+        // normal launch from Springboard
+        [self applicationDidFinishLaunching:application];
     }
     return YES;
 }
 
+// this function will be called when running under OS 2.x
+// under OS 3.x we call it from didFinishLaunchingWithOptions: when launched without options
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-    NSLog(@"Launched using applicationDidFinishLaunching:");
-    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString* appName = [infoDict valueForKey:@"CFBundleName"];
-    NSLog(@"App name seems to be %@", appName);
-    // Override point for customization after app launch    
-    [window addSubview:viewController.view];
+
+    [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
-    // we did not receive an image
-    viewController.image = [UIImage imageNamed:@"TestImage.png"];
+
+    // we did not receive an image, use default test image
+    [rootViewController performSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"TestImage.png"] afterDelay:0.0];
 }
 
 
 - (void)dealloc {
-    [viewController release];
+    [navigationController release];
     [window release];
     [super dealloc];
 }
 
 
 @end
+

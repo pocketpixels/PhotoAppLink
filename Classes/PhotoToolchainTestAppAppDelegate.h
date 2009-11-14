@@ -12,11 +12,14 @@
 
 @interface PhotoToolchainTestAppAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    PhotoToolchainTestAppViewController *viewController;
+    UINavigationController *navigationController;
+    PhotoToolchainTestAppViewController* rootViewController;
 }
 
+@property (nonatomic, retain) IBOutlet PhotoToolchainTestAppViewController *rootViewController;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet PhotoToolchainTestAppViewController *viewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end
+
 
