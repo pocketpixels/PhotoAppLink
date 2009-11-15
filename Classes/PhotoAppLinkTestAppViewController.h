@@ -1,6 +1,6 @@
 //
-//  PhotoAppChainTestAppViewController.h
-//  PhotoAppChainTestApp
+//  PhotoAppLinkTestAppViewController.h
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-09.
 //  Copyright Pocket Pixels Inc 2009. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoAppChainTestAppViewController : UIViewController {
+@interface PhotoAppLinkTestAppViewController : UIViewController {
     IBOutlet UIButton* returnToPreviousAppButton;
     IBOutlet UIButton* sendToAppsButton;
     IBOutlet UIImageView* imageView;

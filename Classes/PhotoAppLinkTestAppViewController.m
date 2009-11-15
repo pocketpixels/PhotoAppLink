@@ -1,16 +1,16 @@
 //
-//  PhotoAppChainTestAppViewController.m
-//  PhotoAppChainTestApp
+//  PhotoAppLinkTestAppViewController.m
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-09.
 //  Copyright Pocket Pixels Inc 2009. All rights reserved.
 //
 
-#import "PhotoAppChainTestAppViewController.h"
+#import "PhotoAppLinkTestAppViewController.h"
 #import "TargetAppsTableViewController.h"
-#import "PhotoAppChainManager.h"
+#import "PhotoAppLinkManager.h"
 
-@implementation PhotoAppChainTestAppViewController
+@implementation PhotoAppLinkTestAppViewController
 
 @synthesize returnToPreviousAppButton;
 @synthesize callingAppLabel;
@@ -21,23 +21,23 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
-    if ([appchain canReturnToPreviousApp]) {
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    if ([applink canReturnToPreviousApp]) {
         [self.returnToPreviousAppButton setHidden:NO];
     }
 }
 
 - (IBAction)returnToPreviousApp
 {
-    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
-    [appchain returnToPreviousAppWithImage:self.image];
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    [applink returnToPreviousAppWithImage:self.image];
 }
 
 - (IBAction)showSendToAppTable
 {
-    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
     TargetAppsTableViewController* targetAppTable = [[TargetAppsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    NSArray* supportedAppNames = [appchain destinationAppNames];
+    NSArray* supportedAppNames = [applink destinationAppNames];
     targetAppTable.targetAppNames = supportedAppNames;
     targetAppTable.currentImage = self.image;
     [self.navigationController pushViewController:targetAppTable animated:YES];

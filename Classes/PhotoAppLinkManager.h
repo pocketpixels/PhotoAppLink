@@ -1,6 +1,6 @@
 //
-//  PhotoAppChainManager.h
-//  PhotoAppChainTestApp
+//  PhotoAppLinkManager.h
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-09.
 //  Copyright 2009 Pocket Pixels Inc. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PhotoAppChainManager : NSObject {
+@interface PhotoAppLinkManager : NSObject {
     NSMutableDictionary* installedAppsURLSchemes; 
     NSString* previousAppBundleID;
     BOOL didReturnFromApp;
@@ -21,7 +21,7 @@
 // Get the singleton instance
 // Note that this will return nil on pre-3.0 OS versions. 
 // So test for nil before using it!
-+ (PhotoAppChainManager*)sharedPhotoAppChainManager;
++ (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
 
 // This method should be called from the app delegate with the dictionary 
 // passed to the didFinishLaunchingWithOptions: method.

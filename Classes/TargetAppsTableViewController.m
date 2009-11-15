@@ -1,13 +1,13 @@
 //
 //  TargetAppsTableViewController.m
-//  PhotoAppChainTestApp
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-10.
 //  Copyright 2009 Pocket Pixels Inc. All rights reserved.
 //
 
 #import "TargetAppsTableViewController.h"
-#import "PhotoAppChainManager.h"
+#import "PhotoAppLinkManager.h"
 
 @implementation TargetAppsTableViewController
 
@@ -105,8 +105,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* selectedAppName = [targetAppNames objectAtIndex:indexPath.row];
-    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
-    [appchain invokeApplication:selectedAppName withImage:self.currentImage];
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    [applink invokeApplication:selectedAppName withImage:self.currentImage];
 }
 
 

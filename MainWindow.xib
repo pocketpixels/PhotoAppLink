@@ -63,14 +63,14 @@
 					<object class="IBUIViewController" id="943309135">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="1043082404">
 							<reference key="IBUINavigationBar"/>
-							<string key="IBUITitle">PhotoAppChain Test</string>
+							<string key="IBUITitle">PhotoAppLink Test</string>
 							<object class="IBUIBarButtonItem" key="IBUIBackBarButtonItem" id="738312686">
 								<string key="IBUITitle">back</string>
 								<int key="IBUIStyle">1</int>
 							</object>
 						</object>
 						<reference key="IBUIParentViewController" ref="639240245"/>
-						<string key="IBUINibName">PhotoAppChainTestAppViewController</string>
+						<string key="IBUINibName">PhotoAppLinkTestAppViewController</string>
 						<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 					</object>
 				</object>
@@ -131,7 +131,7 @@
 						<int key="objectID">3</int>
 						<reference key="object" ref="664661524"/>
 						<reference key="parent" ref="0"/>
-						<string key="objectName">PhotoAppChainTestApp App Delegate</string>
+						<string key="objectName">PhotoAppLinkTestApp App Delegate</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">-2</int>
@@ -204,7 +204,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIApplication</string>
 					<string>UIResponder</string>
-					<string>PhotoAppChainTestAppViewController</string>
+					<string>PhotoAppLinkTestAppViewController</string>
 					<string>{{333, 351}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{525, 346}, {320, 480}}</string>
@@ -212,7 +212,7 @@
 					<string>{{0, 365}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>PhotoAppChainTestAppAppDelegate</string>
+					<string>PhotoAppLinkTestAppAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -238,7 +238,7 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">PhotoAppChainTestAppAppDelegate</string>
+					<string key="className">PhotoAppLinkTestAppAppDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -251,17 +251,17 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UINavigationController</string>
-							<string>PhotoAppChainTestAppViewController</string>
+							<string>PhotoAppLinkTestAppViewController</string>
 							<string>UIWindow</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/PhotoAppChainTestAppAppDelegate.h</string>
+						<string key="minorKey">Classes/PhotoAppLinkTestAppAppDelegate.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">PhotoAppChainTestAppAppDelegate</string>
+					<string key="className">PhotoAppLinkTestAppAppDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
@@ -269,7 +269,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">PhotoAppChainTestAppViewController</string>
+					<string key="className">PhotoAppLinkTestAppViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">showSendToAppTable:</string>
@@ -292,7 +292,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/PhotoAppChainTestAppViewController.h</string>
+						<string key="minorKey">Classes/PhotoAppLinkTestAppViewController.h</string>
 					</object>
 				</object>
 			</object>
@@ -569,7 +569,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">PhotoAppChainTestApp.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">PhotoAppLinkTestApp.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">3.1</string>
 	</data>

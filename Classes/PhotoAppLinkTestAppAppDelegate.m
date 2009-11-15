@@ -1,16 +1,16 @@
 //
-//  PhotoAppChainTestAppAppDelegate.m
-//  PhotoAppChainTestApp
+//  PhotoAppLinkTestAppAppDelegate.m
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-09.
 //  Copyright Pocket Pixels Inc 2009. All rights reserved.
 //
 
-#import "PhotoAppChainTestAppAppDelegate.h"
-#import "PhotoAppChainTestAppViewController.h"
-#import "PhotoAppChainManager.h"
+#import "PhotoAppLinkTestAppAppDelegate.h"
+#import "PhotoAppLinkTestAppViewController.h"
+#import "PhotoAppLinkManager.h"
 
-@implementation PhotoAppChainTestAppAppDelegate
+@implementation PhotoAppLinkTestAppAppDelegate
 
 @synthesize rootViewController;
 @synthesize window;
@@ -18,9 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-    // Simply accessing the appchain manager here triggers a background update of the list of supported apps
+    // Simply accessing the applink manager here triggers a background update of the list of supported apps
     // (if necessary). So do this first thing. 
-    PhotoAppChainManager* appchain = [PhotoAppChainManager sharedPhotoAppChainManager];
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
 
     // If you are not sure about your app's bundle ID, this prints it:
     // (required for the entry in the plist stored on the server)
@@ -28,19 +28,19 @@
     
     if (launchOptions) {
         NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
-        if ([[launchURL scheme] isEqualToString:@"photoappchaintestapp-photoappchain"]) {
+        if ([[launchURL scheme] isEqualToString:@"photoapplinktestapp-photoapplink"]) {
             // launched from another app
             
-            // Let the app chain manager parse the launch options
+            // Let the app link manager parse the launch options
             // This is only necessary for the "return to previous app" functionality
-            [appchain parseAppLaunchOptions:launchOptions];
+            [applink parseAppLaunchOptions:launchOptions];
                         
             // basic app setup
             [window addSubview:navigationController.view];
             [window makeKeyAndVisible];
                         
             // get the image that was passed from previous app
-            UIImage *image = [appchain popPassedInImage];
+            UIImage *image = [applink popPassedInImage];
             [rootViewController performSelector:@selector(setImage:) withObject:image afterDelay:0.0];
             
             // display bundle ID of calling app in Test App UI

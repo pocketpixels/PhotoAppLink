@@ -1,17 +1,17 @@
 //
-//  PhotoAppChainManager.m
-//  PhotoAppChainTestApp
+//  PhotoAppLinkManager.m
+//  PhotoAppLinkTestApp
 //
 //  Created by Hendrik Kueck on 09-11-09.
 //  Copyright 2009 Pocket Pixels Inc. All rights reserved.
 //
 
-#import "PhotoAppChainManager.h"
+#import "PhotoAppLinkManager.h"
 
-static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppChain_PListDictionary";
-static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppChain_LastUpdateDate";
+static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
+static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
-static NSString *const PASTEBOARD_NAME = @"com.photoappchain.pasteboard";
+static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
 #else
@@ -19,13 +19,13 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 0;
 const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60; 
 #endif
 
-@interface PhotoAppChainManager() 
+@interface PhotoAppLinkManager() 
 @property (nonatomic, retain) NSMutableDictionary* installedAppsURLSchemes;
 @property (nonatomic, copy) NSString *previousAppBundleID;
 -(NSDictionary*) getAppInfoForBundleID:(NSString*) bundleID;
 @end
 
-@implementation PhotoAppChainManager
+@implementation PhotoAppLinkManager
 
 @synthesize previousAppBundleID;
 
@@ -72,9 +72,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     if (secondsSinceLastUpdate < MINIMUM_SECS_BETWEEN_UPDATES) return;
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchain_debug.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoapplink_debug.plist"];
 #else
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchain.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoapplink.plist"];
 #endif
     NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
     // NSLog(@"Received updated plist dict: %@", plistDict);
@@ -199,19 +199,19 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 #pragma mark -
 #pragma mark Singleton 
 
-static PhotoAppChainManager *s_sharedPhotoAppChainManager = nil;
+static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 
-+ (PhotoAppChainManager*)sharedPhotoAppChainManager
++ (PhotoAppLinkManager*)sharedPhotoAppLinkManager
 {
-    if (s_sharedPhotoAppChainManager == nil) {
-        s_sharedPhotoAppChainManager = [[super allocWithZone:NULL] init];
+    if (s_sharedPhotoAppLinkManager == nil) {
+        s_sharedPhotoAppLinkManager = [[super allocWithZone:NULL] init];
     }
-    return s_sharedPhotoAppChainManager;    
+    return s_sharedPhotoAppLinkManager;    
 }
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [[self sharedPhotoAppChainManager] retain];
+    return [[self sharedPhotoAppLinkManager] retain];
 }
 
 - (id)copyWithZone:(NSZone *)zone
