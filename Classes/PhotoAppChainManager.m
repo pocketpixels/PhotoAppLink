@@ -72,9 +72,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     if (secondsSinceLastUpdate < MINIMUM_SECS_BETWEEN_UPDATES) return;
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchainapps_debug.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchain_debug.plist"];
 #else
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchainapps.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoappchain.plist"];
 #endif
     NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
     // NSLog(@"Received updated plist dict: %@", plistDict);
