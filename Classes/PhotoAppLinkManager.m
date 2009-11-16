@@ -116,14 +116,22 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
 {
+    NSDate* startDate = [NSDate date];
+
     // the class alias is required to allow the code to compile and load under iPhone OS 2.x
     Class PasteBoardClass = NSClassFromString(@"UIPasteboard");
     id pasteboard = [PasteBoardClass pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
-    [pasteboard setImage:image];
+    //    [pasteboard setImage:image];
+    NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
+    [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
+    
     // get URL for the destination app name
     NSString* urlString = [[self.installedAppsURLSchemes objectForKey:appName] stringByAppendingString:@"://edit"];
     NSURL* appLaunchURL = [NSURL URLWithString:urlString];
+    NSLog(@"JPEG data size: %d Kb", [jpegData length] >> 10);
+    NSLog(@"Coping image to pasteboard took %f seconds.", -[startDate timeIntervalSinceNow]);
+
     // launch the app
     [[UIApplication sharedApplication] openURL:appLaunchURL];
 }
