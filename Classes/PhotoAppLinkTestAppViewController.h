@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PhotoAppLinkTestAppViewController : UIViewController {
-    IBOutlet UIButton* returnToPreviousAppButton;
     IBOutlet UIButton* sendToAppsButton;
     IBOutlet UIImageView* imageView;
     IBOutlet UILabel* callingAppLabel;
@@ -17,13 +16,11 @@
     UIImage* image;
 }
 
-@property (nonatomic, retain) UIButton *returnToPreviousAppButton;
 @property (nonatomic, retain) UILabel *callingAppLabel;
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
 
 - (IBAction)showSendToAppTable;
-- (IBAction)returnToPreviousApp;
 
 
 @end

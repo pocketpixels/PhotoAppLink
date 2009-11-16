@@ -20,14 +20,10 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 #endif
 
 @interface PhotoAppLinkManager() 
-@property (nonatomic, retain) NSMutableDictionary* installedAppsURLSchemes;
-@property (nonatomic, copy) NSString *previousAppBundleID;
--(NSDictionary*) getAppInfoForBundleID:(NSString*) bundleID;
+@property (nonatomic, readonly) NSMutableDictionary* installedAppsURLSchemes;
 @end
 
 @implementation PhotoAppLinkManager
-
-@synthesize previousAppBundleID;
 
 @dynamic destinationAppNames;
 @dynamic installedAppsURLSchemes;
@@ -50,15 +46,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     return self;
 }
 
-- (void)parseAppLaunchOptions:(NSDictionary*)launchOptions
-{
-    if (launchOptions == nil) return;
-
-    self.previousAppBundleID = [launchOptions objectForKey:@"UIApplicationLaunchOptionsSourceApplicationKey"];
-    NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
-    didReturnFromApp = [[launchURL host] isEqualToString:@"return"];
-}
-
 // this method runs in a background thread and downloads the latest plist file with information
 // on the supported apps and their URL schemes.
 // This update is only performed once every few days
@@ -72,9 +59,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     if (secondsSinceLastUpdate < MINIMUM_SECS_BETWEEN_UPDATES) return;
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoapplink_debug.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink_debug.plist"];
 #else
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.pocketpixels.com/photoapplink.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
     NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
     // NSLog(@"Received updated plist dict: %@", plistDict);
@@ -114,9 +101,8 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
         NSString* urlString = [[appInfo objectForKey:@"scheme"] stringByAppendingString:@"://"];
         NSURL *launchURL= [NSURL URLWithString:urlString];
         NSString* bundleID = [appInfo objectForKey:@"bundleID"];
-        BOOL launchAllowed = [[appInfo objectForKey:@"allowLaunch"] boolValue];
         // check which of the supported apps are actually supported on the device
-        if ( launchAllowed && ![bundleID isEqualToString:ownBundleID] && [[UIApplication sharedApplication] canOpenURL:launchURL]) {
+        if ( ![bundleID isEqualToString:ownBundleID] && [[UIApplication sharedApplication] canOpenURL:launchURL]) {
             [installedAppsURLSchemes setValue:[appInfo objectForKey:@"scheme"] forKey:appName];
         }
     }
@@ -130,7 +116,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
 {
-    // this is to allow the code to compile and load under iPhone OS 2.x
+    // the class alias is required to allow the code to compile and load under iPhone OS 2.x
     Class PasteBoardClass = NSClassFromString(@"UIPasteboard");
     id pasteboard = [PasteBoardClass pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
@@ -152,47 +138,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     // clear the pasteboard
     [pasteboard setItems:nil];
     return image;
-}
-
-- (NSDictionary*)getAppInfoForBundleID:(NSString*)bundleID
-{
-    if (bundleID == nil) return nil;
-    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-    NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];
-    NSArray* supportedApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
-    if (supportedApps == nil) return nil;
-    for (NSDictionary* appInfo in supportedApps) {
-        NSString* appBundleID = [appInfo objectForKey:@"bundleID"];
-        if ([bundleID isEqualToString:appBundleID]) {
-            return appInfo;
-        }
-    }
-    return nil;
-}
-
-- (BOOL)canReturnToPreviousApp
-{
-    if (didReturnFromApp || previousAppBundleID == nil) return NO;
-    NSDictionary* previousAppInfo = [self getAppInfoForBundleID:previousAppBundleID];
-    if ([[previousAppInfo objectForKey:@"allowReturn"] boolValue] == NO) return NO;
-    NSString* previousAppUrlString = [[previousAppInfo objectForKey:@"scheme"] stringByAppendingString:@"://"];
-    NSURL* appLaunchURL = [NSURL URLWithString:previousAppUrlString];
-    return ([[UIApplication sharedApplication] canOpenURL:appLaunchURL]);
-}
-
-- (void)returnToPreviousAppWithImage:(UIImage*)image
-{
-    // copy image to special pasteboard
-    Class PasteBoardClass = NSClassFromString(@"UIPasteboard");
-    id pasteboard = [PasteBoardClass pasteboardWithName:PASTEBOARD_NAME create:YES];
-    [pasteboard setPersistent:YES];
-    [pasteboard setImage:image];
-    
-    NSDictionary* previousAppInfo = [self getAppInfoForBundleID:previousAppBundleID];
-    NSString* previousAppUrlString = [[previousAppInfo objectForKey:@"scheme"] stringByAppendingString:@"://return"];
-    NSURL* appLaunchURL = [NSURL URLWithString:previousAppUrlString];
-    // launch the app
-    [[UIApplication sharedApplication] openURL:appLaunchURL];
 }
 
 

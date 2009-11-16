@@ -12,7 +12,6 @@
 
 @implementation PhotoAppLinkTestAppViewController
 
-@synthesize returnToPreviousAppButton;
 @synthesize callingAppLabel;
 @synthesize image;
 @synthesize imageView;
@@ -21,16 +20,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
-    if ([applink canReturnToPreviousApp]) {
-        [self.returnToPreviousAppButton setHidden:NO];
-    }
-}
-
-- (IBAction)returnToPreviousApp
-{
-    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
-    [applink returnToPreviousAppWithImage:self.image];
 }
 
 - (IBAction)showSendToAppTable

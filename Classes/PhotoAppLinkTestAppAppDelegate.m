@@ -31,10 +31,6 @@
         if ([[launchURL scheme] isEqualToString:@"photoapplinktestapp-photoapplink"]) {
             // launched from another app
             
-            // Let the app link manager parse the launch options
-            // This is only necessary for the "return to previous app" functionality
-            [applink parseAppLaunchOptions:launchOptions];
-                        
             // basic app setup
             [window addSubview:navigationController.view];
             [window makeKeyAndVisible];
