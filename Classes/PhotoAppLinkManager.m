@@ -10,6 +10,7 @@
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
+static NSString *const LAUNCH_DATE_KEY = @"launchDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
 static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
 #ifdef DEBUG 
@@ -64,7 +65,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
     NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
-    // NSLog(@"Received updated plist dict: %@", plistDict);
+    NSLog(@"Received updated plist dict: %@", plistDict);
     if (plistDict) {
         [self performSelectorOnMainThread:@selector(storeUpdatedPlistContent:) 
                                withObject:plistDict waitUntilDone:YES];        
@@ -93,6 +94,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     // get dictionary of all supported apps from the user defaults
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];
+    // deactivate until official launch date
+    NSDate* launchDate = [plistDict objectForKey:LAUNCH_DATE_KEY];
+    if (launchDate && ([launchDate compare:[NSDate date]] == NSOrderedDescending)) return nil;
     NSArray* supportedApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
     if (supportedApps == nil) return nil;
     NSString* ownBundleID = [[NSBundle mainBundle] bundleIdentifier];
