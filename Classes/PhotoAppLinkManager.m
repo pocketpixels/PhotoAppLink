@@ -41,11 +41,17 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
             return nil;
         }
     }    
-    // trigger background update of the list of supported apps
-    [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];
     
     return self;
 }
+
+
+// trigger background update of the list of supported apps
+- (void)updateSupportedAppsInBackground
+{
+    [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];    
+}
+
 
 // this method runs in a background thread and downloads the latest plist file with information
 // on the supported apps and their URL schemes.

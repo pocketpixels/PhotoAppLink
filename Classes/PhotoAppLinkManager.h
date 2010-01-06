@@ -22,6 +22,10 @@
 // Note that this will return nil on pre-3.0 OS versions. 
 + (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
 
+// Downloads the latest list of supported apps and their custom URLs in the background
+// Call this once immediately after app launch. 
+- (void)updateSupportedAppsInBackground;
+
 // Returns the image passed in by the calling app.
 // It also clears it off the pasteboard (hence the "pop")
 - (UIImage*)popPassedInImage;

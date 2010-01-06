@@ -33,11 +33,13 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     //          use didFinishLaunchingWithOptions: to handle URL & notification launches, forward normal launches 
     //          to applicationDidFinishLaunching: (which will also be called directly when running under 2.x)
     
-    // Simply accessing the applink manager here triggers a background update of the list of supported apps
-    // (if necessary). So do this first thing. 
+    // The updateSupportedAppsInBackground method should be called right after app launch. 
+    // It goes out to the server and downloads the latest list of supported applications and 
+    // their custom URL schemes.
     // If you are using applicationDidFinishLaunching: & handleOpenURL: make sure you stick this into 
     // applicationDidFinishLaunching: in order to trigger the implicit background update.
     PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    [applink updateSupportedAppsInBackground];
 
     // If you are not sure about your app's bundle ID, this prints it:
     // (required for the entry in the plist stored on the server)
