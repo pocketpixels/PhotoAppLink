@@ -65,7 +65,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
     NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
-    NSLog(@"Received updated plist dict: %@", plistDict);
+    //NSLog(@"Received updated plist dict: %@", plistDict);
     if (plistDict) {
         [self performSelectorOnMainThread:@selector(storeUpdatedPlistContent:) 
                                withObject:plistDict waitUntilDone:YES];        
