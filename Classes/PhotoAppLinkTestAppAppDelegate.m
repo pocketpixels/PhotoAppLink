@@ -68,7 +68,7 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
             [window makeKeyAndVisible];
                         
             // Retrieve the image that was passed from previous app.
-            // You could (and maybe should) instead access this image during a later stage of the launch process 
+            // You could (and likely should) instead access this image during a later stage of the launch process 
             // rather than doing it directly in this launch handler
             UIImage *image = [applink popPassedInImage];
             [rootViewController performSelector:@selector(setImage:) withObject:image afterDelay:0.0];

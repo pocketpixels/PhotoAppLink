@@ -106,7 +106,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 }
 
 
-- (NSDictionary*)installedAppsURLSchemes
+- (NSMutableDictionary*)installedAppsURLSchemes
 {
     if (installedAppsURLSchemes) return installedAppsURLSchemes;
     installedAppsURLSchemes = [[NSMutableDictionary alloc] init];
