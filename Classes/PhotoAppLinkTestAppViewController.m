@@ -24,16 +24,23 @@
 #import "TargetAppsTableViewController.h"
 #import "PhotoAppLinkManager.h"
 
+@interface PhotoAppLinkTestAppViewController()
+@property (nonatomic, retain) UIButton *sendToAppsButton;
+@property (nonatomic, retain) UIImageView *imageView;
+@end
+
 @implementation PhotoAppLinkTestAppViewController
 
-@synthesize callingAppLabel;
-@synthesize image;
+@dynamic image;
 @synthesize imageView;
+@synthesize sendToAppsButton;
 
+- (void)dealloc
+{
+	[sendToAppsButton release];
+    [imageView release];
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
+	[super dealloc];
 }
 
 - (IBAction)showSendToAppTable
@@ -50,20 +57,19 @@
 
 - (void)setImage:(UIImage*)newImage
 {
-    [image release];
-    image = [newImage retain];
-    self.imageView.image = image;
-
-    float imageWidth = image.size.width;
-    float imageHeight = image.size.height;
-    float maxDim = MAX(imageWidth, imageHeight);
-    float scaleFactor = MIN(280.0 / maxDim, 1.0);
-    self.imageView.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);    
+    self.imageView.image = newImage;
+    if (newImage) {
+        float imageWidth = newImage.size.width;
+        float imageHeight = newImage.size.height;
+        float maxDim = MAX(imageWidth, imageHeight);
+        float scaleFactor = MIN(280.0 / maxDim, 1.0);
+        self.imageView.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);            
+    }
 }
 
-- (void)setPreviousAppBundleID:(NSString*)bundleID
+- (UIImage*) image
 {
-    self.callingAppLabel.text = bundleID;
+    return self.imageView.image;
 }
 
 @end

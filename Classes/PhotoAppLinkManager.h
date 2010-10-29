@@ -33,7 +33,6 @@
 @property (nonatomic, readonly) NSArray *destinationAppNames;
 
 // Get the singleton instance
-// Note that this will return nil on pre-3.0 OS versions. 
 + (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
 
 // Downloads the latest list of supported apps and their custom URLs in the background

@@ -26,57 +26,43 @@ static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const LAUNCH_DATE_KEY = @"launchDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
 static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
+
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
 #else
-// update list of supported apps every 3 days at most
+// update list of supported apps every 3 days at most (to avoid unneccessary network access)
 const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60; 
 #endif
 
 @interface PhotoAppLinkManager() 
-@property (nonatomic, readonly) NSMutableDictionary* installedAppsURLSchemes;
+@property (nonatomic, retain) NSMutableDictionary* installedAppsURLSchemes;
 @end
 
 @implementation PhotoAppLinkManager
 
 @dynamic destinationAppNames;
-@dynamic installedAppsURLSchemes;
-
-- (id)init
-{
-    self = [super init];
-    if (self != nil) {
-        NSString* osVersion = [[UIDevice currentDevice] systemVersion];
-        // iPhone OS versions before 3.0 are missing required features.
-        BOOL os_earlier_than_30 = [osVersion compare:@"3.0" options: NSNumericSearch] == NSOrderedAscending;
-        if (os_earlier_than_30) {
-            [self release];
-            return nil;
-        }
-    }    
-    
-    return self;
-}
+@synthesize installedAppsURLSchemes;
 
 
 // trigger background update of the list of supported apps
+// This update is only performed once every few days
 - (void)updateSupportedAppsInBackground
 {
-    [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];    
+    // check if we already updated recently
+    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
+    NSDate* lastUpdateDate = [userPrefs objectForKey:LASTUPDATE_USERPREF_KEY];
+    NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
+    if (secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
+        [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
+    }
 }
 
 
 // this method runs in a background thread and downloads the latest plist file with information
 // on the supported apps and their URL schemes.
-// This update is only performed once every few days
 - (void)requestSupportedAppURLSchemesUpdate
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    // check if we already updated recently
-    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-    NSDate* lastUpdateDate = [userPrefs objectForKey:LASTUPDATE_USERPREF_KEY];
-    NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
-    if (secondsSinceLastUpdate < MINIMUM_SECS_BETWEEN_UPDATES) return;
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink_debug.plist"];
@@ -101,8 +87,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
     [userPrefs synchronize];
     // invalidate list of installed supported apps
-    [installedAppsURLSchemes release];
-    installedAppsURLSchemes = nil;
+    self.installedAppsURLSchemes = nil;
 }
 
 
@@ -139,9 +124,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
 {
-    // the class alias is required to allow the code to compile and load under iPhone OS 2.x
-    Class PasteBoardClass = NSClassFromString(@"UIPasteboard");
-    id pasteboard = [PasteBoardClass pasteboardWithName:PASTEBOARD_NAME create:YES];
+    UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
     NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
     [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
@@ -155,10 +138,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (UIImage*)popPassedInImage
 {
-    Class PasteBoardClass = NSClassFromString(@"UIPasteboard");
     // Note: We are just looking for an existing pasteboard, however specifying create:NO 
     // will never find the existing pasteboard. This is a bug in Apple's implementation 
-    id pasteboard = [PasteBoardClass pasteboardWithName:PASTEBOARD_NAME create:YES];
+    UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];
     UIImage* image = [pasteboard image];
     // clear the pasteboard
     [pasteboard setItems:nil];
