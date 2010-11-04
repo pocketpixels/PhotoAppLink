@@ -35,13 +35,13 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 #endif
 
 @interface PhotoAppLinkManager() 
-@property (nonatomic, retain) NSMutableDictionary* installedAppsURLSchemes;
+@property (nonatomic,  copy) NSArray *supportedApps;
 @end
 
 @implementation PhotoAppLinkManager
 
 @dynamic destinationAppNames;
-@synthesize installedAppsURLSchemes;
+@synthesize supportedApps;
 
 
 // trigger background update of the list of supported apps
@@ -65,7 +65,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink_debug.plist"];
+    NSURL* plistURL = [NSURL URLWithString:@"http://dl.dropbox.com/u/261469/temp/photoapplink_debug.plist"];
 #else
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
@@ -86,40 +86,59 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     // store time stamp of update
     [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
     [userPrefs synchronize];
-    // invalidate list of installed supported apps
-    self.installedAppsURLSchemes = nil;
+    
+    // invalidate list of supported apps
+    self.supportedApps = nil;
 }
 
 
-- (NSMutableDictionary*)installedAppsURLSchemes
+- (NSArray*)supportedApps
 {
-    if (installedAppsURLSchemes) return installedAppsURLSchemes;
-    installedAppsURLSchemes = [[NSMutableDictionary alloc] init];
-    // get dictionary of all supported apps from the user defaults
+    if (supportedApps) return supportedApps;
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];
+
     // deactivate until official launch date
     NSDate* launchDate = [plistDict objectForKey:LAUNCH_DATE_KEY];
     if (launchDate && ([launchDate compare:[NSDate date]] == NSOrderedDescending)) return nil;
-    NSArray* supportedApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
-    if (supportedApps == nil) return nil;
+    
+    NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
+    if (plistApps == nil) return nil;
+    
     NSString* ownBundleID = [[NSBundle mainBundle] bundleIdentifier];
-    for (NSDictionary* appInfo in supportedApps) {
-        NSString* appName = [appInfo objectForKey:@"name"];
-        NSString* urlString = [[appInfo objectForKey:@"scheme"] stringByAppendingString:@"://"];
-        NSURL *launchURL= [NSURL URLWithString:urlString];
-        NSString* bundleID = [appInfo objectForKey:@"bundleID"];
-        // check which of the supported apps are actually supported on the device
-        if ( ![bundleID isEqualToString:ownBundleID] && [[UIApplication sharedApplication] canOpenURL:launchURL]) {
-            [installedAppsURLSchemes setValue:[appInfo objectForKey:@"scheme"] forKey:appName];
+    NSMutableArray* newSupportedApps = [NSMutableArray array];
+    for (NSDictionary* plistAppInfo in plistApps) {
+        PALAppInfo* appInfo = [[PALAppInfo alloc] init];
+        appInfo.appName = [plistAppInfo objectForKey:@"name"];
+        appInfo.canSend = [[plistAppInfo objectForKey:@"sends"] boolValue];
+        appInfo.canReceive = [[plistAppInfo objectForKey:@"receives"] boolValue];
+        appInfo.urlScheme = [NSURL URLWithString:[[plistAppInfo objectForKey:@"scheme"] 
+                                                  stringByAppendingString:@"://"]];
+        appInfo.installed = (appInfo.canReceive && 
+                             [[UIApplication sharedApplication] canOpenURL:appInfo.urlScheme]);
+        appInfo.appDescription = [plistAppInfo objectForKey:@"description"];
+        appInfo.bundleID = [plistAppInfo objectForKey:@"bundleID"];
+        appInfo.thumbnailURL = [NSURL URLWithString:[plistAppInfo objectForKey:@"thumbnail"]];
+        appInfo.thumbnail2xURL = [NSURL URLWithString:[plistAppInfo objectForKey:@"thumbnail2x"]];
+        // Drop entry for the currently running app
+        if (! [appInfo.bundleID isEqualToString:ownBundleID]) {
+            [newSupportedApps addObject:appInfo];
         }
+        [appInfo release];        
     }
-    return installedAppsURLSchemes;
+    supportedApps = [newSupportedApps copy];
+    return supportedApps;
 }
 
 - (NSArray*)destinationAppNames
 {
-    return [self.installedAppsURLSchemes allKeys];
+    NSMutableArray* appNames = [NSMutableArray array];
+    for (PALAppInfo* appInfo in self.supportedApps) {
+        if (appInfo.installed) {
+            [appNames addObject:appInfo.appName];
+        }
+    }
+    return appNames;
 }
 
 - (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
@@ -128,12 +147,12 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     [pasteboard setPersistent:YES];
     NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
     [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
-    
-    // get URL for the destination app name
-    NSString* urlString = [[self.installedAppsURLSchemes objectForKey:appName] stringByAppendingString:@"://edit"];
-    NSURL* appLaunchURL = [NSURL URLWithString:urlString];
-    // launch the app
-    [[UIApplication sharedApplication] openURL:appLaunchURL];
+    for (PALAppInfo* appInfo in self.supportedApps) {
+        if ([appInfo.appName isEqualToString:appName]) {
+            // launch the app
+            [[UIApplication sharedApplication] openURL:appInfo.urlScheme];
+        }
+    }    
 }
 
 - (UIImage*)popPassedInImage
@@ -191,7 +210,32 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
     return self;
 }
 
+@end
 
+@implementation PALAppInfo
+
+@synthesize appName;
+@synthesize urlScheme;
+@synthesize appDescription;
+@synthesize bundleID;
+@synthesize thumbnailURL;
+@synthesize thumbnail2xURL;
+@synthesize installed;
+@synthesize canSend;
+@synthesize canReceive;
+
+- (void) dealloc
+{
+    [appName release];
+	[urlScheme release];
+	[bundleID release];
+	[thumbnailURL release];
+	[thumbnail2xURL release];
+
+    [super dealloc];
+}
 
 @end
+
+
 

@@ -22,15 +22,21 @@
 
 #import <Foundation/Foundation.h>
 
+@class PALAppInfo; // defined at the bottom of the file
+
 @interface PhotoAppLinkManager : NSObject {
-    NSMutableDictionary* installedAppsURLSchemes; 
+    NSArray* supportedApps;
 }
 
 // the names of the photo editing apps that are installed on the user's device
-// and support the photo app exchange scheme
+// and support receiving images via the photo app link protocol
 // Check that this is not nil or empty first
 // Then present users this list of apps under a "Send to app" submenu / list. 
 @property (nonatomic, readonly) NSArray *destinationAppNames;
+
+// a dictionary of PALAppInfo objects for all supported apps (installed and not)
+@property (nonatomic, copy, readonly) NSArray *supportedApps;
+
 
 // Get the singleton instance
 + (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
@@ -48,5 +54,29 @@
 // If successful, this function will not return but quit the current app and 
 - (void)invokeApplication:(NSString*) appName withImage:(UIImage*)image;
 
+@end
+
+@interface PALAppInfo : NSObject {
+    NSString*   appName;        // the display name of the app
+    BOOL        canSend;        // Flag whether the app supports sending images
+    BOOL        canReceive;     // Flag whether the app supports receiving images
+    BOOL        installed;      // Flag indicating whether the app is installed on this device
+                                // (only valid for apps that can receive images)
+    NSString*   appDescription;    // a one line description of the app
+    NSURL*      urlScheme;      // the PhotoAppLink URL scheme used by the app
+    NSString*   bundleID;       // the app's bundle ID
+    NSURL*      thumbnailURL;   // URL to thumbnail image
+    NSURL*      thumbnail2xURL; // URL to a 2x resolution version of the thumbnail
+}
+
+@property (nonatomic, copy) NSString *appName;
+@property (nonatomic, assign) BOOL installed;
+@property (nonatomic, assign) BOOL canSend;
+@property (nonatomic, assign) BOOL canReceive;
+@property (nonatomic, retain) NSURL *urlScheme;
+@property (nonatomic, copy) NSString *appDescription;
+@property (nonatomic, copy) NSString *bundleID;
+@property (nonatomic, retain) NSURL *thumbnailURL;
+@property (nonatomic, retain) NSURL *thumbnail2xURL;
 @end
 
