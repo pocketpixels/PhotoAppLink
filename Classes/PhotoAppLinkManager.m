@@ -52,11 +52,11 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     NSDate* lastUpdateDate = [userPrefs objectForKey:LASTUPDATE_USERPREF_KEY];
     NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
-    if (secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
+    if (!lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
         [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
     }
 }
-
+ 
 
 // this method runs in a background thread and downloads the latest plist file with information
 // on the supported apps and their URL schemes.
