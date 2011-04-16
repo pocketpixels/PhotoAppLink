@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class PALAppInfo; // defined at the bottom of the file
+@class PALAppInfo; 
 
 @interface PhotoAppLinkManager : NSObject {
     NSArray* supportedApps;
@@ -56,27 +56,45 @@
 
 @end
 
+
+
 @interface PALAppInfo : NSObject {
-    NSString*   appName;        // the display name of the app
-    BOOL        canSend;        // Flag whether the app supports sending images
-    BOOL        canReceive;     // Flag whether the app supports receiving images
-    BOOL        installed;      // Flag indicating whether the app is installed on this device
-                                // (only valid for apps that can receive images)
-    NSString*   appDescription;    // a one line description of the app
-    NSURL*      urlScheme;      // the PhotoAppLink URL scheme used by the app
-    NSString*   bundleID;       // the app's bundle ID
-    NSURL*      thumbnailURL;   // URL to thumbnail image
-    NSURL*      thumbnail2xURL; // URL to a 2x resolution version of the thumbnail
+    NSString*   appName;
+    BOOL        canSend;
+    BOOL        canReceive;
+    BOOL        installed;
+    NSString*   appDescription;
+    NSURL*      urlScheme;
+    NSString*   bundleID;
+    NSString*   appleID;
+    NSURL*      thumbnailURL;
+    NSURL*      thumbnail2xURL;
 }
 
-@property (nonatomic, copy) NSString *appName;
-@property (nonatomic, assign) BOOL installed;
+// the display name of the app
+@property (nonatomic, copy) NSString* appName;
+// Flag indicating whether the app is installed on this device
+// (only valid for apps that can receive images)
+@property (nonatomic, assign) BOOL installed;   
+// Flag whether the app supports sending images to other apps
 @property (nonatomic, assign) BOOL canSend;
+// Flag whether the app supports receiving images
 @property (nonatomic, assign) BOOL canReceive;
-@property (nonatomic, retain) NSURL *urlScheme;
-@property (nonatomic, copy) NSString *appDescription;
-@property (nonatomic, copy) NSString *bundleID;
-@property (nonatomic, retain) NSURL *thumbnailURL;
-@property (nonatomic, retain) NSURL *thumbnail2xURL;
+// the PhotoAppLink URL used to launch the app
+@property (nonatomic, retain) NSURL* urlScheme;
+// a one line description of the app
+@property (nonatomic, copy) NSString* appDescription;
+// the app's bundle ID (i.e. "com.apple.imovie")
+@property (nonatomic, copy) NSString* bundleID;
+// Apple's app identifier (part of iTunes App Store links, example: "374308914")
+@property (nonatomic, copy) NSString* appleID;
+// URL to thumbnail image
+@property (nonatomic, retain) NSURL* thumbnailURL;
+// URL to a 2x resolution version of the thumbnail
+@property (nonatomic, retain) NSURL* thumbnail2xURL;
+
+// Link to the app in the app store. 
+- (NSURL*)appStoreLink; 
+
 @end
 

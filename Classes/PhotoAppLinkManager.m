@@ -21,6 +21,17 @@
 
 #import "PhotoAppLinkManager.h"
 
+// Substitute your own Linkshare Site ID here if you like.
+// This Linkshare ID is used to create affiliate links to 
+// supported apps on the App Store
+static NSString *const LINKSHARE_SITE_ID = @"voTw02jXldU";
+
+// Substitute this for testing with your own edited server side plist URL
+// (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
+//  otherwise the production plist file will be used)
+static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/261469/temp/photoapplink_debug.plist";
+//static NSString *const DEBUG_PLIST_URL = @"http://www.photoapplink.com/photoapplink_debug.plist";
+
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const LAUNCH_DATE_KEY = @"launchDate";
@@ -65,7 +76,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:@"http://dl.dropbox.com/u/261469/temp/photoapplink_debug.plist"];
+    NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
 #else
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
@@ -114,6 +125,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
         appInfo.canReceive = [[plistAppInfo objectForKey:@"receives"] boolValue];
         appInfo.urlScheme = [NSURL URLWithString:[[plistAppInfo objectForKey:@"scheme"] 
                                                   stringByAppendingString:@"://"]];
+        appInfo.appleID = [plistAppInfo objectForKey:@"appleID"];
         appInfo.installed = (appInfo.canReceive && 
                              [[UIApplication sharedApplication] canOpenURL:appInfo.urlScheme]);
         appInfo.appDescription = [plistAppInfo objectForKey:@"description"];
@@ -214,25 +226,29 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 
 @implementation PALAppInfo
 
-@synthesize appName;
-@synthesize urlScheme;
-@synthesize appDescription;
-@synthesize bundleID;
-@synthesize thumbnailURL;
-@synthesize thumbnail2xURL;
-@synthesize installed;
-@synthesize canSend;
-@synthesize canReceive;
+@synthesize appName, urlScheme, appDescription, bundleID, appleID;
+@synthesize thumbnailURL, thumbnail2xURL, installed, canSend, canReceive;
+
 
 - (void) dealloc
 {
     [appName release];
 	[urlScheme release];
 	[bundleID release];
+    [appleID release];
 	[thumbnailURL release];
 	[thumbnail2xURL release];
 
     [super dealloc];
+}
+
+- (NSURL*)appStoreLink
+{
+    if (self.appleID == nil) return nil;
+    // This creates a LinkShare affiliate link, but without any redirection. It does straight to the app store item.
+    NSString* affiliateLink = [NSString stringWithFormat:@"http://itunes.apple.com/app/id%@?mt=8&partnerId=30&tduid=%@",
+                               self.appleID, LINKSHARE_SITE_ID];
+    return [NSURL URLWithString:affiliateLink];
 }
 
 @end
