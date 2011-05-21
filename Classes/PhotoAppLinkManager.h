@@ -24,8 +24,10 @@
 
 @class PALAppInfo; 
 
-@interface PhotoAppLinkManager : NSObject {
+@interface PhotoAppLinkManager : NSObject <UIActionSheetDelegate> {
     NSArray* supportedApps;
+    UIImage* genericAppIcon;
+    UIImage* imageToSend;
 }
 
 // the names of the photo editing apps that are installed on the user's device
@@ -34,9 +36,17 @@
 // Then present users this list of apps under a "Send to app" submenu / list. 
 @property (nonatomic, readonly) NSArray *destinationAppNames;
 
+// the PALAppInfo objects of the photo editing apps that are installed on the user's device
+// and support receiving images via the photo app link protocol
+// Check that this is not nil or empty first
+// Then present users this list of apps under a "Send to app" submenu / list. 
+@property (nonatomic, readonly) NSArray *destinationApps;
+
 // a dictionary of PALAppInfo objects for all supported apps (installed and not)
 @property (nonatomic, copy, readonly) NSArray *supportedApps;
 
+// a generic image to use if there was a problem getting an app icon
+@property (nonatomic, readonly) UIImage *genericAppIcon;
 
 // Get the singleton instance
 + (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
@@ -54,6 +64,8 @@
 // If successful, this function will not return but quit the current app and 
 - (void)invokeApplication:(NSString*) appName withImage:(UIImage*)image;
 
+- (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
+
 @end
 
 
@@ -69,6 +81,7 @@
     NSString*   appleID;
     NSURL*      thumbnailURL;
     NSURL*      thumbnail2xURL;
+    UIImage*    thumbnail;
 }
 
 // the display name of the app
@@ -92,9 +105,14 @@
 @property (nonatomic, retain) NSURL* thumbnailURL;
 // URL to a 2x resolution version of the thumbnail
 @property (nonatomic, retain) NSURL* thumbnail2xURL;
+// The image thumbnail
+@property (nonatomic, readonly) UIImage* thumbnail;
 
 // Link to the app in the app store. 
-- (NSURL*)appStoreLink; 
+- (NSURL*)appStoreLink;
+
+// Call after setting both thumbnails URLs to get the image
+- (void)updateThumbnail;
 
 @end
 
