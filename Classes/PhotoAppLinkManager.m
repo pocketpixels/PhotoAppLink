@@ -154,10 +154,8 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 - (NSArray*)destinationAppNames
 {
     NSMutableArray* appNames = [NSMutableArray array];
-    for (PALAppInfo* appInfo in self.supportedApps) {
-        if (appInfo.installed) {
-            [appNames addObject:appInfo.appName];
-        }
+    for (PALAppInfo* appInfo in self.destinationApps) {
+        [appNames addObject:appInfo.appName];
     }
     return appNames;
 }
