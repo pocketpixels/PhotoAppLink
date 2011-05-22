@@ -26,7 +26,6 @@
 
 @interface PhotoAppLinkManager : NSObject <UIActionSheetDelegate> {
     NSArray* supportedApps;
-    UIImage* genericAppIcon;
     UIImage* imageToSend;
 }
 
@@ -44,9 +43,6 @@
 
 // a dictionary of PALAppInfo objects for all supported apps (installed and not)
 @property (nonatomic, copy, readonly) NSArray *supportedApps;
-
-// a generic image to use if there was a problem getting an app icon
-@property (nonatomic, readonly) UIImage *genericAppIcon;
 
 // Get the singleton instance
 + (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
@@ -79,40 +75,37 @@
     NSURL*      urlScheme;
     NSString*   bundleID;
     NSString*   appleID;
-    NSURL*      thumbnailURL;
-    NSURL*      thumbnail2xURL;
     UIImage*    thumbnail;
+    NSURL*      thumbnailURL;
 }
 
+// Initializer
+- (id)initWithPropertyDict:(NSDictionary*)properties;
+
 // the display name of the app
-@property (nonatomic, copy) NSString* appName;
+@property (nonatomic, readonly) NSString* appName;
 // Flag indicating whether the app is installed on this device
 // (only valid for apps that can receive images)
-@property (nonatomic, assign) BOOL installed;   
+@property (nonatomic, readonly) BOOL installed;   
 // Flag whether the app supports sending images to other apps
-@property (nonatomic, assign) BOOL canSend;
+@property (nonatomic, readonly) BOOL canSend;
 // Flag whether the app supports receiving images
-@property (nonatomic, assign) BOOL canReceive;
+@property (nonatomic, readonly) BOOL canReceive;
 // the PhotoAppLink URL used to launch the app
-@property (nonatomic, retain) NSURL* urlScheme;
+@property (nonatomic, readonly) NSURL* urlScheme;
 // a one line description of the app
-@property (nonatomic, copy) NSString* appDescription;
+@property (nonatomic, readonly) NSString* appDescription;
 // the app's bundle ID (i.e. "com.apple.imovie")
-@property (nonatomic, copy) NSString* bundleID;
+@property (nonatomic, readonly) NSString* bundleID;
 // Apple's app identifier (part of iTunes App Store links, example: "374308914")
-@property (nonatomic, copy) NSString* appleID;
-// URL to thumbnail image
-@property (nonatomic, retain) NSURL* thumbnailURL;
-// URL to a 2x resolution version of the thumbnail
-@property (nonatomic, retain) NSURL* thumbnail2xURL;
-// The image thumbnail
+@property (nonatomic, readonly) NSString* appleID;
+// The image thumbnail (with appropriate scale for the device)
 @property (nonatomic, readonly) UIImage* thumbnail;
+// URL to thumbnail image
+@property (nonatomic, readonly) NSURL* thumbnailURL;
 
 // Link to the app in the app store. 
 - (NSURL*)appStoreLink;
-
-// Call after setting both thumbnails URLs to get the image
-- (void)updateThumbnail;
 
 @end
 

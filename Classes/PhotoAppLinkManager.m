@@ -26,12 +26,17 @@
 // supported apps on the App Store
 static NSString *const LINKSHARE_SITE_ID = @"voTw02jXldU";
 
+// If you are not using app icons to display the list of supported
+// apps in your UI, you can set this to NO to disable downloading 
+// of these app icons
+static BOOL USING_APP_ICONS = YES;
+
 // Substitute this for testing with your own edited server side plist URL
 // (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
 //  otherwise the production plist file will be used)
 static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/12543232/photoapplink_debug.plist";
 
-static NSString *const GENERIC_APP_ICON = @"sharer-generic.png";
+static NSString *const GENERIC_APP_ICON = @"PhotoAppLink_genericAppIcon.png";
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
@@ -49,6 +54,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 @interface PhotoAppLinkManager() 
 @property (nonatomic,  copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
+- (void)downloadAndCacheIconsForAllApps;
 @end
 
 @implementation PhotoAppLinkManager
@@ -68,6 +74,10 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
     if (!lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
         [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
+    }
+    else if (USING_APP_ICONS){
+        // still check for any missing app icons and download them
+        [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];            
     }
 }
 
@@ -103,8 +113,11 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     
     // invalidate list of supported apps
     self.supportedApps = nil;
+    if (USING_APP_ICONS) {
+        // download app icons for all apps in the new list
+        [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];        
+    }
 }
-
 
 - (NSArray*)supportedApps
 {
@@ -122,26 +135,12 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSString* ownBundleID = [[NSBundle mainBundle] bundleIdentifier];
     NSMutableArray* newSupportedApps = [NSMutableArray array];
     for (NSDictionary* plistAppInfo in plistApps) {
-        NSString* bundleID = [plistAppInfo objectForKey:@"bundleID"];
+        PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
         // Drop entry for the currently running app
-        if (! [bundleID isEqualToString:ownBundleID]) {
-            PALAppInfo* appInfo = [[PALAppInfo alloc] init];
-            appInfo.bundleID = bundleID;
-            appInfo.appName = [plistAppInfo objectForKey:@"name"];
-            appInfo.canSend = [[plistAppInfo objectForKey:@"sends"] boolValue];
-            appInfo.canReceive = [[plistAppInfo objectForKey:@"receives"] boolValue];
-            appInfo.urlScheme = [NSURL URLWithString:[[plistAppInfo objectForKey:@"scheme"] 
-                                                      stringByAppendingString:@"://"]];
-            appInfo.appleID = [plistAppInfo objectForKey:@"appleID"];
-            appInfo.installed = (appInfo.canReceive && 
-                                 [[UIApplication sharedApplication] canOpenURL:appInfo.urlScheme]);
-            appInfo.appDescription = [plistAppInfo objectForKey:@"description"];
-            appInfo.thumbnailURL = [NSURL URLWithString:[plistAppInfo objectForKey:@"thumbnail"]];
-            appInfo.thumbnail2xURL = [NSURL URLWithString:[plistAppInfo objectForKey:@"thumbnail2x"]];
-            [appInfo updateThumbnail];
+        if (![appInfo.bundleID isEqualToString:ownBundleID]) {
             [newSupportedApps addObject:appInfo];
-            [appInfo release];        
         }
+        [appInfo release];
     }
     supportedApps = [newSupportedApps copy];
     return supportedApps;
@@ -161,13 +160,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
         }
     }
     return appNames;
-}
-
-- (UIImage*)genericAppIcon
-{
-    if (genericAppIcon) return genericAppIcon;
-    genericAppIcon = [[UIImage imageNamed:GENERIC_APP_ICON] retain];
-    return genericAppIcon;
 }
 
 - (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
@@ -194,6 +186,83 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     [pasteboard setItems:nil];
     return image;
 }
+
+#pragma mark -
+#pragma mark App icon cache
+
+- (NSString*)appIconCacheDirectory
+{
+    NSArray  *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *generalcacheDirectory = [cachePaths objectAtIndex:0];
+    NSString *iconDirectory = [generalcacheDirectory stringByAppendingPathComponent:@"PhotoAppLink_AppIcons"];
+    return iconDirectory;
+}
+
+- (void)createAppIconCacheDirectory
+{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[self appIconCacheDirectory]]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:[self appIconCacheDirectory] 
+                                  withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
+
+- (void)clearAppIconCache
+{
+    [[NSFileManager defaultManager] removeItemAtPath:[self appIconCacheDirectory] error:nil];
+    [self createAppIconCacheDirectory];
+}
+
+- (NSString*)cachedIconPathForApp:(PALAppInfo*)app
+{
+    NSString* fileName = [NSString stringWithFormat:@"%@_%@", app.bundleID, [app.thumbnailURL lastPathComponent]];
+    NSString* fullPath = [[self appIconCacheDirectory] stringByAppendingPathComponent:fileName];
+    return fullPath;
+}
+
+- (UIImage*)cachedIconForApp:(PALAppInfo*)app
+{
+    UIImage* icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
+    if (icon == nil) return nil;
+    BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
+    if (!isRetina || [icon scale] > 1.0) return icon;
+    else {
+        // need to create image with appropriate scale
+        float scale = [[UIScreen mainScreen] scale];
+        UIImageOrientation orientation = [icon imageOrientation];
+        UIImage* retinaIcon = [UIImage imageWithCGImage:icon.CGImage scale:scale orientation:orientation];
+        return retinaIcon;
+    }
+}
+
+- (void)downloadAndCacheIconsForAllApps
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    // ensure that the cache directory exists
+    [self createAppIconCacheDirectory];
+    
+    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
+    NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];    
+    NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
+    if (plistApps == nil) return;
+    
+    for (NSDictionary* plistAppInfo in plistApps) {
+        PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
+        NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
+        if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
+            NSData* imageData = [NSData dataWithContentsOfURL:appInfo.thumbnailURL];
+            // verify that the data is actually an image
+            UIImage* image = [UIImage imageWithData:imageData];
+            if (image != nil) {
+                [imageData writeToFile:cachedIconPath atomically:YES];                
+            }
+        }
+    }
+    [pool release];
+}
+
+
+#pragma mark -
+#pragma mark Action Sheet
 
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image
 {
@@ -274,11 +343,35 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 
 @end
 
+
+#pragma mark -
+#pragma mark PALAppInfo class
+
 @implementation PALAppInfo
 
 @synthesize appName, urlScheme, appDescription, bundleID, appleID;
-@synthesize thumbnailURL, thumbnail2xURL, installed, canSend, canReceive;
+@synthesize thumbnailURL, installed, canSend, canReceive;
 @synthesize thumbnail;
+
+- (id)initWithPropertyDict:(NSDictionary*)properties {
+    self = [super init];
+    if (self) {
+        bundleID = [[properties objectForKey:@"bundleID"] copy];
+        appName = [[properties objectForKey:@"name"] copy];
+        canSend = [[properties objectForKey:@"sends"] boolValue];
+        canReceive = [[properties objectForKey:@"receives"] boolValue];
+        urlScheme = [[NSURL alloc] initWithString:[[properties objectForKey:@"scheme"] 
+                                                           stringByAppendingString:@"://"]];
+        appleID = [[properties objectForKey:@"appleID"] copy];
+        installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:urlScheme]);
+        appDescription = [[properties objectForKey:@"description"] copy];
+        // select appropriate app icon for this device
+        BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
+        NSString* thumbnailKey = isRetina ? @"thumbnail2x" : @"thumbnail";
+        thumbnailURL = [[NSURL alloc] initWithString:[properties objectForKey:thumbnailKey]];            
+    }
+    return self;
+}
 
 - (void) dealloc
 {
@@ -287,9 +380,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 	[bundleID release];
     [appleID release];
 	[thumbnailURL release];
-	[thumbnail2xURL release];
     [thumbnail release];
-    
     [super dealloc];
 }
 
@@ -302,67 +393,12 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
     return [NSURL URLWithString:affiliateLink];
 }
 
-- (void)updateThumbnail
-{
-    if (thumbnail) return;
-
-    NSArray  *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cacheDirectory = [cachePaths objectAtIndex:0];
-    NSString *cacheFile = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"icon-%@.png", bundleID]];
-    
-    if ([[NSFileManager defaultManager] isReadableFileAtPath:cacheFile]) {
-        thumbnail = [[UIImage alloc] initWithContentsOfFile:cacheFile];
-    }
-    
-    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-    NSDate* lastUpdateDate = [userPrefs objectForKey:[LASTUPDATE_USERPREF_KEY stringByAppendingString:bundleID]];
-    NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
-    if (thumbnail == nil || !lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
-        [self performSelectorInBackground:@selector(requestIconUpdate) withObject:nil];            
-    }
-}
-
-- (void)requestIconUpdate
-{
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    
-    UIScreen *mainScreen = [UIScreen mainScreen];
-    BOOL isRetina = [mainScreen respondsToSelector:@selector(scale)] && [mainScreen scale] == 2.0f;
-    NSURL *thumbURL = isRetina ? thumbnail2xURL : thumbnailURL;
-    
-    NSData *imageData = [NSData dataWithContentsOfURL:thumbURL];
-    if (imageData) {
-        UIImage *thumb = [UIImage imageWithData:imageData];
-        // Just to avoid any consurrency issue
-        [self performSelectorOnMainThread:@selector(storeUpdatedThumbnail:)
-                               withObject:thumb
-                            waitUntilDone:YES];
-
-        // Update the cache
-        NSArray  *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *cacheDirectory = [cachePaths objectAtIndex:0];
-        NSString *cacheFile = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"icon-%@.png", bundleID]];
-        [imageData writeToFile:cacheFile atomically:YES];
-
-        NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-        // store time stamp of update
-        [userPrefs setObject:[NSDate date] forKey:[LASTUPDATE_USERPREF_KEY stringByAppendingString:bundleID]];
-        [userPrefs synchronize];
-    }
-    
-    [pool release];
-}
-
-- (void)storeUpdatedThumbnail:(UIImage*)thumb
-{
-    [thumbnail release];
-    thumbnail = [thumb retain];
-}
-
 - (UIImage*)thumbnail
 {
     if (thumbnail) return thumbnail;
-    return [[PhotoAppLinkManager sharedPhotoAppLinkManager] genericAppIcon];
+    thumbnail = [[[PhotoAppLinkManager sharedPhotoAppLinkManager] cachedIconForApp:self] retain];
+    if (thumbnail) return thumbnail;
+    else return [UIImage imageNamed:GENERIC_APP_ICON];
 }
 
 @end
