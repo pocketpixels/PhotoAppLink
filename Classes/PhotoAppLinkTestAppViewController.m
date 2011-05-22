@@ -45,14 +45,7 @@
 
 - (IBAction)showSendToAppTable
 {
-    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
-    TargetAppsTableViewController* targetAppTable = [[TargetAppsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    NSArray* supportedAppNames = [applink destinationAppNames];
-    targetAppTable.targetAppNames = supportedAppNames;
-    targetAppTable.currentImage = self.image;
-    [self.navigationController pushViewController:targetAppTable animated:YES];
-    //    [self presentModalViewController:targetAppTable animated:YES];
-    [targetAppTable release];
+    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
 }
 
 - (void)setImage:(UIImage*)newImage
