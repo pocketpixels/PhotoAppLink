@@ -15,6 +15,7 @@
 		2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */; };
+		B13508E113899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B13508E013899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.m */; };
 		B1C3353910A90572001287E9 /* PhotoAppLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C3353810A90572001287E9 /* PhotoAppLinkManager.m */; };
 		B1FB988610AA543100C56AE2 /* TargetAppsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB988510AA543100C56AE2 /* TargetAppsTableViewController.m */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
@@ -34,6 +35,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhotoAppLinkTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestApp_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PhotoAppLinkTestApp-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B13508DF13899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsViewController.h; sourceTree = "<group>"; };
+		B13508E013899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsViewController.m; sourceTree = "<group>"; };
 		B1C3353710A90572001287E9 /* PhotoAppLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkManager.h; sourceTree = "<group>"; };
 		B1C3353810A90572001287E9 /* PhotoAppLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkManager.m; sourceTree = "<group>"; };
 		B1FB988410AA543100C56AE2 /* TargetAppsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetAppsTableViewController.h; sourceTree = "<group>"; };
@@ -58,12 +61,14 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B1C3353710A90572001287E9 /* PhotoAppLinkManager.h */,
+				B1C3353810A90572001287E9 /* PhotoAppLinkManager.m */,
 				1D3623240D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.h */,
 				1D3623250D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */,
-				B1C3353710A90572001287E9 /* PhotoAppLinkManager.h */,
-				B1C3353810A90572001287E9 /* PhotoAppLinkManager.m */,
+				B13508DF13899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.h */,
+				B13508E013899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.m */,
 				B1FB988410AA543100C56AE2 /* TargetAppsTableViewController.h */,
 				B1FB988510AA543100C56AE2 /* TargetAppsTableViewController.m */,
 			);
@@ -187,6 +192,7 @@
 				28D7ACF80DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m in Sources */,
 				B1C3353910A90572001287E9 /* PhotoAppLinkManager.m in Sources */,
 				B1FB988610AA543100C56AE2 /* TargetAppsTableViewController.m in Sources */,
+				B13508E113899F8D00C13B60 /* PhotoAppLinkMoreAppsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
