@@ -24,7 +24,7 @@
 // Substitute your own Linkshare Site ID here if you like.
 // This Linkshare ID is used to create affiliate links to 
 // supported apps on the App Store
-static NSString *const LINKSHARE_SITE_ID = @"voTw02jXldU";
+static NSString *const LINKSHARE_SITE_ID = @"2695383";
 
 // If you are not using app icons to display the list of supported
 // apps in your UI, you can set this to NO to disable downloading 
