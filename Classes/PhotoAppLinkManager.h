@@ -85,7 +85,7 @@
 // the display name of the app
 @property (nonatomic, readonly) NSString* appName;
 // Flag indicating whether the app is installed on this device
-// (only valid for apps that can receive images)
+// (only valid for apps that can receive images, NO for other apps)
 @property (nonatomic, readonly) BOOL installed;   
 // Flag whether the app supports sending images to other apps
 @property (nonatomic, readonly) BOOL canSend;
