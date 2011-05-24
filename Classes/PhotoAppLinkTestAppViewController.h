@@ -24,12 +24,14 @@
 
 @interface PhotoAppLinkTestAppViewController : UIViewController {
     IBOutlet UIButton* sendToAppsButton;
+    IBOutlet UIButton* moreAppsButton;
     IBOutlet UIImageView* imageView;
 }
 
 @property (nonatomic, retain) UIImage *image;
 
-- (IBAction)showSendToAppTable;
+- (IBAction)showActionSheet;
+- (IBAction)showMoreAppsTable;
 
 @end
 
