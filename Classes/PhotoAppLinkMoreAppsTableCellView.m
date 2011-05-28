@@ -47,6 +47,7 @@
     static int appDescriptionTopPostion = 31;
     static int appDescriptionMaxHeight = 30;
     static int appDescriptionRightMargin = 70;
+    static int appDescriptionSingleLineOffset = 5;
     
     float totalWidth = self.bounds.size.width;
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -65,7 +66,7 @@
                         withFont:titleFont 
                    lineBreakMode:UILineBreakModeTailTruncation];
     
-    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.25 alpha:1.0];
+    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.20 alpha:1.0];
     UIFont* capabilitiesTextFont = [UIFont systemFontOfSize:13];
     [capabilitiesTextColor set];
     NSString* capabilitiesText;
@@ -96,7 +97,7 @@
         CGSize descriptionSize = [appInfo.appDescription sizeWithFont:descriptionFont 
                                                     constrainedToSize:maxSize];
         BOOL singleLineDescription = descriptionSize.height < 22;
-        int yOffset = (singleLineDescription) ? 4 : 0;
+        int yOffset = (singleLineDescription) ? appDescriptionSingleLineOffset : 0;
         CGRect descriptionBox = CGRectMake(leftTextBoundary, 
                                            appDescriptionTopPostion + yOffset, 
                                            descriptionMaxWidth,
