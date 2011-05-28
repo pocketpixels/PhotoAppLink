@@ -20,8 +20,17 @@ static const int ROWHEIGHT = 86;
     if (self) {
         PhotoAppLinkManager* palManager = [PhotoAppLinkManager sharedPhotoAppLinkManager];
         // TODO filter out apps for the wrong platform
-        NSPredicate* notInstalledPred = [NSPredicate predicateWithFormat:@"%K=FALSE", @"installed"];
-        additionalApps =  [palManager.supportedApps filteredArrayUsingPredicate:notInstalledPred];
+        NSString* deviceType = [[UIDevice currentDevice] model];
+        BOOL isIPad = [deviceType hasPrefix:@"iPad"];
+        NSPredicate* appsToShowPredicate;
+        // Only show apps that are not yet installed (as far as we can tell) and that are supported on the user's device
+        if (isIPad) {
+            appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPhone'"];
+        }
+        else {
+            appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPad'"];            
+        }
+        additionalApps =  [palManager.supportedApps filteredArrayUsingPredicate:appsToShowPredicate];
         [additionalApps retain];
     }
     return self;
