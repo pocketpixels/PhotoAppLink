@@ -53,6 +53,16 @@ static const int ROWHEIGHT = 86;
     self.tableView.allowsSelection = NO;
     self.tableView.rowHeight = ROWHEIGHT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+    
+    UIImage* shadowImage = [UIImage imageNamed:@"PAL_tableview_shadow.png"];
+    UIImageView* bottomShadowView = [[UIImageView alloc] initWithImage:shadowImage];
+    UIImageView* topShadowView = [[UIImageView alloc] initWithImage:shadowImage];
+    [topShadowView setTransform:CGAffineTransformMakeScale(1.0, -1.0)];
+    self.tableView.tableFooterView = bottomShadowView;
+    self.tableView.tableHeaderView = topShadowView;
+    [bottomShadowView release];
+    self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -97,7 +107,7 @@ static const int ROWHEIGHT = 86;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"PALAppInfoCell";
-    static const int APPINFOVIEW_TAG = 100;
+    static const int APPINFOVIEW_TAG = 1042;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     PhotoAppLinkMoreAppsTableCellView* appInfoView;
     UIButton* storeButton;
@@ -109,12 +119,19 @@ static const int ROWHEIGHT = 86;
         appInfoView= [[PhotoAppLinkMoreAppsTableCellView alloc] initWithFrame:cellFrame];
         appInfoView.tag = APPINFOVIEW_TAG;
         [cell.contentView addSubview:appInfoView];
-        
+        [appInfoView release];
         // add button to go to App Store
-        storeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIImage* buttonBG = [UIImage imageNamed:@"PAL_store_button.png"];
+        UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
+        // TODO add assert
+        storeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [storeButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
         [storeButton addTarget:self action:@selector(storeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [storeButton setTitle:@"Store" forState:UIControlStateNormal];
-        storeButton.frame = CGRectMake(0, 0, 50, 32);
+        [storeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:13]];
+        [storeButton.titleLabel setShadowColor:[UIColor blackColor]];
+        [storeButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];        
+        storeButton.frame = CGRectMake(0, 0, 50, 25);
         [cell setAccessoryView:storeButton];
     }
     else {
