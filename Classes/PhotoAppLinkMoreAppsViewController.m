@@ -127,7 +127,6 @@ static const int ROWHEIGHT = 86;
         storeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [storeButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
         [storeButton addTarget:self action:@selector(storeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [storeButton setTitle:@"Store" forState:UIControlStateNormal];
         [storeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:13]];
         [storeButton.titleLabel setShadowColor:[UIColor blackColor]];
         [storeButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];        
@@ -138,10 +137,19 @@ static const int ROWHEIGHT = 86;
         appInfoView = (PhotoAppLinkMoreAppsTableCellView*) [cell.contentView viewWithTag:APPINFOVIEW_TAG];
         storeButton = (UIButton*) cell.accessoryView;
     }
+
     
     PALAppInfo* appInfo = [additionalApps objectAtIndex:indexPath.row];
     [appInfoView setAppInfo:appInfo];
     storeButton.tag = indexPath.row;
+    NSString* storeButtonText;
+    if (appInfo.freeApp) {
+        storeButtonText = NSLocalizedString(@"FREE", "PhotoAppLink");
+    }
+    else {
+        storeButtonText = NSLocalizedString(@"Store", "PhotoAppLink");        
+    }
+    [storeButton setTitle:storeButtonText forState:UIControlStateNormal];
     return cell;
 }
 
