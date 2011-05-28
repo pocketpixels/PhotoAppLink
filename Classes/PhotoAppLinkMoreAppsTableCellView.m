@@ -34,7 +34,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    NSLog(@"PhotoAppLinkMoreAppsTableCellView drawRect");
     static int thumbnailSize = 57;
     static int thumbnailTopMargin = 15;
     static int thumbnailLeftMargin = 10;
