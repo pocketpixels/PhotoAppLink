@@ -348,6 +348,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 @implementation PALAppInfo
 
 @synthesize appName, urlScheme, appDescription, bundleID, appleID;
+@synthesize platform, freeApp;
 @synthesize thumbnailURL, installed, canSend, canReceive;
 @synthesize thumbnail;
 
@@ -359,8 +360,11 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
         canSend = [[properties objectForKey:@"sends"] boolValue];
         canReceive = [[properties objectForKey:@"receives"] boolValue];
         urlScheme = [[NSURL alloc] initWithString:[[properties objectForKey:@"scheme"] 
-                                                           stringByAppendingString:@"://"]];
+                                                   stringByAppendingString:@"://"]];
         appleID = [[properties objectForKey:@"appleID"] copy];
+        platform = [[properties objectForKey:@"platform"] copy];
+        if (platform == nil) platform = [[NSString alloc] initWithString:@"universal"];
+        freeApp = [[properties objectForKey:@"free"] boolValue];
         installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:urlScheme]);
         appDescription = [[properties objectForKey:@"description"] copy];
         // select appropriate app icon for this device
@@ -379,6 +383,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
     [appleID release];
 	[thumbnailURL release];
     [thumbnail release];
+    [platform release];
     [super dealloc];
 }
 

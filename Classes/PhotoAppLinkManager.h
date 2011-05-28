@@ -75,6 +75,8 @@
     NSURL*      urlScheme;
     NSString*   bundleID;
     NSString*   appleID;
+    NSString*   platform;
+    BOOL        freeApp;
     UIImage*    thumbnail;
     NSURL*      thumbnailURL;
 }
@@ -99,6 +101,10 @@
 @property (nonatomic, readonly) NSString* bundleID;
 // Apple's app identifier (part of iTunes App Store links, example: "374308914")
 @property (nonatomic, readonly) NSString* appleID;
+// The device type that the app runs on ("iPhone", "iPad" or "universal")
+@property (nonatomic, copy) NSString *platform;
+// whether the app is free or paid
+@property (nonatomic) BOOL freeApp;
 // The image thumbnail (with appropriate scale for the device)
 @property (nonatomic, readonly) UIImage* thumbnail;
 // URL to thumbnail image
