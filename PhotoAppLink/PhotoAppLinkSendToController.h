@@ -41,8 +41,8 @@
     UIScrollView *_iconsScrollView;
     UIPageControl *_iconsPageControl;
     UIButton *_moreAppsButton;
-    UIToolbar *_topToolbar;
-    UILabel *_titleLabel;
+    UINavigationBar *_myNavigationBar;
+    UINavigationItem *_myNavigationItem;
     
     NSMutableArray *_sharingActions;
 }
@@ -53,11 +53,12 @@
 @property (nonatomic, retain) IBOutlet UIScrollView *iconsScrollView;
 @property (nonatomic, retain) IBOutlet UIPageControl *iconsPageControl;
 @property (nonatomic, retain) IBOutlet UIButton *moreAppsButton;
-@property (nonatomic, retain) IBOutlet UIToolbar *topToolbar;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, retain) IBOutlet UINavigationBar *myNavigationBar;
+@property (nonatomic, retain) IBOutlet UINavigationItem *myNavigationItem;
 
 - (void)addSharingActionWithTitle:(NSString*)title icon:(UIImage*)icon identifier:(int)identifier;
 - (IBAction)dismissView:(id)sender;
 - (IBAction)pageChanged:(id)sender;
+- (IBAction)moreApps:(id)sender;
 
 @end

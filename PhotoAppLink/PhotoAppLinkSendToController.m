@@ -33,8 +33,8 @@
 @synthesize iconsScrollView = _iconsScrollView;
 @synthesize iconsPageControl = _iconsPageControl;
 @synthesize moreAppsButton = _moreAppsButton;
-@synthesize topToolbar = _topToolbar;
-@synthesize titleLabel = _titleLabel;
+@synthesize myNavigationBar = _myNavigationBar;
+@synthesize myNavigationItem = _myNavigationItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,13 +53,9 @@
     [_iconsScrollView release];
     [_iconsPageControl release];
     [_moreAppsButton release];
-    [_topToolbar release];
-    [_titleLabel release];
+    [_myNavigationBar release];
+    [_myNavigationItem release];
     [super dealloc];
-}
-
-- (NSString*)title {
-    return _titleLabel.text;
 }
 
 #pragma mark - View lifecycle
@@ -93,18 +89,20 @@
 
     if (self.navigationController)
     {
-        // If it's presented as part of a navigation controller
-        // I'll hide my toolbar and title
-        _titleLabel.hidden = YES;
-        _topToolbar.hidden = YES;
+        _myNavigationBar.hidden = YES;
         
         // I have to extend the size of my icons view because the
         // navigation bar shrunk it...
         _iconsScrollView.frame = CGRectMake(_iconsScrollView.frame.origin.x,
-                                            _iconsScrollView.frame.origin.y - _topToolbar.frame.size.height,
+                                            _iconsScrollView.frame.origin.y - _myNavigationBar.frame.size.height,
                                             _iconsScrollView.frame.size.width, 
-                                            _iconsScrollView.frame.size.height + _topToolbar.frame.size.height);
+                                            _iconsScrollView.frame.size.height + _myNavigationBar.frame.size.height);
     }
+}
+
+- (NSString*)title
+{
+    return self.myNavigationItem.title;
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -138,8 +136,8 @@
     [self setIconsScrollView:nil];
     [self setIconsPageControl:nil];
     [self setMoreAppsButton:nil];
-    [self setTopToolbar:nil];
-    [self setTitleLabel:nil];
+    [self setMyNavigationBar:nil];
+    [self setMyNavigationItem:nil];
     [super viewDidUnload];
 }
 
@@ -290,7 +288,10 @@
 
 - (IBAction)dismissView:(id)sender 
 {
-    [self dismissModalViewControllerAnimated:YES];
+    if (self.navigationController)
+        [self.navigationController popViewControllerAnimated:YES];
+    else
+        [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)pageChanged:(id)sender
@@ -298,6 +299,19 @@
     [_iconsScrollView scrollRectToVisible:CGRectMake(_iconsPageControl.currentPage * _iconsScrollView.frame.size.width, 0.0f,
                                                      _iconsScrollView.frame.size.width, _iconsScrollView.frame.size.height) 
                                  animated:YES];
+}
+
+- (IBAction)moreApps:(id)sender
+{    
+    PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
+    if (self.navigationController)
+    {
+        [self.navigationController pushViewController:newView animated:YES];
+    }
+    else
+    {
+        [self presentModalViewController:newView animated:YES];
+    }
 }
 
 #pragma mark -
