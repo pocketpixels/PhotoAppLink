@@ -89,6 +89,7 @@
 
     if (self.navigationController)
     {
+        // ALready comes with a navigation bar. Will hide mine
         _myNavigationBar.hidden = YES;
         
         // I have to extend the size of my icons view because the
@@ -98,37 +99,6 @@
                                             _iconsScrollView.frame.size.width, 
                                             _iconsScrollView.frame.size.height + _myNavigationBar.frame.size.height);
     }
-}
-
-- (NSString*)title
-{
-    return self.myNavigationItem.title;
-}
-
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:animated];
-    int pos = 0;
-    if (_sharingActions) 
-    {
-        for (NSArray *sharingAction in _sharingActions)
-        {
-            [self addButtonWithTitle:[sharingAction objectAtIndex:0]
-                                icon:[sharingAction objectAtIndex:1]
-                          inPosition:pos++];
-        }
-    }
-    
-    NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
-    for (PALAppInfo *info in sharers)
-    {
-        [self addButtonWithTitle:info.appName
-                            icon:info.thumbnail
-                      inPosition:pos++];
-    }
-    
-    _iconsPageControl.currentPage = 0;
-    [self fixIconsLayoutAnimated:NO];
 }
 
 - (void)viewDidUnload
@@ -147,11 +117,48 @@
     return YES;
 }
 
+- (NSString*)title
+{
+    return self.myNavigationItem.title;
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+
+    int pos = 0;
+    
+    // First add the custom sharing options
+    if (_sharingActions) 
+    {
+        for (NSArray *sharingAction in _sharingActions)
+        {
+            [self addButtonWithTitle:[sharingAction objectAtIndex:0]
+                                icon:[sharingAction objectAtIndex:1]
+                          inPosition:pos++];
+        }
+    }
+    
+    // Go though the list of available apps
+    NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
+    for (PALAppInfo *info in sharers)
+    {
+        [self addButtonWithTitle:info.appName
+                            icon:info.thumbnail
+                      inPosition:pos++];
+    }
+    
+    _iconsPageControl.currentPage = 0;
+    [self fixIconsLayoutAnimated:NO];
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self fixIconsLayoutAnimated:YES];
 }
 
+// Called after initialization and before presenting to add custom sharers
+// If you do this you must provide a delegate that implements photoAppLinkImage:sendToItemWithIdentifier:
 - (void)addSharingActionWithTitle:(NSString*)title icon:(UIImage*)icon identifier:(int)identifier
 {
     if (_sharingActions == nil)
@@ -160,6 +167,8 @@
     [_sharingActions addObject:[NSArray arrayWithObjects:title, icon, [NSNumber numberWithInt:identifier], nil]];
 }
 
+// Creates a UIView with the button and label
+// Makes it easier to layout.
 - (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position 
 {
     UIView *encapsulator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_HEIGHT)];
@@ -188,6 +197,7 @@
     [encapsulator release];
 }
 
+// Fixes the layout base on the size of the UIScrollView
 - (void)fixIconsLayoutAnimated:(BOOL)animated
 {
     NSArray *subviews = [_iconsScrollView subviews];
@@ -202,11 +212,15 @@
         CGFloat w = _iconsScrollView.bounds.size.width;
         CGFloat h = _iconsScrollView.bounds.size.height;
         
+        // Number of rows and columns of icons
         int iconsX = (int)floor(w / BUTTONS_MIN_WIDTH);
         int iconsY = (int)floor(h / BUTTONS_MIN_HEIGHT);
         
+        // The spacing between icons
         CGFloat dx = floor(w / iconsX);
         CGFloat dy = floor(h / iconsY);
+        
+        // The left/top margin
         CGFloat x0 = floor((dx - BUTTONS_WIDTH) / 2.0f);
         CGFloat y0 = floor((dy - BUTTONS_HEIGHT) / 2.0f);
         
@@ -231,6 +245,9 @@
             }
         }
         
+        // page now holds the number of pages
+        // don't add if posX==0 && posY==0 because this would
+        // be an empty page
         if (posX != 0 || posY != 0)
             page++;
         
@@ -254,6 +271,7 @@
 
 - (void)buttonClicked:(id)sender
 {
+    // Get the image from the property or from the delegate
     UIImage *imageToShare = self.image;
     if (imageToShare == nil && _delegate && [_delegate respondsToSelector:@selector(photoAppLinkImage)])
         imageToShare = [_delegate photoAppLinkImage];
@@ -281,14 +299,7 @@
         }
     }
     
-    if (self.navigationController)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [self dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissView:nil];
 }
 
 - (IBAction)dismissView:(id)sender 
@@ -307,7 +318,8 @@
 }
 
 - (IBAction)moreApps:(id)sender
-{    
+{
+    // TODO: Change newView to a view that shows more apps.
     PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
     if (self.navigationController)
     {
@@ -324,6 +336,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    // Fix my page control
     _iconsPageControl.currentPage = _iconsScrollView.contentOffset.x / _iconsScrollView.frame.size.width;
 }
 

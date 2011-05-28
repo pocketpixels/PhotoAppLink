@@ -28,7 +28,12 @@
 @protocol PhotoAppLinkSendToControllerDelegate <NSObject>
 
 @optional
+// Called if you add custm sharers
 - (void)photoAppLinkImage:(UIImage*)image sendToItemWithIdentifier:(int)identifier;
+
+// If you want to defer providing an image you can use this delegate method
+// Useful if you need processing to generate the image. In this case
+// if the user cancels the action you didn't have to generate it.
 - (UIImage*)photoAppLinkImage;
 
 @end
@@ -47,7 +52,10 @@
     NSMutableArray *_sharingActions;
 }
 
+// Provide a delegate if you have custom actions and/or if you want to defer image creation
 @property (nonatomic, assign) id<PhotoAppLinkSendToControllerDelegate> delegate;
+
+// The image to share. Can be provided later by a delegate.
 @property (nonatomic, retain) UIImage *image;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *iconsScrollView;
@@ -56,7 +64,11 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *myNavigationBar;
 @property (nonatomic, retain) IBOutlet UINavigationItem *myNavigationItem;
 
+// Called after initialization and before presenting to add custom sharers
+// If you do this you must provide a delegate that implements photoAppLinkImage:sendToItemWithIdentifier:
 - (void)addSharingActionWithTitle:(NSString*)title icon:(UIImage*)icon identifier:(int)identifier;
+
+// Actions
 - (IBAction)dismissView:(id)sender;
 - (IBAction)pageChanged:(id)sender;
 - (IBAction)moreApps:(id)sender;
