@@ -59,6 +59,7 @@
 // and passes along the image for further processing.
 // If successful, this function will not return but quit the current app and 
 - (void)invokeApplication:(NSString*) appName withImage:(UIImage*)image;
+- (void)invokeScheme:(NSURL*) urlScheme withImage:(UIImage*)image;
 
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
 
