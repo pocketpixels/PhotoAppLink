@@ -254,26 +254,31 @@
 
 - (void)buttonClicked:(id)sender
 {
-    int position = [sender tag] - 1;
-    if (_sharingActions && position < [_sharingActions count])
+    UIImage *imageToShare = self.image;
+    if (imageToShare == nil && _delegate && [_delegate respondsToSelector:@selector(photoAppLinkImage)])
+        imageToShare = [_delegate photoAppLinkImage];
+    
+    if (imageToShare == nil)
     {
-        NSArray *sharingAction = [_sharingActions objectAtIndex:position];
-        [_delegate photoAppLinkImageSendToItemWithIdentifier:[[sharingAction objectAtIndex:2] intValue]];
+        NSLog(@"This should not happen! You have to either set this object's image or set a delegate and implement photoAppLinkImage");
     }
     else
     {
-        if (_sharingActions)
-            position -= [_sharingActions count];
-        
-        NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
-        PALAppInfo *info = [sharers objectAtIndex:position];
-        UIImage *imageToShare = self.image;
-        if (imageToShare == nil && _delegate && [_delegate respondsToSelector:@selector(photoAppLinkImage)])
-            imageToShare = [_delegate photoAppLinkImage];
-        if (imageToShare)
-            [[PhotoAppLinkManager sharedPhotoAppLinkManager] invokeApplication:info.appName withImage:imageToShare];
+        int position = [sender tag] - 1;
+        if (_sharingActions && position < [_sharingActions count])
+        {
+            NSArray *sharingAction = [_sharingActions objectAtIndex:position];
+            [_delegate photoAppLinkImage:imageToShare sendToItemWithIdentifier:[[sharingAction objectAtIndex:2] intValue]];
+        }
         else
-            NSLog(@"This should not happen! You have to either set this object's image or set a delegate and implement photoAppLinkImage");
+        {
+            if (_sharingActions)
+                position -= [_sharingActions count];
+            
+            NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
+            PALAppInfo *info = [sharers objectAtIndex:position];
+            [[PhotoAppLinkManager sharedPhotoAppLinkManager] invokeApplication:info.appName withImage:imageToShare];
+        }
     }
     
     if (self.navigationController)

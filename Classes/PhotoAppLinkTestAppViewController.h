@@ -21,8 +21,9 @@
 
 
 #import <UIKit/UIKit.h>
+#import "PhotoAppLinkSendToController.h"
 
-@interface PhotoAppLinkTestAppViewController : UIViewController {
+@interface PhotoAppLinkTestAppViewController : UIViewController <PhotoAppLinkSendToControllerDelegate> {
     IBOutlet UIButton* sendToAppsButton;
     IBOutlet UIImageView* imageView;
 }

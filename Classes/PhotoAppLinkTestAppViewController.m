@@ -22,6 +22,7 @@
 
 #import "PhotoAppLinkTestAppViewController.h"
 #import "TargetAppsTableViewController.h"
+#import "PhotoAppLinkSendToController.h"
 #import "PhotoAppLinkManager.h"
 
 @interface PhotoAppLinkTestAppViewController()
@@ -45,7 +46,54 @@
 
 - (IBAction)showSendToAppTable
 {
-    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
+    // TargetAppsTableViewController method
+    /*
+    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    TargetAppsTableViewController* targetAppTable = [[TargetAppsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    NSArray* supportedAppNames = [applink destinationAppNames];
+    targetAppTable.targetAppNames = supportedAppNames;
+    targetAppTable.currentImage = self.image;
+    [self.navigationController pushViewController:targetAppTable animated:YES];
+    //    [self presentModalViewController:targetAppTable animated:YES];
+    [targetAppTable release];
+     */
+
+    // Simple UIActionSheet method
+//    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
+    
+    // PhotoAppLinkSendToController method
+    PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
+
+    // These are custom buttons for your own sharing options, such as send to fb, twitter, etc...
+    [newView addSharingActionWithTitle:@"test action 01" icon:[UIImage imageNamed:@"PhotoAppLink_genericAppIcon.png"] identifier:1];
+    [newView addSharingActionWithTitle:@"test action 02" icon:[UIImage imageNamed:@"PhotoAppLink_genericAppIcon.png"] identifier:1];
+    
+    // The image you want to share. This can also be provided by a delegate method
+    newView.image = self.image;
+    
+    // Gotta set the delegate because of the custom sharing items. Otherwise not needed.
+    newView.delegate = self;
+
+    // Present it however you want...
+    [self.navigationController pushViewController:newView animated:YES];
+//    [self presentModalViewController:newView animated:YES];
+    
+    [newView release];
+}
+
+#pragma mark -
+#pragma PhotoAppLinkSendToControllerDelegate
+
+// Delegate method that gets called when a custom sharing item is pressed by the user.
+- (void)photoAppLinkImage:(UIImage*)image sendToItemWithIdentifier:(int)identifier
+{
+    UIAlertView *newView = [[UIAlertView alloc] initWithTitle:nil 
+                                                      message:[NSString stringWithFormat:@"Triggered action %d", identifier]
+                                                     delegate:nil 
+                                            cancelButtonTitle:@"OK" 
+                                            otherButtonTitles:nil];
+    [newView show];
+    [newView release];
 }
 
 - (void)setImage:(UIImage*)newImage

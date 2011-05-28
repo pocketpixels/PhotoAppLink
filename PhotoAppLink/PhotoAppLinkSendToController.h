@@ -28,7 +28,7 @@
 @protocol PhotoAppLinkSendToControllerDelegate <NSObject>
 
 @optional
-- (void)photoAppLinkImageSendToItemWithIdentifier:(int)identifier;
+- (void)photoAppLinkImage:(UIImage*)image sendToItemWithIdentifier:(int)identifier;
 - (UIImage*)photoAppLinkImage;
 
 @end
