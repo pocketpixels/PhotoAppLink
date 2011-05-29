@@ -36,7 +36,7 @@ static BOOL USING_APP_ICONS = YES;
 //  otherwise the production plist file will be used)
 static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/261469/photoapplink_debug.plist";
 
-static NSString *const GENERIC_APP_ICON = @"PhotoAppLink_genericAppIcon.png";
+static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
