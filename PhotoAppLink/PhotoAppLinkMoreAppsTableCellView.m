@@ -64,7 +64,8 @@
                         forWidth:totalWidth - titleRightMargin - leftTextBoundary 
                         withFont:titleFont 
                    lineBreakMode:UILineBreakModeTailTruncation];
-    
+    CGContextRestoreGState(context);
+
 //    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.20 alpha:1.0];
     UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.5 alpha:1.0];
     UIFont* capabilitiesTextFont = [UIFont systemFontOfSize:13];
@@ -86,7 +87,6 @@
                          withFont:capabilitiesTextFont];
     
     
-    CGContextRestoreGState(context);
 
     if (appInfo.appDescription && [appInfo.appDescription length] > 0) {
         UIColor* descriptionColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
