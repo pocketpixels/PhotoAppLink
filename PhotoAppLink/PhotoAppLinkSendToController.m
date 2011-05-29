@@ -7,6 +7,8 @@
 
 #import "PhotoAppLinkSendToController.h"
 #import "PhotoAppLinkManager.h"
+#import "PhotoAppLinkMoreAppsViewController.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 #define BUTTONS_WIDTH   57.0f
@@ -319,8 +321,7 @@
 
 - (IBAction)moreApps:(id)sender
 {
-    // TODO: Change newView to a view that shows more apps.
-    PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
+    PhotoAppLinkMoreAppsViewController *newView = [[PhotoAppLinkMoreAppsViewController alloc] init];
     if (self.navigationController)
     {
         [self.navigationController pushViewController:newView animated:YES];
