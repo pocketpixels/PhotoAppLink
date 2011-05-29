@@ -34,9 +34,9 @@ static BOOL USING_APP_ICONS = YES;
 // Substitute this for testing with your own edited server side plist URL
 // (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
 //  otherwise the production plist file will be used)
-static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/12543232/photoapplink_debug.plist";
+static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/261469/photoapplink_debug.plist";
 
-static NSString *const GENERIC_APP_ICON = @"PhotoAppLink_genericAppIcon.png";
+static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
@@ -355,6 +355,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 @implementation PALAppInfo
 
 @synthesize appName, urlScheme, appDescription, bundleID, appleID;
+@synthesize platform, freeApp;
 @synthesize thumbnailURL, installed, canSend, canReceive;
 @synthesize thumbnail;
 
@@ -366,8 +367,11 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
         canSend = [[properties objectForKey:@"sends"] boolValue];
         canReceive = [[properties objectForKey:@"receives"] boolValue];
         urlScheme = [[NSURL alloc] initWithString:[[properties objectForKey:@"scheme"] 
-                                                           stringByAppendingString:@"://"]];
+                                                   stringByAppendingString:@"://"]];
         appleID = [[properties objectForKey:@"appleID"] copy];
+        platform = [[properties objectForKey:@"platform"] copy];
+        if (platform == nil) platform = [[NSString alloc] initWithString:@"universal"];
+        freeApp = [[properties objectForKey:@"free"] boolValue];
         installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:urlScheme]);
         appDescription = [[properties objectForKey:@"description"] copy];
         // select appropriate app icon for this device
@@ -386,6 +390,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
     [appleID release];
 	[thumbnailURL release];
     [thumbnail release];
+    [platform release];
     [super dealloc];
 }
 

@@ -24,9 +24,11 @@
 #import "TargetAppsTableViewController.h"
 #import "PhotoAppLinkSendToController.h"
 #import "PhotoAppLinkManager.h"
+#import "PhotoAppLinkMoreAppsViewController.h"
 
 @interface PhotoAppLinkTestAppViewController()
 @property (nonatomic, retain) UIButton *sendToAppsButton;
+@property (nonatomic, retain) UIButton *moreAppsButton;
 @property (nonatomic, retain) UIImageView *imageView;
 @end
 
@@ -35,16 +37,17 @@
 @dynamic image;
 @synthesize imageView;
 @synthesize sendToAppsButton;
+@synthesize moreAppsButton;
 
 - (void)dealloc
 {
 	[sendToAppsButton release];
+    [moreAppsButton release];
     [imageView release];
-
 	[super dealloc];
 }
 
-- (IBAction)showSendToAppTable
+- (IBAction)showActionSheet
 {
     // TargetAppsTableViewController method
     /*
@@ -94,6 +97,13 @@
                                             otherButtonTitles:nil];
     [newView show];
     [newView release];
+}
+
+- (IBAction)showMoreAppsTable
+{
+    PhotoAppLinkMoreAppsViewController* moreAppsVC = [[PhotoAppLinkMoreAppsViewController alloc] init];
+    [self.navigationController pushViewController:moreAppsVC animated:YES];
+    [moreAppsVC release];
 }
 
 - (void)setImage:(UIImage*)newImage
