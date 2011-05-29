@@ -115,7 +115,7 @@ static const int ROWHEIGHT = 86;
         [cell.contentView addSubview:appInfoView];
         [appInfoView release];
         // add button to go to App Store
-        UIImage* buttonBG = [UIImage imageNamed:@"PAL_store_button.png"];
+        UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
         UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
         // TODO add assert
         storeButton = [UIButton buttonWithType:UIButtonTypeCustom];

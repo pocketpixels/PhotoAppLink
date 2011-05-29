@@ -66,23 +66,11 @@
 {
     [super viewDidLoad];
     
-    // Customization of the button to make it nicer.
-    _moreAppsButton.layer.cornerRadius = 6.0f;
-    _moreAppsButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    _moreAppsButton.layer.borderWidth = 1.0f;
-    _moreAppsButton.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
-    _moreAppsButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
-    _moreAppsButton.layer.masksToBounds = YES;
     
-    // Adding a gradient background
-    CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
-    gradientLayer.bounds = _moreAppsButton.bounds;
-    gradientLayer.position = CGPointMake(gradientLayer.bounds.size.width/2, gradientLayer.bounds.size.height/2);
-    gradientLayer.colors = [NSArray arrayWithObjects:
-                            (id)[[UIColor colorWithRed:98.0f/255.0f green:116.0f/255.0f blue:154.0f/255.0f alpha:1.0f] CGColor], 
-                            (id)[[UIColor colorWithRed:52.0f/255.0f green: 90.0f/255.0f blue:154.0f/255.0f alpha:1.0f] CGColor], nil];
-    [_moreAppsButton.layer insertSublayer:gradientLayer atIndex:0];
-    [gradientLayer release];
+    // Customization of the button to make it nicer.
+    UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
+    UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
+    [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
     
     // My list of icons go here.
     // I'll customize this a bit.
