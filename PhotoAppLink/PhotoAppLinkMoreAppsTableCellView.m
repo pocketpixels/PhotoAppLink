@@ -65,7 +65,8 @@
                         withFont:titleFont 
                    lineBreakMode:UILineBreakModeTailTruncation];
     
-    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.20 alpha:1.0];
+//    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.20 alpha:1.0];
+    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.5 alpha:1.0];
     UIFont* capabilitiesTextFont = [UIFont systemFontOfSize:13];
     [capabilitiesTextColor set];
     NSString* capabilitiesText;

@@ -15,10 +15,15 @@
 		2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */; };
+		B1413E151391FB2C00A0F1FD /* PAL_store_button.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E101391FB2C00A0F1FD /* PAL_store_button.png */; };
+		B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */; };
+		B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */; };
+		B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */; };
+		B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */; };
+		B1413E1E1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */; };
+		B1413E1F1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */; };
 		B1FB988610AA543100C56AE2 /* TargetAppsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB988510AA543100C56AE2 /* TargetAppsTableViewController.m */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
-		EC31648D138FEB1B0071ABB5 /* PhotoAppLink_genericAppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC31648C138FEB1B0071ABB5 /* PhotoAppLink_genericAppIcon.png */; };
-		ECE45B3F13919CFE000FF6EF /* PhotoAppLink_genericAppIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE45B3E13919CFE000FF6EF /* PhotoAppLink_genericAppIcon@2x.png */; };
 		ECF3453B138F42420025507B /* PhotoAppLinkSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */; };
 		ECF3453C138F42420025507B /* PhotoAppLinkSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */; };
 		ECF3453F138F43AA0025507B /* PhotoAppLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */; };
@@ -39,11 +44,18 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhotoAppLinkTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestApp_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PhotoAppLinkTestApp-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B1413E101391FB2C00A0F1FD /* PAL_store_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_store_button.png; sourceTree = "<group>"; };
+		B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tablecell_background.png; sourceTree = "<group>"; };
+		B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tableview_shadow.png; sourceTree = "<group>"; };
+		B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_unknown_app_icon.png; sourceTree = "<group>"; };
+		B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_unknown_app_icon@2x.png"; sourceTree = "<group>"; };
+		B1413E1A1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsTableCellView.h; sourceTree = "<group>"; };
+		B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsTableCellView.m; sourceTree = "<group>"; };
+		B1413E1C1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsViewController.h; sourceTree = "<group>"; };
+		B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsViewController.m; sourceTree = "<group>"; };
 		B1FB988410AA543100C56AE2 /* TargetAppsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetAppsTableViewController.h; sourceTree = "<group>"; };
 		B1FB988510AA543100C56AE2 /* TargetAppsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TargetAppsTableViewController.m; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
-		EC31648C138FEB1B0071ABB5 /* PhotoAppLink_genericAppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoAppLink_genericAppIcon.png; sourceTree = "<group>"; };
-		ECE45B3E13919CFE000FF6EF /* PhotoAppLink_genericAppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhotoAppLink_genericAppIcon@2x.png"; sourceTree = "<group>"; };
 		ECF34538138F42420025507B /* PhotoAppLinkSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkSendToController.h; sourceTree = "<group>"; };
 		ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkSendToController.m; sourceTree = "<group>"; };
 		ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAppLinkSendToController.xib; sourceTree = "<group>"; };
@@ -114,8 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				B1FB990210AAA32A00C56AE2 /* TestImage.png */,
-				EC31648C138FEB1B0071ABB5 /* PhotoAppLink_genericAppIcon.png */,
-				ECE45B3E13919CFE000FF6EF /* PhotoAppLink_genericAppIcon@2x.png */,
 				2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */,
@@ -134,14 +144,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B1413E0F1391FB2C00A0F1FD /* images */ = {
+			isa = PBXGroup;
+			children = (
+				B1413E101391FB2C00A0F1FD /* PAL_store_button.png */,
+				B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */,
+				B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */,
+				B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */,
+				B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		ECF34534138F42130025507B /* PhotoAppLink */ = {
 			isa = PBXGroup;
 			children = (
+				B1413E0F1391FB2C00A0F1FD /* images */,
 				ECF3453D138F43AA0025507B /* PhotoAppLinkManager.h */,
 				ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */,
 				ECF34538138F42420025507B /* PhotoAppLinkSendToController.h */,
 				ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */,
 				ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */,
+				B1413E1A1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.h */,
+				B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */,
+				B1413E1C1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.h */,
+				B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */,
 			);
 			path = PhotoAppLink;
 			sourceTree = "<group>";
@@ -199,8 +226,11 @@
 				2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */,
 				B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */,
 				ECF3453C138F42420025507B /* PhotoAppLinkSendToController.xib in Resources */,
-				EC31648D138FEB1B0071ABB5 /* PhotoAppLink_genericAppIcon.png in Resources */,
-				ECE45B3F13919CFE000FF6EF /* PhotoAppLink_genericAppIcon@2x.png in Resources */,
+				B1413E151391FB2C00A0F1FD /* PAL_store_button.png in Resources */,
+				B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */,
+				B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */,
+				B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */,
+				B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +247,8 @@
 				B1FB988610AA543100C56AE2 /* TargetAppsTableViewController.m in Sources */,
 				ECF3453B138F42420025507B /* PhotoAppLinkSendToController.m in Sources */,
 				ECF3453F138F43AA0025507B /* PhotoAppLinkManager.m in Sources */,
+				B1413E1E1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m in Sources */,
+				B1413E1F1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
