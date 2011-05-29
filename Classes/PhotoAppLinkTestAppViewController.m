@@ -25,8 +25,6 @@
 #import "PhotoAppLinkMoreAppsViewController.h"
 
 @interface PhotoAppLinkTestAppViewController()
-@property (nonatomic, retain) UIButton *sendToAppsButton;
-@property (nonatomic, retain) UIButton *moreAppsButton;
 @property (nonatomic, retain) UIImageView *imageView;
 @end
 
@@ -34,23 +32,21 @@
 
 @dynamic image;
 @synthesize imageView;
-@synthesize sendToAppsButton;
-@synthesize moreAppsButton;
 
 - (void)dealloc
 {
-	[sendToAppsButton release];
-    [moreAppsButton release];
     [imageView release];
 	[super dealloc];
 }
 
 - (IBAction)showActionSheet
 {
-
     // Simple UIActionSheet method
-//    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
-    
+    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
+}
+
+- (IBAction)showSendToAppController
+{
     // PhotoAppLinkSendToController method
     PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
 
@@ -71,6 +67,14 @@
     [newView release];
 }
 
+- (IBAction)showMoreAppsTable
+{
+    PhotoAppLinkMoreAppsViewController* moreAppsVC = [[PhotoAppLinkMoreAppsViewController alloc] init];
+    [self.navigationController pushViewController:moreAppsVC animated:YES];
+    [moreAppsVC release];
+}
+
+
 #pragma mark -
 #pragma PhotoAppLinkSendToControllerDelegate
 
@@ -84,13 +88,6 @@
                                             otherButtonTitles:nil];
     [newView show];
     [newView release];
-}
-
-- (IBAction)showMoreAppsTable
-{
-    PhotoAppLinkMoreAppsViewController* moreAppsVC = [[PhotoAppLinkMoreAppsViewController alloc] init];
-    [self.navigationController pushViewController:moreAppsVC animated:YES];
-    [moreAppsVC release];
 }
 
 - (void)setImage:(UIImage*)newImage

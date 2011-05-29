@@ -24,8 +24,6 @@
 #import "PhotoAppLinkSendToController.h"
 
 @interface PhotoAppLinkTestAppViewController : UIViewController <PhotoAppLinkSendToControllerDelegate> {
-    IBOutlet UIButton* sendToAppsButton;
-    IBOutlet UIButton* moreAppsButton;
     IBOutlet UIImageView* imageView;
 }
 
@@ -33,6 +31,7 @@
 
 - (IBAction)showActionSheet;
 - (IBAction)showMoreAppsTable;
+- (IBAction)showSendToAppController;
 
 @end
 
