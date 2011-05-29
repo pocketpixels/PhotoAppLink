@@ -160,23 +160,16 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     return appNames;
 }
 
-- (void)invokeScheme:(NSURL*)urlScheme withImage:(UIImage*)image
+- (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
 {
     UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
     NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
     [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
-    // launch the app
-    [[UIApplication sharedApplication] openURL:urlScheme];
-}
-
-- (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
-{
     for (PALAppInfo* appInfo in self.supportedApps) {
         if ([appInfo.appName isEqualToString:appName]) {
             // launch the app
-            [self invokeScheme:appInfo.urlScheme withImage:image];
-            break;
+            [[UIApplication sharedApplication] openURL:appInfo.urlScheme];
         }
     }    
 }
@@ -293,7 +286,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSArray *apps = self.destinationApps;
     if (buttonIndex < [apps count]) {
         PALAppInfo *app = [apps objectAtIndex:buttonIndex];
-        [self invokeScheme:app.urlScheme withImage:self.imageToSend];
+        [self invokeApplication:app.appName withImage:self.imageToSend];
     }
     self.imageToSend = nil;
 }
