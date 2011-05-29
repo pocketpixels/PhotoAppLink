@@ -309,7 +309,7 @@
 
 - (IBAction)moreApps:(id)sender
 {
-    PhotoAppLinkMoreAppsViewController *newView = [[PhotoAppLinkMoreAppsViewController alloc] init];
+    PhotoAppLinkMoreAppsViewController *newView = [[[PhotoAppLinkMoreAppsViewController alloc] init] autorelease];
     if (self.navigationController)
     {
         [self.navigationController pushViewController:newView animated:YES];
