@@ -19,9 +19,7 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #import "PhotoAppLinkTestAppViewController.h"
-#import "TargetAppsTableViewController.h"
 #import "PhotoAppLinkSendToController.h"
 #import "PhotoAppLinkManager.h"
 #import "PhotoAppLinkMoreAppsViewController.h"
@@ -49,17 +47,6 @@
 
 - (IBAction)showActionSheet
 {
-    // TargetAppsTableViewController method
-    /*
-    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
-    TargetAppsTableViewController* targetAppTable = [[TargetAppsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    NSArray* supportedAppNames = [applink destinationAppNames];
-    targetAppTable.targetAppNames = supportedAppNames;
-    targetAppTable.currentImage = self.image;
-    [self.navigationController pushViewController:targetAppTable animated:YES];
-    //    [self presentModalViewController:targetAppTable animated:YES];
-    [targetAppTable release];
-     */
 
     // Simple UIActionSheet method
 //    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
