@@ -86,6 +86,11 @@ static const int ROWHEIGHT = 86;
 //    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -109,7 +114,7 @@ static const int ROWHEIGHT = 86;
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PAL_tablecell_background.png"]];
-        CGRect cellFrame = CGRectMake(0.0, 0.0, 320, ROWHEIGHT);
+        CGRect cellFrame = CGRectMake(0.0, 0.0, tableView.frame.size.width, ROWHEIGHT);
         appInfoView= [[PhotoAppLinkMoreAppsTableCellView alloc] initWithFrame:cellFrame];
         appInfoView.tag = APPINFOVIEW_TAG;
         [cell.contentView addSubview:appInfoView];
@@ -129,10 +134,10 @@ static const int ROWHEIGHT = 86;
     }
     else {
         appInfoView = (PhotoAppLinkMoreAppsTableCellView*) [cell.contentView viewWithTag:APPINFOVIEW_TAG];
+        appInfoView.frame = CGRectMake(0, 0, tableView.frame.size.width, ROWHEIGHT);
         storeButton = (UIButton*) cell.accessoryView;
     }
 
-    
     PALAppInfo* appInfo = [additionalApps objectAtIndex:indexPath.row];
     [appInfoView setAppInfo:appInfo];
     storeButton.tag = indexPath.row;

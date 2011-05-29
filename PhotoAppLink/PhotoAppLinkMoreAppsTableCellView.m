@@ -28,8 +28,8 @@
     if (appInfo != anAppInfo) {
         [appInfo release];
         appInfo = [anAppInfo retain];
-        [self setNeedsDisplay];
     }
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -48,7 +48,7 @@
     static int appDescriptionRightMargin = 70;
     static int appDescriptionSingleLineOffset = 5;
     
-    float totalWidth = self.bounds.size.width;
+    float totalWidth = self.frame.size.width;
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f), 3.0f);
