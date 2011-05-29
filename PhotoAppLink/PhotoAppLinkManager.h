@@ -29,12 +29,6 @@
     UIImage* imageToSend;
 }
 
-// the names of the photo editing apps that are installed on the user's device
-// and support receiving images via the photo app link protocol
-// Check that this is not nil or empty first
-// Then present users this list of apps under a "Send to app" submenu / list. 
-@property (nonatomic, readonly) NSArray *destinationAppNames;
-
 // the PALAppInfo objects of the photo editing apps that are installed on the user's device
 // and support receiving images via the photo app link protocol
 // Check that this is not nil or empty first
@@ -58,7 +52,7 @@
 // Switches to the app with the given name (should be one of the names in destinationAppNames)
 // and passes along the image for further processing.
 // If successful, this function will not return but quit the current app and 
-- (void)invokeApplication:(NSString*) appName withImage:(UIImage*)image;
+- (void)invokeApplication:(PALAppInfo*) appInfo withImage:(UIImage*)image;
 
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
 

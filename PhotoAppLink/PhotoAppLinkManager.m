@@ -59,7 +59,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 @implementation PhotoAppLinkManager
 
-@dynamic destinationAppNames;
 @synthesize supportedApps;
 @synthesize imageToSend;
 
@@ -151,27 +150,13 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     return [self.supportedApps filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=TRUE", @"installed"]];
 }
 
-- (NSArray*)destinationAppNames
-{
-    NSMutableArray* appNames = [NSMutableArray array];
-    for (PALAppInfo* appInfo in self.destinationApps) {
-        [appNames addObject:appInfo.appName];
-    }
-    return appNames;
-}
-
-- (void)invokeApplication:(NSString*)appName withImage:(UIImage*)image
+- (void)invokeApplication:(PALAppInfo*) appInfo withImage:(UIImage*)image;
 {
     UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
     NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
     [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
-    for (PALAppInfo* appInfo in self.supportedApps) {
-        if ([appInfo.appName isEqualToString:appName]) {
-            // launch the app
-            [[UIApplication sharedApplication] openURL:appInfo.urlScheme];
-        }
-    }    
+    [[UIApplication sharedApplication] openURL:appInfo.urlScheme];
 }
 
 - (UIImage*)popPassedInImage
@@ -286,7 +271,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSArray *apps = self.destinationApps;
     if (buttonIndex < [apps count]) {
         PALAppInfo *app = [apps objectAtIndex:buttonIndex];
-        [self invokeApplication:app.appName withImage:self.imageToSend];
+        [self invokeApplication:app withImage:self.imageToSend];
     }
     self.imageToSend = nil;
 }

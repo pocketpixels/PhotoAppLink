@@ -295,7 +295,7 @@
             
             NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
             PALAppInfo *info = [sharers objectAtIndex:position];
-            [[PhotoAppLinkManager sharedPhotoAppLinkManager] invokeApplication:info.appName withImage:imageToShare];
+            [[PhotoAppLinkManager sharedPhotoAppLinkManager] invokeApplication:info withImage:imageToShare];
         }
     }
     
