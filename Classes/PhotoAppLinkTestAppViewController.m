@@ -51,8 +51,8 @@
     PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
 
     // These are custom buttons for your own sharing options, such as send to fb, twitter, etc...
-    [newView addSharingActionWithTitle:@"test action 01" icon:[UIImage imageNamed:@"PhotoAppLink_genericAppIcon.png"] identifier:1];
-    [newView addSharingActionWithTitle:@"test action 02" icon:[UIImage imageNamed:@"PhotoAppLink_genericAppIcon.png"] identifier:1];
+    [newView addSharingActionWithTitle:@"test action 01" icon:[UIImage imageNamed:@"PAL_unknown_app_icon.png"] identifier:1];
+    [newView addSharingActionWithTitle:@"test action 02" icon:[UIImage imageNamed:@"PAL_unknown_app_icon.png"] identifier:1];
     
     // The image you want to share. This can also be provided by a delegate method
     newView.image = self.image;
