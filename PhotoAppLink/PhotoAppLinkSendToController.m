@@ -13,11 +13,14 @@
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
+#define BUTTONLABEL_WIDTH  79.0f
 
-#define BUTTONS_MIN_WIDTH   80.0f
-#define BUTTONS_MIN_HEIGHT  90.0f
+#define BUTTONS_MIN_WIDTH   82.0f
+#define BUTTONS_MIN_HEIGHT  82.0f
 
-
+#define SCROLLVIEW_BOTTOM_MARGIN 18.0f
+#define SCROLLVIEW_TOP_MARGIN 8.0f
+#define SCROLLVIEW_SIDE_MARGIN 8.0f
 
 @interface PhotoAppLinkSendToController (PrivateStuff)
 
@@ -66,6 +69,9 @@
 {
     [super viewDidLoad];
     
+    UIImage* bgTexture = [UIImage imageNamed:@"PAL_brushed_metal.png"];
+    UIColor* bgPattern = [UIColor colorWithPatternImage:bgTexture];
+    [self.view setBackgroundColor:bgPattern];
     
     // Customization of the button to make it nicer.
     UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
@@ -74,9 +80,8 @@
     
     // My list of icons go here.
     // I'll customize this a bit.
-    _iconsScrollView.layer.cornerRadius = 6.0f;
+    _iconsScrollView.layer.cornerRadius = 10.0f;
     _iconsScrollView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
-
     if (self.navigationController)
     {
         // ALready comes with a navigation bar. Will hide mine
@@ -167,19 +172,22 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.tag = position + 1;
     btn.frame = CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_WIDTH);
+    [btn setBackgroundImage:icon forState:UIControlStateNormal];
     btn.showsTouchWhenHighlighted = YES;
-    [btn setImage:icon forState:UIControlStateNormal];
+    btn.adjustsImageWhenHighlighted = YES;
     [btn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [encapsulator addSubview:btn];
     
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, BUTTONS_WIDTH, BUTTONS_WIDTH, 20.0f)];
+    float buttonOffset = (BUTTONS_WIDTH - BUTTONLABEL_WIDTH) / 2.0;
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(buttonOffset, BUTTONS_WIDTH, BUTTONLABEL_WIDTH, 20.0f)];
     lbl.text = title;
-    lbl.font = [UIFont systemFontOfSize:12.0f];
-    lbl.adjustsFontSizeToFitWidth = YES;
+    lbl.font = [UIFont boldSystemFontOfSize:12.0f];
+    lbl.lineBreakMode = UILineBreakModeMiddleTruncation;
     lbl.textAlignment = UITextAlignmentCenter;
+    lbl.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     lbl.backgroundColor = [UIColor clearColor];
-    lbl.shadowColor = [UIColor lightTextColor];
-    lbl.shadowOffset = CGSizeMake(0.0f, -1.0f);
+    lbl.shadowColor = [UIColor blackColor];
+    lbl.shadowOffset = CGSizeMake(0.0f, 1.0f);
     [encapsulator addSubview:lbl];
     [lbl release];
     
@@ -198,9 +206,10 @@
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.1f];
         }
-        
-        CGFloat w = _iconsScrollView.bounds.size.width;
-        CGFloat h = _iconsScrollView.bounds.size.height;
+        CGFloat fullW = _iconsScrollView.bounds.size.width;
+        CGFloat fullH = _iconsScrollView.bounds.size.height;
+        CGFloat w = fullW - 2.0 * SCROLLVIEW_SIDE_MARGIN;
+        CGFloat h = fullH - SCROLLVIEW_BOTTOM_MARGIN - SCROLLVIEW_TOP_MARGIN;
         
         // Number of rows and columns of icons
         int iconsX = (int)floor(w / BUTTONS_MIN_WIDTH);
@@ -211,15 +220,15 @@
         CGFloat dy = floor(h / iconsY);
         
         // The left/top margin
-        CGFloat x0 = floor((dx - BUTTONS_WIDTH) / 2.0f);
-        CGFloat y0 = floor((dy - BUTTONS_HEIGHT) / 2.0f);
+        CGFloat x0 = floor((dx - BUTTONS_WIDTH) / 2.0f) + SCROLLVIEW_SIDE_MARGIN;
+        CGFloat y0 = floor((dy - BUTTONS_HEIGHT) / 2.0f) + SCROLLVIEW_TOP_MARGIN;
         
         int posX = 0;
         int posY = 0;
         int page = 0;
         for (UIView *view in subviews)
         {
-            view.frame = CGRectMake(x0 + dx * posX + page * w, 
+            view.frame = CGRectMake(x0 + dx * posX + page * fullW, 
                                     y0 + dy * posY, 
                                     BUTTONS_WIDTH, 
                                     BUTTONS_HEIGHT);
@@ -242,14 +251,14 @@
             page++;
         
         _iconsPageControl.hidden = (page <= 1);
-        _iconsScrollView.contentSize = CGSizeMake(page * w, h);
+        _iconsScrollView.contentSize = CGSizeMake(page * fullW, fullH);
         
         _iconsPageControl.numberOfPages = page;
         if (_iconsPageControl.currentPage >= page)
             _iconsPageControl.currentPage = page - 1;
         
-        [_iconsScrollView scrollRectToVisible:CGRectMake(_iconsPageControl.currentPage * w, 0.0f,
-                                                         w, h) 
+        [_iconsScrollView scrollRectToVisible:CGRectMake(_iconsPageControl.currentPage * fullW, 0.0f,
+                                                         fullW, fullH) 
                                      animated:NO];
         
         if (animated)
