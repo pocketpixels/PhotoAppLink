@@ -38,47 +38,8 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
 
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+- (BOOL)handleURL:(NSURL *)url
 {
-    // If you are not sure about your app's bundle ID, this prints it:
-    // (required for the entry in the plist stored on the server)
-    NSLog(@"App BundleID: %@", [[NSBundle mainBundle] bundleIdentifier]);
-    
-    // basic app setup
-    [window addSubview:navigationController.view];
-    [window makeKeyAndVisible];
-
-    if (launchOptions) {
-        NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
-        if ([[launchURL scheme] isEqualToString:APP_PHOTOAPPLINK_URL_SCHEME]) {
-            // launched from another app via our Photo App Link URL scheme
-            
-            // In versions prior to 4.0 handleOpenURL is not called 
-            // if didFinishLaunchingWithOptions: is implemented.
-            // In later versions it DOES get called
-            // So we have to manually call it here for pre-4.0 iOS versions
-            NSString* osVersion = [[UIDevice currentDevice] systemVersion];
-            if ([osVersion floatValue] < 4.0) {
-                [self application:application handleOpenURL:launchURL];
-            }            
-            return YES;
-        }
-        else {
-            // unknown URL scheme
-            return NO;
-        }
-    }
-    else {
-        // normal launch from Springboard
-        // use default test image
-        [self.rootViewController performSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"TestImage.png"] afterDelay:0.0];                                                                             
-    }
-    return YES;
-}
-
-
-- (BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{    
     if ([[url scheme] isEqualToString:APP_PHOTOAPPLINK_URL_SCHEME]) {
         // Retrieve the image that was passed from previous app.
         // You could (and likely should) instead access this image during a later stage of the launch process 
@@ -93,6 +54,36 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     }
 }
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
+    // If you are not sure about your app's bundle ID, this prints it:
+    // (required for the entry in the plist stored on the server)
+    NSLog(@"App BundleID: %@", [[NSBundle mainBundle] bundleIdentifier]);
+    
+    // basic app setup
+    [window addSubview:navigationController.view];
+    [window makeKeyAndVisible];
+
+    if (launchOptions) {
+        NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
+        return [self handleURL:launchURL];
+    }
+    else {
+        // normal launch from Springboard
+        // use default test image
+        [self.rootViewController performSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"TestImage.png"] afterDelay:0.0];                                                                             
+    }
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [self handleURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [self handleURL:url];
+}
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
