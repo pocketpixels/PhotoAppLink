@@ -44,6 +44,7 @@
     UIImage *_image;
     
     UIScrollView *_iconsScrollView;
+    UIImageView *_scrollViewBackgroundView;
     UIPageControl *_iconsPageControl;
     UIButton *_moreAppsButton;
     UINavigationBar *_myNavigationBar;
@@ -59,6 +60,8 @@
 @property (nonatomic, retain) UIImage *image;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *iconsScrollView;
+@property (nonatomic, retain) IBOutlet UIImageView *scrollViewBackgroundView;
+
 @property (nonatomic, retain) IBOutlet UIPageControl *iconsPageControl;
 @property (nonatomic, retain) IBOutlet UIButton *moreAppsButton;
 @property (nonatomic, retain) IBOutlet UINavigationBar *myNavigationBar;

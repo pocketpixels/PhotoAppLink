@@ -9,8 +9,6 @@
 #import "PhotoAppLinkManager.h"
 #import "PhotoAppLinkMoreAppsViewController.h"
 
-#import <QuartzCore/QuartzCore.h>
-
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
 #define BUTTONLABEL_WIDTH  79.0f
@@ -36,6 +34,7 @@
 @synthesize image = _image;
 
 @synthesize iconsScrollView = _iconsScrollView;
+@synthesize scrollViewBackgroundView = _scrollViewBackgroundView;
 @synthesize iconsPageControl = _iconsPageControl;
 @synthesize moreAppsButton = _moreAppsButton;
 @synthesize myNavigationBar = _myNavigationBar;
@@ -56,6 +55,7 @@
     [_image release];
     [_sharingActions release];
     [_iconsScrollView release];
+    [_scrollViewBackgroundView release];
     [_iconsPageControl release];
     [_moreAppsButton release];
     [_myNavigationBar release];
@@ -73,15 +73,17 @@
     UIColor* bgPattern = [UIColor colorWithPatternImage:bgTexture];
     [self.view setBackgroundColor:bgPattern];
     
+    UIImage* scrollViewBG = [UIImage imageNamed:@"PAL_scrollview_background.png"];
+    UIImage* stretchableScrollViewBG = [scrollViewBG stretchableImageWithLeftCapWidth:34 topCapHeight:34];
+    [_scrollViewBackgroundView setImage:stretchableScrollViewBG];
+    // make sure the view is positioned behind the scroll view and not in front of it   
+    [self.view sendSubviewToBack:_scrollViewBackgroundView];
+    
     // Customization of the button to make it nicer.
     UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
     UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
     [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
     
-    // My list of icons go here.
-    // I'll customize this a bit.
-    _iconsScrollView.layer.cornerRadius = 10.0f;
-    _iconsScrollView.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     if (self.navigationController)
     {
         // ALready comes with a navigation bar. Will hide mine
@@ -89,16 +91,19 @@
         
         // I have to extend the size of my icons view because the
         // navigation bar shrunk it...
-        _iconsScrollView.frame = CGRectMake(_iconsScrollView.frame.origin.x,
+        CGRect scrollViewFrame = CGRectMake(_iconsScrollView.frame.origin.x,
                                             _iconsScrollView.frame.origin.y - _myNavigationBar.frame.size.height,
                                             _iconsScrollView.frame.size.width, 
                                             _iconsScrollView.frame.size.height + _myNavigationBar.frame.size.height);
+        _iconsScrollView.frame = scrollViewFrame;
+        _scrollViewBackgroundView.frame = scrollViewFrame;
     }
 }
 
 - (void)viewDidUnload
 {
     [self setIconsScrollView:nil];
+    [self setScrollViewBackgroundView:nil];
     [self setIconsPageControl:nil];
     [self setMoreAppsButton:nil];
     [self setMyNavigationBar:nil];

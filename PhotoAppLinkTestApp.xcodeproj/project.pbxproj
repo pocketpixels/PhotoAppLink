@@ -23,11 +23,11 @@
 		B1413E1E1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */; };
 		B1413E1F1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */; };
 		B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */; };
+		B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
 		ECF3453B138F42420025507B /* PhotoAppLinkSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */; };
 		ECF3453C138F42420025507B /* PhotoAppLinkSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */; };
 		ECF3453F138F43AA0025507B /* PhotoAppLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */; };
-		ECF34541138F4F870025507B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECF34540138F4F870025507B /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,13 +54,13 @@
 		B1413E1C1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsViewController.h; sourceTree = "<group>"; };
 		B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsViewController.m; sourceTree = "<group>"; };
 		B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_brushed_metal.png; sourceTree = "<group>"; };
+		B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_scrollview_background.png; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
 		ECF34538138F42420025507B /* PhotoAppLinkSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkSendToController.h; sourceTree = "<group>"; };
 		ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkSendToController.m; sourceTree = "<group>"; };
 		ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAppLinkSendToController.xib; sourceTree = "<group>"; };
 		ECF3453D138F43AA0025507B /* PhotoAppLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkManager.h; sourceTree = "<group>"; };
 		ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkManager.m; sourceTree = "<group>"; };
-		ECF34540138F4F870025507B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECF34541138F4F870025507B /* QuartzCore.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -136,7 +135,6 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
-				ECF34540138F4F870025507B /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,6 +142,7 @@
 		B1413E0F1391FB2C00A0F1FD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */,
 				B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */,
 				B1413E101391FB2C00A0F1FD /* PAL_button_background.png */,
 				B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */,
@@ -230,6 +229,7 @@
 				B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */,
 				B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */,
 				B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */,
+				B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
