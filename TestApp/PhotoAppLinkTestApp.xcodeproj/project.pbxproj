@@ -15,21 +15,21 @@
 		2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* TestAppRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TestAppRootViewController.m */; };
-		B1413E151391FB2C00A0F1FD /* PAL_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E101391FB2C00A0F1FD /* PAL_button_background.png */; };
-		B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */; };
-		B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */; };
-		B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */; };
-		B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */; };
-		B1413E1E1391FB3800A0F1FD /* PALMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */; };
-		B1413E1F1391FB3800A0F1FD /* PALMoreAppsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */; };
-		B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */; };
-		B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */; };
-		B1AE1E7F1393499A00A3C137 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AE1E7D1393499A00A3C137 /* PALSendToController.m */; };
-		B1AE1E82139365C000A3C137 /* PALAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AE1E81139365C000A3C137 /* PALAppInfo.m */; };
-		B1AE1E8413936ABB00A3C137 /* PAL_scrollview_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */; };
+		B1B8051613936FBE00960283 /* PAL_brushed_metal.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050313936FBE00960283 /* PAL_brushed_metal.png */; };
+		B1B8051713936FBE00960283 /* PAL_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050413936FBE00960283 /* PAL_button_background.png */; };
+		B1B8051813936FBE00960283 /* PAL_scrollview_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050513936FBE00960283 /* PAL_scrollview_background.png */; };
+		B1B8051913936FBE00960283 /* PAL_scrollview_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050613936FBE00960283 /* PAL_scrollview_background@2x.png */; };
+		B1B8051A13936FBE00960283 /* PAL_tablecell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050713936FBE00960283 /* PAL_tablecell_background.png */; };
+		B1B8051B13936FBE00960283 /* PAL_tableview_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050813936FBE00960283 /* PAL_tableview_shadow.png */; };
+		B1B8051C13936FBE00960283 /* PAL_unknown_app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050913936FBE00960283 /* PAL_unknown_app_icon.png */; };
+		B1B8051D13936FBE00960283 /* PAL_unknown_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B8050A13936FBE00960283 /* PAL_unknown_app_icon@2x.png */; };
+		B1B8051E13936FBE00960283 /* PALAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8050C13936FBE00960283 /* PALAppInfo.m */; };
+		B1B8051F13936FBE00960283 /* PALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8050E13936FBE00960283 /* PALManager.m */; };
+		B1B8052013936FBE00960283 /* PALMoreAppsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8051013936FBE00960283 /* PALMoreAppsController.m */; };
+		B1B8052113936FBE00960283 /* PALMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8051213936FBE00960283 /* PALMoreAppsTableCellView.m */; };
+		B1B8052213936FBE00960283 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8051413936FBE00960283 /* PALSendToController.m */; };
+		B1B8052313936FBE00960283 /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B8051513936FBE00960283 /* PALSendToController.xib */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
-		ECF3453C138F42420025507B /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PALSendToController.xib */; };
-		ECF3453F138F43AA0025507B /* PALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PALManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,26 +46,26 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhotoAppLinkTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestApp_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PhotoAppLinkTestApp-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		B1413E101391FB2C00A0F1FD /* PAL_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_button_background.png; sourceTree = "<group>"; };
-		B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tablecell_background.png; sourceTree = "<group>"; };
-		B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tableview_shadow.png; sourceTree = "<group>"; };
-		B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_unknown_app_icon.png; sourceTree = "<group>"; };
-		B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_unknown_app_icon@2x.png"; sourceTree = "<group>"; };
-		B1413E1A1391FB3800A0F1FD /* PALMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsTableCellView.h; sourceTree = "<group>"; };
-		B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsTableCellView.m; sourceTree = "<group>"; };
-		B1413E1C1391FB3800A0F1FD /* PALMoreAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsController.h; sourceTree = "<group>"; };
-		B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsController.m; sourceTree = "<group>"; };
-		B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_brushed_metal.png; sourceTree = "<group>"; };
-		B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_scrollview_background.png; sourceTree = "<group>"; };
-		B1AE1E7D1393499A00A3C137 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALSendToController.m; sourceTree = "<group>"; };
-		B1AE1E7E1393499A00A3C137 /* PALSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALSendToController.h; sourceTree = "<group>"; };
-		B1AE1E80139365C000A3C137 /* PALAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALAppInfo.h; sourceTree = "<group>"; };
-		B1AE1E81139365C000A3C137 /* PALAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALAppInfo.m; sourceTree = "<group>"; };
-		B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_scrollview_background@2x.png"; sourceTree = "<group>"; };
+		B1B8050313936FBE00960283 /* PAL_brushed_metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_brushed_metal.png; sourceTree = "<group>"; };
+		B1B8050413936FBE00960283 /* PAL_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_button_background.png; sourceTree = "<group>"; };
+		B1B8050513936FBE00960283 /* PAL_scrollview_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_scrollview_background.png; sourceTree = "<group>"; };
+		B1B8050613936FBE00960283 /* PAL_scrollview_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_scrollview_background@2x.png"; sourceTree = "<group>"; };
+		B1B8050713936FBE00960283 /* PAL_tablecell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tablecell_background.png; sourceTree = "<group>"; };
+		B1B8050813936FBE00960283 /* PAL_tableview_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tableview_shadow.png; sourceTree = "<group>"; };
+		B1B8050913936FBE00960283 /* PAL_unknown_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_unknown_app_icon.png; sourceTree = "<group>"; };
+		B1B8050A13936FBE00960283 /* PAL_unknown_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_unknown_app_icon@2x.png"; sourceTree = "<group>"; };
+		B1B8050B13936FBE00960283 /* PALAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALAppInfo.h; sourceTree = "<group>"; };
+		B1B8050C13936FBE00960283 /* PALAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALAppInfo.m; sourceTree = "<group>"; };
+		B1B8050D13936FBE00960283 /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALManager.h; sourceTree = "<group>"; };
+		B1B8050E13936FBE00960283 /* PALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALManager.m; sourceTree = "<group>"; };
+		B1B8050F13936FBE00960283 /* PALMoreAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsController.h; sourceTree = "<group>"; };
+		B1B8051013936FBE00960283 /* PALMoreAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsController.m; sourceTree = "<group>"; };
+		B1B8051113936FBE00960283 /* PALMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsTableCellView.h; sourceTree = "<group>"; };
+		B1B8051213936FBE00960283 /* PALMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsTableCellView.m; sourceTree = "<group>"; };
+		B1B8051313936FBE00960283 /* PALSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALSendToController.h; sourceTree = "<group>"; };
+		B1B8051413936FBE00960283 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALSendToController.m; sourceTree = "<group>"; };
+		B1B8051513936FBE00960283 /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
-		ECF3453A138F42420025507B /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
-		ECF3453D138F43AA0025507B /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALManager.h; sourceTree = "<group>"; };
-		ECF3453E138F43AA0025507B /* PALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
 				1D3623240D0F684500981E51 /* TestAppDelegate.h */,
@@ -90,6 +90,7 @@
 				28D7ACF60DDB3853001CB0EB /* TestAppRootViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* TestAppRootViewController.m */,
 			);
+			name = TestApp;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -104,10 +105,10 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				ECF34534138F42130025507B /* PhotoAppLink */,
-				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				B1B8050113936FBE00960283 /* PhotoAppLink */,
+				080E96DDFE201D6D7F000001 /* TestApp */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -144,38 +145,39 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B1413E0F1391FB2C00A0F1FD /* images */ = {
+		B1B8050113936FBE00960283 /* PhotoAppLink */ = {
 			isa = PBXGroup;
 			children = (
-				B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */,
-				B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */,
-				B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */,
-				B1413E101391FB2C00A0F1FD /* PAL_button_background.png */,
-				B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */,
-				B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */,
-				B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */,
-				B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */,
+				B1B8050213936FBE00960283 /* images */,
+				B1B8050D13936FBE00960283 /* PALManager.h */,
+				B1B8050E13936FBE00960283 /* PALManager.m */,
+				B1B8050B13936FBE00960283 /* PALAppInfo.h */,
+				B1B8050C13936FBE00960283 /* PALAppInfo.m */,
+				B1B8051313936FBE00960283 /* PALSendToController.h */,
+				B1B8051413936FBE00960283 /* PALSendToController.m */,
+				B1B8051513936FBE00960283 /* PALSendToController.xib */,
+				B1B8050F13936FBE00960283 /* PALMoreAppsController.h */,
+				B1B8051013936FBE00960283 /* PALMoreAppsController.m */,
+				B1B8051113936FBE00960283 /* PALMoreAppsTableCellView.h */,
+				B1B8051213936FBE00960283 /* PALMoreAppsTableCellView.m */,
 			);
-			path = images;
+			name = PhotoAppLink;
+			path = ../PhotoAppLink;
 			sourceTree = "<group>";
 		};
-		ECF34534138F42130025507B /* PhotoAppLink */ = {
+		B1B8050213936FBE00960283 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				B1413E0F1391FB2C00A0F1FD /* images */,
-				ECF3453D138F43AA0025507B /* PALManager.h */,
-				ECF3453E138F43AA0025507B /* PALManager.m */,
-				B1AE1E80139365C000A3C137 /* PALAppInfo.h */,
-				B1AE1E81139365C000A3C137 /* PALAppInfo.m */,
-				B1AE1E7D1393499A00A3C137 /* PALSendToController.m */,
-				B1AE1E7E1393499A00A3C137 /* PALSendToController.h */,
-				ECF3453A138F42420025507B /* PALSendToController.xib */,
-				B1413E1C1391FB3800A0F1FD /* PALMoreAppsController.h */,
-				B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */,
-				B1413E1A1391FB3800A0F1FD /* PALMoreAppsTableCellView.h */,
-				B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */,
+				B1B8050913936FBE00960283 /* PAL_unknown_app_icon.png */,
+				B1B8050A13936FBE00960283 /* PAL_unknown_app_icon@2x.png */,
+				B1B8050313936FBE00960283 /* PAL_brushed_metal.png */,
+				B1B8050413936FBE00960283 /* PAL_button_background.png */,
+				B1B8050513936FBE00960283 /* PAL_scrollview_background.png */,
+				B1B8050613936FBE00960283 /* PAL_scrollview_background@2x.png */,
+				B1B8050713936FBE00960283 /* PAL_tablecell_background.png */,
+				B1B8050813936FBE00960283 /* PAL_tableview_shadow.png */,
 			);
-			path = PhotoAppLink;
+			path = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,15 +232,15 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */,
 				B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */,
-				ECF3453C138F42420025507B /* PALSendToController.xib in Resources */,
-				B1413E151391FB2C00A0F1FD /* PAL_button_background.png in Resources */,
-				B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */,
-				B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */,
-				B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */,
-				B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */,
-				B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */,
-				B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */,
-				B1AE1E8413936ABB00A3C137 /* PAL_scrollview_background@2x.png in Resources */,
+				B1B8051613936FBE00960283 /* PAL_brushed_metal.png in Resources */,
+				B1B8051713936FBE00960283 /* PAL_button_background.png in Resources */,
+				B1B8051813936FBE00960283 /* PAL_scrollview_background.png in Resources */,
+				B1B8051913936FBE00960283 /* PAL_scrollview_background@2x.png in Resources */,
+				B1B8051A13936FBE00960283 /* PAL_tablecell_background.png in Resources */,
+				B1B8051B13936FBE00960283 /* PAL_tableview_shadow.png in Resources */,
+				B1B8051C13936FBE00960283 /* PAL_unknown_app_icon.png in Resources */,
+				B1B8051D13936FBE00960283 /* PAL_unknown_app_icon@2x.png in Resources */,
+				B1B8052313936FBE00960283 /* PALSendToController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,11 +254,11 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* TestAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* TestAppRootViewController.m in Sources */,
-				ECF3453F138F43AA0025507B /* PALManager.m in Sources */,
-				B1413E1E1391FB3800A0F1FD /* PALMoreAppsTableCellView.m in Sources */,
-				B1413E1F1391FB3800A0F1FD /* PALMoreAppsController.m in Sources */,
-				B1AE1E7F1393499A00A3C137 /* PALSendToController.m in Sources */,
-				B1AE1E82139365C000A3C137 /* PALAppInfo.m in Sources */,
+				B1B8051E13936FBE00960283 /* PALAppInfo.m in Sources */,
+				B1B8051F13936FBE00960283 /* PALManager.m in Sources */,
+				B1B8052013936FBE00960283 /* PALMoreAppsController.m in Sources */,
+				B1B8052113936FBE00960283 /* PALMoreAppsTableCellView.m in Sources */,
+				B1B8052213936FBE00960283 /* PALSendToController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
