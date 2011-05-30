@@ -4,13 +4,7 @@
 
 #import "PALAppInfo.h"
 #import "PALManager.h"
-
-
-// Substitute your own Linkshare Site ID here if you like.
-// This Linkshare ID is used to create affiliate links to 
-// supported apps on the App Store
-static NSString *const LINKSHARE_SITE_ID = @"2695383";
-static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
+#import "PALConfig.h"
 
 @implementation PALAppInfo
 

@@ -46,6 +46,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhotoAppLinkTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestApp_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PhotoAppLinkTestApp-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B15E8E7C13939402006B6C7F /* PALConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALConfig.h; sourceTree = "<group>"; };
 		B1B8050313936FBE00960283 /* PAL_brushed_metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_brushed_metal.png; sourceTree = "<group>"; };
 		B1B8050413936FBE00960283 /* PAL_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_button_background.png; sourceTree = "<group>"; };
 		B1B8050513936FBE00960283 /* PAL_scrollview_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_scrollview_background.png; sourceTree = "<group>"; };
@@ -151,6 +152,7 @@
 				B1B8050213936FBE00960283 /* images */,
 				B1B8050D13936FBE00960283 /* PALManager.h */,
 				B1B8050E13936FBE00960283 /* PALManager.m */,
+				B15E8E7C13939402006B6C7F /* PALConfig.h */,
 				B1B8050B13936FBE00960283 /* PALAppInfo.h */,
 				B1B8050C13936FBE00960283 /* PALAppInfo.m */,
 				B1B8051313936FBE00960283 /* PALSendToController.h */,

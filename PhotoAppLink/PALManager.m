@@ -21,17 +21,7 @@
 
 #import "PALManager.h"
 #import "PALAppInfo.h"
-
-
-// If you are not using app icons to display the list of supported
-// apps in your UI, you can set this to NO to disable downloading 
-// of these app icons
-static BOOL USING_APP_ICONS = YES;
-
-// Substitute this for testing with your own edited server side plist URL
-// (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
-//  otherwise the production plist file will be used)
-static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/261469/photoapplink_debug.plist";
+#import "PALConfig.h"
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
