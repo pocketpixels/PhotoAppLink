@@ -56,56 +56,6 @@
 
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
 
-@end
-
-
-
-@interface PALAppInfo : NSObject {
-    NSString*   appName;
-    BOOL        canSend;
-    BOOL        canReceive;
-    BOOL        installed;
-    NSString*   appDescription;
-    NSURL*      urlScheme;
-    NSString*   bundleID;
-    NSString*   appleID;
-    NSString*   platform;
-    BOOL        freeApp;
-    UIImage*    thumbnail;
-    NSURL*      thumbnailURL;
-}
-
-// Initializer
-- (id)initWithPropertyDict:(NSDictionary*)properties;
-
-// the display name of the app
-@property (nonatomic, readonly) NSString* appName;
-// Flag indicating whether the app is installed on this device
-// (only valid for apps that can receive images, NO for other apps)
-@property (nonatomic, readonly) BOOL installed;   
-// Flag whether the app supports sending images to other apps
-@property (nonatomic, readonly) BOOL canSend;
-// Flag whether the app supports receiving images
-@property (nonatomic, readonly) BOOL canReceive;
-// the PhotoAppLink URL used to launch the app
-@property (nonatomic, readonly) NSURL* urlScheme;
-// a one line description of the app
-@property (nonatomic, readonly) NSString* appDescription;
-// the app's bundle ID (i.e. "com.apple.imovie")
-@property (nonatomic, readonly) NSString* bundleID;
-// Apple's app identifier (part of iTunes App Store links, example: "374308914")
-@property (nonatomic, readonly) NSString* appleID;
-// The device type that the app runs on ("iPhone", "iPad" or "universal")
-@property (nonatomic, copy) NSString *platform;
-// whether the app is free or paid
-@property (nonatomic) BOOL freeApp;
-// The image thumbnail (with appropriate scale for the device)
-@property (nonatomic, readonly) UIImage* thumbnail;
-// URL to thumbnail image
-@property (nonatomic, readonly) NSURL* thumbnailURL;
-
-// Link to the app in the app store. 
-- (NSURL*)appStoreLink;
+- (UIImage*)cachedIconForApp:(PALAppInfo*)app;
 
 @end
-

@@ -5,6 +5,7 @@
 
 #import "PALMoreAppsTableCellView.h"
 #import "PALManager.h"
+#import "PALAppInfo.h"
 
 @implementation PALMoreAppsTableCellView
 @synthesize appInfo;

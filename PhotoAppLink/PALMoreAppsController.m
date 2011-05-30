@@ -6,6 +6,7 @@
 #import "PALMoreAppsController.h"
 #import "PALManager.h"  
 #import "PALMoreAppsTableCellView.h"
+#import "PALAppInfo.h"
 
 static const int ROWHEIGHT = 86;
 

@@ -20,11 +20,8 @@
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import "PALManager.h"
+#import "PALAppInfo.h"
 
-// Substitute your own Linkshare Site ID here if you like.
-// This Linkshare ID is used to create affiliate links to 
-// supported apps on the App Store
-static NSString *const LINKSHARE_SITE_ID = @"2695383";
 
 // If you are not using app icons to display the list of supported
 // apps in your UI, you can set this to NO to disable downloading 
@@ -35,8 +32,6 @@ static BOOL USING_APP_ICONS = YES;
 // (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
 //  otherwise the production plist file will be used)
 static NSString *const DEBUG_PLIST_URL = @"http://dl.dropbox.com/u/261469/photoapplink_debug.plist";
-
-static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
@@ -325,71 +320,3 @@ static PALManager *s_sharedPhotoAppLinkManager = nil;
 }
 
 @end
-
-
-#pragma mark -
-#pragma mark PALAppInfo class
-
-@implementation PALAppInfo
-
-@synthesize appName, urlScheme, appDescription, bundleID, appleID;
-@synthesize platform, freeApp;
-@synthesize thumbnailURL, installed, canSend, canReceive;
-@synthesize thumbnail;
-
-- (id)initWithPropertyDict:(NSDictionary*)properties {
-    self = [super init];
-    if (self) {
-        bundleID = [[properties objectForKey:@"bundleID"] copy];
-        appName = [[properties objectForKey:@"name"] copy];
-        canSend = [[properties objectForKey:@"sends"] boolValue];
-        canReceive = [[properties objectForKey:@"receives"] boolValue];
-        urlScheme = [[NSURL alloc] initWithString:[[properties objectForKey:@"scheme"] 
-                                                   stringByAppendingString:@"://"]];
-        appleID = [[properties objectForKey:@"appleID"] copy];
-        platform = [[properties objectForKey:@"platform"] copy];
-        if (platform == nil) platform = [[NSString alloc] initWithString:@"universal"];
-        freeApp = [[properties objectForKey:@"free"] boolValue];
-        installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:urlScheme]);
-        appDescription = [[properties objectForKey:@"description"] copy];
-        // select appropriate app icon for this device
-        BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
-        NSString* thumbnailKey = isRetina ? @"thumbnail2x" : @"thumbnail";
-        thumbnailURL = [[NSURL alloc] initWithString:[properties objectForKey:thumbnailKey]];            
-    }
-    return self;
-}
-
-- (void) dealloc
-{
-    [appName release];
-	[urlScheme release];
-	[bundleID release];
-    [appleID release];
-	[thumbnailURL release];
-    [thumbnail release];
-    [platform release];
-    [super dealloc];
-}
-
-- (NSURL*)appStoreLink
-{
-    if (self.appleID == nil) return nil;
-    // This creates a LinkShare affiliate link, but without any redirection. It does straight to the app store item.
-    NSString* affiliateLink = [NSString stringWithFormat:@"http://itunes.apple.com/app/id%@?mt=8&partnerId=30&tduid=%@",
-                               self.appleID, LINKSHARE_SITE_ID];
-    return [NSURL URLWithString:affiliateLink];
-}
-
-- (UIImage*)thumbnail
-{
-    if (thumbnail) return thumbnail;
-    thumbnail = [[[PALManager sharedPALManager] cachedIconForApp:self] retain];
-    if (thumbnail) return thumbnail;
-    else return [UIImage imageNamed:GENERIC_APP_ICON];
-}
-
-@end
-
-
-

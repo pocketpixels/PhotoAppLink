@@ -7,6 +7,7 @@
 #import "PALSendToController.h"
 #import "PALManager.h"
 #import "PALMoreAppsController.h"
+#import "PALAppInfo.h"
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
