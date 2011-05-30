@@ -151,7 +151,7 @@
     NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
     for (PALAppInfo *info in sharers)
     {
-        [self addButtonWithTitle:info.appName
+        [self addButtonWithTitle:info.name
                             icon:info.thumbnail
                       inPosition:pos++];
     }

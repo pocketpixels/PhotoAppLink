@@ -57,7 +57,7 @@
     UIColor* titleColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.3 alpha:1.0];
     UIFont* titleFont = [UIFont boldSystemFontOfSize:16];
     [titleColor set];
-    [appInfo.appName drawAtPoint:CGPointMake(leftTextBoundary, titleTopPosition) 
+    [appInfo.name drawAtPoint:CGPointMake(leftTextBoundary, titleTopPosition) 
                         forWidth:totalWidth - titleRightMargin - leftTextBoundary 
                         withFont:titleFont 
                    lineBreakMode:UILineBreakModeTailTruncation];

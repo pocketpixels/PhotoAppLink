@@ -14,7 +14,7 @@ static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
 
 @implementation PALAppInfo
 
-@synthesize appName, urlScheme, appDescription, bundleID, appleID;
+@synthesize name, scheme, appDescription, bundleID, appleID;
 @synthesize platform, freeApp;
 @synthesize thumbnailURL, installed, canSend, canReceive;
 @synthesize thumbnail;
@@ -23,29 +23,30 @@ static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
     self = [super init];
     if (self) {
         bundleID = [[properties objectForKey:@"bundleID"] copy];
-        appName = [[properties objectForKey:@"name"] copy];
-        canSend = [[properties objectForKey:@"sends"] boolValue];
-        canReceive = [[properties objectForKey:@"receives"] boolValue];
-        urlScheme = [[NSURL alloc] initWithString:[[properties objectForKey:@"scheme"] 
-                                                   stringByAppendingString:@"://"]];
+        name = [[properties objectForKey:@"name"] copy];
+        canSend = [[properties objectForKey:@"canSend"] boolValue];
+        canReceive = [[properties objectForKey:@"canReceive"] boolValue];
+        NSString* schemeStr = [[properties objectForKey:@"scheme"] stringByAppendingString:@"://"];
+        if (schemeStr != nil) scheme = [[NSURL alloc] initWithString:schemeStr];
         appleID = [[properties objectForKey:@"appleID"] copy];
         platform = [[properties objectForKey:@"platform"] copy];
         if (platform == nil) platform = [[NSString alloc] initWithString:@"universal"];
-        freeApp = [[properties objectForKey:@"free"] boolValue];
-        installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:urlScheme]);
+        freeApp = [[properties objectForKey:@"freeApp"] boolValue];
+        installed = (canReceive && [[UIApplication sharedApplication] canOpenURL:scheme]);
         appDescription = [[properties objectForKey:@"description"] copy];
         // select appropriate app icon for this device
         BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
-        NSString* thumbnailKey = isRetina ? @"thumbnail2x" : @"thumbnail";
-        thumbnailURL = [[NSURL alloc] initWithString:[properties objectForKey:thumbnailKey]];            
+        NSString* thumbnailKey = isRetina ? @"thumbnail2xURL" : @"thumbnailURL";
+        NSString* thumbnailURLStr = [properties objectForKey:thumbnailKey];
+        if (thumbnailURLStr != nil) thumbnailURL = [[NSURL alloc] initWithString:thumbnailURLStr];            
     }
     return self;
 }
 
 - (void) dealloc
 {
-    [appName release];
-	[urlScheme release];
+    [name release];
+	[scheme release];
 	[bundleID release];
     [appleID release];
 	[thumbnailURL release];
@@ -72,6 +73,4 @@ static NSString *const GENERIC_APP_ICON = @"PAL_unknown_app_icon.png";
 }
 
 @end
-
-
 

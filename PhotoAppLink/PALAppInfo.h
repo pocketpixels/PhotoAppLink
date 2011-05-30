@@ -22,12 +22,12 @@
 #import <Foundation/Foundation.h>
 
 @interface PALAppInfo : NSObject {
-    NSString*   appName;
+    NSString*   name;
     BOOL        canSend;
     BOOL        canReceive;
     BOOL        installed;
     NSString*   appDescription;
-    NSURL*      urlScheme;
+    NSURL*      scheme;
     NSString*   bundleID;
     NSString*   appleID;
     NSString*   platform;
@@ -40,7 +40,7 @@
 - (id)initWithPropertyDict:(NSDictionary*)properties;
 
 // the display name of the app
-@property (nonatomic, readonly) NSString* appName;
+@property (nonatomic, readonly) NSString* name;
 // Flag indicating whether the app is installed on this device
 // (only valid for apps that can receive images, NO for other apps)
 @property (nonatomic, readonly) BOOL installed;   
@@ -49,7 +49,7 @@
 // Flag whether the app supports receiving images
 @property (nonatomic, readonly) BOOL canReceive;
 // the PhotoAppLink URL used to launch the app
-@property (nonatomic, readonly) NSURL* urlScheme;
+@property (nonatomic, readonly) NSURL* scheme;
 // a one line description of the app
 @property (nonatomic, readonly) NSString* appDescription;
 // the app's bundle ID (i.e. "com.apple.imovie")

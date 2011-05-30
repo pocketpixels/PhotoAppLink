@@ -151,7 +151,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     [pasteboard setPersistent:YES];
     NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
     [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
-    [[UIApplication sharedApplication] openURL:appInfo.urlScheme];
+    [[UIApplication sharedApplication] openURL:appInfo.scheme];
 }
 
 - (UIImage*)popPassedInImage
@@ -251,7 +251,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     
     NSArray *apps = self.destinationApps;
     for (PALAppInfo *info in apps) {
-        [actionSheet addButtonWithTitle:info.appName];
+        [actionSheet addButtonWithTitle:info.name];
     }
     [actionSheet addButtonWithTitle:@"Cancel"];
     actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
