@@ -65,8 +65,8 @@
     PALSendToController *newView = [[PALSendToController alloc] init];
 
     // These are custom buttons for your own sharing options, such as send to fb, twitter, etc...
-    [newView addSharingActionWithTitle:@"test action 01" icon:[UIImage imageNamed:@"PAL_unknown_app_icon.png"] identifier:1];
-    [newView addSharingActionWithTitle:@"test action 02" icon:[UIImage imageNamed:@"PAL_unknown_app_icon.png"] identifier:1];
+    [newView addSharingActionWithTitle:@"Facebook" icon:[UIImage imageNamed:@"facebook-icon.png"] identifier:1];
+    [newView addSharingActionWithTitle:@"Twitter" icon:[UIImage imageNamed:@"twitter-icon.png"] identifier:2];
     
     // The image you want to share. This can also be provided by a delegate method
     newView.image = self.image;
@@ -96,7 +96,7 @@
 - (void)photoAppLinkImage:(UIImage*)image sendToItemWithIdentifier:(int)identifier
 {
     UIAlertView *newView = [[UIAlertView alloc] initWithTitle:nil 
-                                                      message:[NSString stringWithFormat:@"Triggered action %d", identifier]
+                                                      message:[NSString stringWithFormat:@"Triggered %@ sharing option", identifier==1?@"Facebook":@"Twitter"]
                                                      delegate:nil 
                                             cancelButtonTitle:@"OK" 
                                             otherButtonTitles:nil];

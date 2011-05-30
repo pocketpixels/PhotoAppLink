@@ -30,6 +30,10 @@
 		B1B8052213936FBE00960283 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8051413936FBE00960283 /* PALSendToController.m */; };
 		B1B8052313936FBE00960283 /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B8051513936FBE00960283 /* PALSendToController.xib */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
+		ECFD373C139406C100804007 /* twitter-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD3738139406C100804007 /* twitter-icon@2x.png */; };
+		ECFD373D139406C100804007 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD3739139406C100804007 /* twitter-icon.png */; };
+		ECFD373E139406C100804007 /* facebook-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD373A139406C100804007 /* facebook-icon@2x.png */; };
+		ECFD373F139406C100804007 /* facebook-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD373B139406C100804007 /* facebook-icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,18 +59,22 @@
 		B1B8050813936FBE00960283 /* PAL_tableview_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tableview_shadow.png; sourceTree = "<group>"; };
 		B1B8050913936FBE00960283 /* PAL_unknown_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_unknown_app_icon.png; sourceTree = "<group>"; };
 		B1B8050A13936FBE00960283 /* PAL_unknown_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_unknown_app_icon@2x.png"; sourceTree = "<group>"; };
-		B1B8050B13936FBE00960283 /* PALAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PALAppInfo.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		B1B8050C13936FBE00960283 /* PALAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALAppInfo.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		B1B8050D13936FBE00960283 /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PALManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		B1B8050E13936FBE00960283 /* PALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		B1B8050B13936FBE00960283 /* PALAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PALAppInfo.h; sourceTree = "<group>"; };
+		B1B8050C13936FBE00960283 /* PALAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALAppInfo.m; sourceTree = "<group>"; };
+		B1B8050D13936FBE00960283 /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PALManager.h; sourceTree = "<group>"; };
+		B1B8050E13936FBE00960283 /* PALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALManager.m; sourceTree = "<group>"; };
 		B1B8050F13936FBE00960283 /* PALMoreAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsController.h; sourceTree = "<group>"; };
 		B1B8051013936FBE00960283 /* PALMoreAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsController.m; sourceTree = "<group>"; };
 		B1B8051113936FBE00960283 /* PALMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsTableCellView.h; sourceTree = "<group>"; };
-		B1B8051213936FBE00960283 /* PALMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALMoreAppsTableCellView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		B1B8051213936FBE00960283 /* PALMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALMoreAppsTableCellView.m; sourceTree = "<group>"; };
 		B1B8051313936FBE00960283 /* PALSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALSendToController.h; sourceTree = "<group>"; };
-		B1B8051413936FBE00960283 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALSendToController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		B1B8051413936FBE00960283 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALSendToController.m; sourceTree = "<group>"; };
 		B1B8051513936FBE00960283 /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
+		ECFD3738139406C100804007 /* twitter-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon@2x.png"; sourceTree = "<group>"; };
+		ECFD3739139406C100804007 /* twitter-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon.png"; sourceTree = "<group>"; };
+		ECFD373A139406C100804007 /* facebook-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon@2x.png"; sourceTree = "<group>"; };
+		ECFD373B139406C100804007 /* facebook-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +137,10 @@
 			isa = PBXGroup;
 			children = (
 				B1FB990210AAA32A00C56AE2 /* TestImage.png */,
+				ECFD3738139406C100804007 /* twitter-icon@2x.png */,
+				ECFD3739139406C100804007 /* twitter-icon.png */,
+				ECFD373A139406C100804007 /* facebook-icon@2x.png */,
+				ECFD373B139406C100804007 /* facebook-icon.png */,
 				2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */,
@@ -243,6 +255,10 @@
 				B1B8051C13936FBE00960283 /* PAL_unknown_app_icon.png in Resources */,
 				B1B8051D13936FBE00960283 /* PAL_unknown_app_icon@2x.png in Resources */,
 				B1B8052313936FBE00960283 /* PALSendToController.xib in Resources */,
+				ECFD373C139406C100804007 /* twitter-icon@2x.png in Resources */,
+				ECFD373D139406C100804007 /* twitter-icon.png in Resources */,
+				ECFD373E139406C100804007 /* facebook-icon@2x.png in Resources */,
+				ECFD373F139406C100804007 /* facebook-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
