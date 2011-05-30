@@ -42,7 +42,21 @@
 - (IBAction)showActionSheet
 {
     // Simple UIActionSheet method
-    [[[PALManager sharedPALManager] actionSheetToSendImage:self.image] showInView:self.view];
+    UIActionSheet *actionSheet = [[PALManager sharedPALManager] actionSheetToSendImage:self.image];
+    if (actionSheet)
+    {
+        [actionSheet showInView:self.view];
+    }
+    else
+    {
+        UIAlertView *newView = [[UIAlertView alloc] initWithTitle:nil 
+                                                          message:@"You don't have any PhotoAppLink compatible apps installed in your device"
+                                                         delegate:nil 
+                                                cancelButtonTitle:@"OK" 
+                                                otherButtonTitles:nil];
+        [newView show];
+        [newView release];
+    }
 }
 
 - (IBAction)showSendToAppController
