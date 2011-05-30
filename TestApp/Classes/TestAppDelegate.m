@@ -65,7 +65,7 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     [window makeKeyAndVisible];
 
     if (launchOptions && [[[UIDevice currentDevice] systemVersion] floatValue] < 4.0f) {
-        NSURL* launchURL = [launchOptions objectForKey:@"UIApplicationLaunchOptionsURLKey"];
+        NSURL* launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
         return [self handleURL:launchURL];
     }
     else {
