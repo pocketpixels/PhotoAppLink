@@ -182,7 +182,8 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (NSString*)cachedIconPathForApp:(PALAppInfo*)app
 {
-    NSString* fileName = [NSString stringWithFormat:@"%@_%@", app.bundleID, [app.thumbnailURL lastPathComponent]];
+    NSString* lastPathComponent = [[[app.thumbnailURL path] componentsSeparatedByString:@"/"] lastObject];
+    NSString* fileName = [NSString stringWithFormat:@"%@_%@", app.bundleID, lastPathComponent];
     NSString* fullPath = [[self appIconCacheDirectory] stringByAppendingPathComponent:fileName];
     return fullPath;
 }
@@ -234,19 +235,24 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image
 {
-    self.imageToSend = image;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    actionSheet.title = @"Send To";
-    actionSheet.delegate = self;
-    
     NSArray *apps = self.destinationApps;
-    for (PALAppInfo *info in apps) {
-        [actionSheet addButtonWithTitle:info.name];
+    if ([apps count] > 0)
+    {
+        self.imageToSend = image;
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+        actionSheet.title = @"Send To";
+        actionSheet.delegate = self;
+        
+        for (PALAppInfo *info in apps) {
+            [actionSheet addButtonWithTitle:info.name];
+        }
+        [actionSheet addButtonWithTitle:@"Cancel"];
+        actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+        
+        return [actionSheet autorelease];
     }
-    [actionSheet addButtonWithTitle:@"Cancel"];
-    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
     
-    return [actionSheet autorelease];
+    return nil;
 }
 
 #pragma mark -
