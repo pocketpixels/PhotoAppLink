@@ -24,6 +24,7 @@
 - (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position;
 - (void)fixIconsLayoutAnimated:(BOOL)animated;
 - (void)buttonClicked:(id)sender;
+- (void)setupScrollViewContent;
 
 @end
 
@@ -82,7 +83,9 @@
     UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
     UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
     [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
-    
+
+    [self setupScrollViewContent];
+
     if (self.navigationController)
     {
         // ALready comes with a navigation bar. Will hide mine
@@ -97,6 +100,7 @@
         _iconsScrollView.frame = scrollViewFrame;
         _scrollViewBackgroundView.frame = scrollViewFrame;
     }
+    
 }
 
 - (void)viewDidUnload
@@ -121,10 +125,14 @@
     return self.myNavigationItem.title;
 }
 
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:animated];
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self fixIconsLayoutAnimated:YES];
+}
+
+- (void)setupScrollViewContent
+{
     int pos = 0;
     
     // First add the custom sharing options
@@ -149,11 +157,6 @@
     
     _iconsPageControl.currentPage = 0;
     [self fixIconsLayoutAnimated:NO];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self fixIconsLayoutAnimated:YES];
 }
 
 // Called after initialization and before presenting to add custom sharers
