@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface PhotoAppLinkMoreAppsViewController : UITableViewController {
+@interface PALMoreAppsController : UITableViewController {
     NSArray* additionalApps;
 }
 

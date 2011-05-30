@@ -24,7 +24,7 @@
 
 @class PALAppInfo; 
 
-@interface PhotoAppLinkManager : NSObject <UIActionSheetDelegate> {
+@interface PALManager : NSObject <UIActionSheetDelegate> {
     NSArray* supportedApps;
     UIImage* imageToSend;
 }
@@ -39,7 +39,7 @@
 @property (nonatomic, copy, readonly) NSArray *supportedApps;
 
 // Get the singleton instance
-+ (PhotoAppLinkManager*)sharedPhotoAppLinkManager;
++ (PALManager*)sharedPALManager;
 
 // Downloads the latest list of supported apps and their custom URLs in the background
 // Call this once immediately after app launch. 

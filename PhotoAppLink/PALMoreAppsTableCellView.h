@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class PALAppInfo;
 
-@interface PhotoAppLinkMoreAppsTableCellView : UIView {
+@interface PALMoreAppsTableCellView : UIView {
     PALAppInfo* appInfo;
 }
 

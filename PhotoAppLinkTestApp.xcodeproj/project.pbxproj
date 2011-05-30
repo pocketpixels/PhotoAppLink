@@ -7,40 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* TestAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* TestAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		28D7ACF80DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */; };
+		28D7ACF80DDB3853001CB0EB /* TestAppRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TestAppRootViewController.m */; };
 		B1413E151391FB2C00A0F1FD /* PAL_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E101391FB2C00A0F1FD /* PAL_button_background.png */; };
 		B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */; };
 		B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */; };
 		B1413E181391FB2C00A0F1FD /* PAL_unknown_app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */; };
 		B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */; };
-		B1413E1E1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */; };
-		B1413E1F1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */; };
+		B1413E1E1391FB3800A0F1FD /* PALMoreAppsTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */; };
+		B1413E1F1391FB3800A0F1FD /* PALMoreAppsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */; };
 		B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */; };
 		B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */; };
+		B1AE1E7F1393499A00A3C137 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AE1E7D1393499A00A3C137 /* PALSendToController.m */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
-		ECF3453B138F42420025507B /* PhotoAppLinkSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */; };
-		ECF3453C138F42420025507B /* PhotoAppLinkSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */; };
-		ECF3453F138F43AA0025507B /* PhotoAppLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */; };
+		ECF3453C138F42420025507B /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PALSendToController.xib */; };
+		ECF3453F138F43AA0025507B /* PALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PALManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestAppAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkTestAppAppDelegate.m; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* TestAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* TestAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* PhotoAppLinkTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoAppLinkTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoAppLinkTestAppViewController.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		28D7ACF60DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestAppViewController.h; sourceTree = "<group>"; };
-		28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkTestAppViewController.m; sourceTree = "<group>"; };
+		28D7ACF60DDB3853001CB0EB /* TestAppRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAppRootViewController.h; sourceTree = "<group>"; };
+		28D7ACF70DDB3853001CB0EB /* TestAppRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAppRootViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhotoAppLinkTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkTestApp_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PhotoAppLinkTestApp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PhotoAppLinkTestApp-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -49,18 +49,18 @@
 		B1413E121391FB2C00A0F1FD /* PAL_tableview_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_tableview_shadow.png; sourceTree = "<group>"; };
 		B1413E131391FB2C00A0F1FD /* PAL_unknown_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_unknown_app_icon.png; sourceTree = "<group>"; };
 		B1413E141391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_unknown_app_icon@2x.png"; sourceTree = "<group>"; };
-		B1413E1A1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsTableCellView.h; sourceTree = "<group>"; };
-		B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsTableCellView.m; sourceTree = "<group>"; };
-		B1413E1C1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkMoreAppsViewController.h; sourceTree = "<group>"; };
-		B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkMoreAppsViewController.m; sourceTree = "<group>"; };
+		B1413E1A1391FB3800A0F1FD /* PALMoreAppsTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsTableCellView.h; sourceTree = "<group>"; };
+		B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsTableCellView.m; sourceTree = "<group>"; };
+		B1413E1C1391FB3800A0F1FD /* PALMoreAppsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALMoreAppsController.h; sourceTree = "<group>"; };
+		B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALMoreAppsController.m; sourceTree = "<group>"; };
 		B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_brushed_metal.png; sourceTree = "<group>"; };
 		B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_scrollview_background.png; sourceTree = "<group>"; };
+		B1AE1E7D1393499A00A3C137 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALSendToController.m; sourceTree = "<group>"; };
+		B1AE1E7E1393499A00A3C137 /* PALSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALSendToController.h; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
-		ECF34538138F42420025507B /* PhotoAppLinkSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkSendToController.h; sourceTree = "<group>"; };
-		ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkSendToController.m; sourceTree = "<group>"; };
-		ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAppLinkSendToController.xib; sourceTree = "<group>"; };
-		ECF3453D138F43AA0025507B /* PhotoAppLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAppLinkManager.h; sourceTree = "<group>"; };
-		ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAppLinkManager.m; sourceTree = "<group>"; };
+		ECF3453A138F42420025507B /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
+		ECF3453D138F43AA0025507B /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALManager.h; sourceTree = "<group>"; };
+		ECF3453E138F43AA0025507B /* PALManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,10 +80,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				1D3623240D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.h */,
-				1D3623250D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m */,
-				28D7ACF60DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m */,
+				1D3623240D0F684500981E51 /* TestAppDelegate.h */,
+				1D3623250D0F684500981E51 /* TestAppDelegate.m */,
+				28D7ACF60DDB3853001CB0EB /* TestAppRootViewController.h */,
+				28D7ACF70DDB3853001CB0EB /* TestAppRootViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -157,15 +157,15 @@
 			isa = PBXGroup;
 			children = (
 				B1413E0F1391FB2C00A0F1FD /* images */,
-				ECF3453D138F43AA0025507B /* PhotoAppLinkManager.h */,
-				ECF3453E138F43AA0025507B /* PhotoAppLinkManager.m */,
-				ECF34538138F42420025507B /* PhotoAppLinkSendToController.h */,
-				ECF34539138F42420025507B /* PhotoAppLinkSendToController.m */,
-				ECF3453A138F42420025507B /* PhotoAppLinkSendToController.xib */,
-				B1413E1A1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.h */,
-				B1413E1B1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m */,
-				B1413E1C1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.h */,
-				B1413E1D1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m */,
+				ECF3453D138F43AA0025507B /* PALManager.h */,
+				ECF3453E138F43AA0025507B /* PALManager.m */,
+				B1AE1E7D1393499A00A3C137 /* PALSendToController.m */,
+				B1AE1E7E1393499A00A3C137 /* PALSendToController.h */,
+				ECF3453A138F42420025507B /* PALSendToController.xib */,
+				B1413E1C1391FB3800A0F1FD /* PALMoreAppsController.h */,
+				B1413E1D1391FB3800A0F1FD /* PALMoreAppsController.m */,
+				B1413E1A1391FB3800A0F1FD /* PALMoreAppsTableCellView.h */,
+				B1413E1B1391FB3800A0F1FD /* PALMoreAppsTableCellView.m */,
 			);
 			path = PhotoAppLink;
 			sourceTree = "<group>";
@@ -222,7 +222,7 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* PhotoAppLinkTestAppViewController.xib in Resources */,
 				B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */,
-				ECF3453C138F42420025507B /* PhotoAppLinkSendToController.xib in Resources */,
+				ECF3453C138F42420025507B /* PALSendToController.xib in Resources */,
 				B1413E151391FB2C00A0F1FD /* PAL_button_background.png in Resources */,
 				B1413E161391FB2C00A0F1FD /* PAL_tablecell_background.png in Resources */,
 				B1413E171391FB2C00A0F1FD /* PAL_tableview_shadow.png in Resources */,
@@ -241,12 +241,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* PhotoAppLinkTestAppAppDelegate.m in Sources */,
-				28D7ACF80DDB3853001CB0EB /* PhotoAppLinkTestAppViewController.m in Sources */,
-				ECF3453B138F42420025507B /* PhotoAppLinkSendToController.m in Sources */,
-				ECF3453F138F43AA0025507B /* PhotoAppLinkManager.m in Sources */,
-				B1413E1E1391FB3800A0F1FD /* PhotoAppLinkMoreAppsTableCellView.m in Sources */,
-				B1413E1F1391FB3800A0F1FD /* PhotoAppLinkMoreAppsViewController.m in Sources */,
+				1D3623260D0F684500981E51 /* TestAppDelegate.m in Sources */,
+				28D7ACF80DDB3853001CB0EB /* TestAppRootViewController.m in Sources */,
+				ECF3453F138F43AA0025507B /* PALManager.m in Sources */,
+				B1413E1E1391FB3800A0F1FD /* PALMoreAppsTableCellView.m in Sources */,
+				B1413E1F1391FB3800A0F1FD /* PALMoreAppsController.m in Sources */,
+				B1AE1E7F1393499A00A3C137 /* PALSendToController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

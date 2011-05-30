@@ -1,16 +1,12 @@
 //
-//  PhotoAppLinkMoreAppsTableCellView.m
-//  PhotoAppLinkTestApp
-//
+//  PALMoreAppsTableCellView.m
 //  Created by Hendrik Kueck on 11-05-23.
-//  Copyright 2011 Pocket Pixels Inc. All rights reserved.
 //
 
-#import "PhotoAppLinkMoreAppsTableCellView.h"
-#import "PhotoAppLinkManager.h"
-#import <QuartzCore/QuartzCore.h>
+#import "PALMoreAppsTableCellView.h"
+#import "PALManager.h"
 
-@implementation PhotoAppLinkMoreAppsTableCellView
+@implementation PALMoreAppsTableCellView
 @synthesize appInfo;
 
 - (id)initWithFrame:(CGRect)frame
@@ -66,7 +62,6 @@
                    lineBreakMode:UILineBreakModeTailTruncation];
     CGContextRestoreGState(context);
 
-//    UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.5 green:0.35 blue:0.20 alpha:1.0];
     UIColor* capabilitiesTextColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.5 alpha:1.0];
     UIFont* capabilitiesTextFont = [UIFont systemFontOfSize:13];
     [capabilitiesTextColor set];
@@ -85,9 +80,7 @@
     }
     [capabilitiesText drawAtPoint:CGPointMake(leftTextBoundary, capabilitiesTextTopPosition) 
                          withFont:capabilitiesTextFont];
-    
-    
-
+        
     if (appInfo.appDescription && [appInfo.appDescription length] > 0) {
         UIColor* descriptionColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
         UIFont* descriptionFont = [UIFont systemFontOfSize:13];
@@ -105,7 +98,6 @@
         [appInfo.appDescription drawInRect:descriptionBox withFont:descriptionFont
                              lineBreakMode:UILineBreakModeWordWrap];
     }
-    
 }
 
 - (void)dealloc

@@ -19,7 +19,7 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "PhotoAppLinkManager.h"
+#import "PALManager.h"
 
 // Substitute your own Linkshare Site ID here if you like.
 // This Linkshare ID is used to create affiliate links to 
@@ -51,13 +51,13 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 0;
 const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60; 
 #endif
 
-@interface PhotoAppLinkManager() 
+@interface PALManager() 
 @property (nonatomic,  copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
 - (void)downloadAndCacheIconsForAllApps;
 @end
 
-@implementation PhotoAppLinkManager
+@implementation PALManager
 
 @synthesize supportedApps;
 @synthesize imageToSend;
@@ -284,9 +284,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 #pragma mark -
 #pragma mark Singleton 
 
-static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
+static PALManager *s_sharedPhotoAppLinkManager = nil;
 
-+ (PhotoAppLinkManager*)sharedPhotoAppLinkManager
++ (PALManager*)sharedPALManager
 {
     if (s_sharedPhotoAppLinkManager == nil) {
         s_sharedPhotoAppLinkManager = [[super allocWithZone:NULL] init];
@@ -296,7 +296,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [[self sharedPhotoAppLinkManager] retain];
+    return [[self sharedPALManager] retain];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -384,7 +384,7 @@ static PhotoAppLinkManager *s_sharedPhotoAppLinkManager = nil;
 - (UIImage*)thumbnail
 {
     if (thumbnail) return thumbnail;
-    thumbnail = [[[PhotoAppLinkManager sharedPhotoAppLinkManager] cachedIconForApp:self] retain];
+    thumbnail = [[[PALManager sharedPALManager] cachedIconForApp:self] retain];
     if (thumbnail) return thumbnail;
     else return [UIImage imageNamed:GENERIC_APP_ICON];
 }

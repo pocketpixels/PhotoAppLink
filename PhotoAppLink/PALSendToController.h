@@ -25,7 +25,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol PhotoAppLinkSendToControllerDelegate <NSObject>
+@protocol PALSendToControllerDelegate <NSObject>
 
 @optional
 // Called if you add custm sharers
@@ -38,9 +38,9 @@
 
 @end
 
-@interface PhotoAppLinkSendToController : UIViewController <UIScrollViewDelegate> {
+@interface PALSendToController : UIViewController <UIScrollViewDelegate> {
     
-    id<PhotoAppLinkSendToControllerDelegate> _delegate;
+    id<PALSendToControllerDelegate> _delegate;
     UIImage *_image;
     
     UIScrollView *_iconsScrollView;
@@ -54,7 +54,7 @@
 }
 
 // Provide a delegate if you have custom actions and/or if you want to defer image creation
-@property (nonatomic, assign) id<PhotoAppLinkSendToControllerDelegate> delegate;
+@property (nonatomic, assign) id<PALSendToControllerDelegate> delegate;
 
 // The image to share. Can be provided later by a delegate.
 @property (nonatomic, retain) UIImage *image;

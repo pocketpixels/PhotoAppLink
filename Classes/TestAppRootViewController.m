@@ -19,16 +19,16 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "PhotoAppLinkTestAppViewController.h"
-#import "PhotoAppLinkSendToController.h"
-#import "PhotoAppLinkManager.h"
-#import "PhotoAppLinkMoreAppsViewController.h"
+#import "TestAppRootViewController.h"
+#import "PALSendToController.h"
+#import "PALManager.h"
+#import "PALMoreAppsController.h"
 
-@interface PhotoAppLinkTestAppViewController()
+@interface TestAppRootViewController()
 @property (nonatomic, retain) UIImageView *imageView;
 @end
 
-@implementation PhotoAppLinkTestAppViewController
+@implementation TestAppRootViewController
 
 @dynamic image;
 @synthesize imageView;
@@ -42,13 +42,13 @@
 - (IBAction)showActionSheet
 {
     // Simple UIActionSheet method
-    [[[PhotoAppLinkManager sharedPhotoAppLinkManager] actionSheetToSendImage:self.image] showInView:self.view];
+    [[[PALManager sharedPALManager] actionSheetToSendImage:self.image] showInView:self.view];
 }
 
 - (IBAction)showSendToAppController
 {
     // PhotoAppLinkSendToController method
-    PhotoAppLinkSendToController *newView = [[PhotoAppLinkSendToController alloc] init];
+    PALSendToController *newView = [[PALSendToController alloc] init];
 
     // These are custom buttons for your own sharing options, such as send to fb, twitter, etc...
     [newView addSharingActionWithTitle:@"test action 01" icon:[UIImage imageNamed:@"PAL_unknown_app_icon.png"] identifier:1];
@@ -69,7 +69,7 @@
 
 - (IBAction)showMoreAppsTable
 {
-    PhotoAppLinkMoreAppsViewController* moreAppsVC = [[PhotoAppLinkMoreAppsViewController alloc] init];
+    PALMoreAppsController* moreAppsVC = [[PALMoreAppsController alloc] init];
     [self.navigationController pushViewController:moreAppsVC animated:YES];
     [moreAppsVC release];
 }

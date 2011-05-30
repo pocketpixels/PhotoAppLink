@@ -19,24 +19,20 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #import <UIKit/UIKit.h>
-#import "PhotoAppLinkSendToController.h"
 
-@interface PhotoAppLinkTestAppViewController : UIViewController <PhotoAppLinkSendToControllerDelegate> {
-    IBOutlet UIImageView* imageView;
+@class TestAppRootViewController;
+
+@interface TestAppDelegate : NSObject <UIApplicationDelegate> {
+    UIWindow *window;
+    UINavigationController *navigationController;
+    TestAppRootViewController* rootViewController;
 }
 
-@property (nonatomic, retain) UIImage *image;
-
-- (IBAction)showActionSheet;
-- (IBAction)showMoreAppsTable;
-- (IBAction)showSendToAppController;
+@property (nonatomic, retain) IBOutlet TestAppRootViewController *rootViewController;
+@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end
-
-
-
-
 
 

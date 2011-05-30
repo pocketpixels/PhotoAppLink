@@ -1,24 +1,21 @@
 //
-//  PhotoAppLinkMoreAppsViewController.m
-//  PhotoAppLinkTestApp
-//
+//  PALMoreAppsController.m
 //  Created by Hendrik Kueck on 11-05-22.
-//  Copyright 2011 Pocket Pixels Inc. All rights reserved.
 //
 
-#import "PhotoAppLinkMoreAppsViewController.h"
-#import "PhotoAppLinkManager.h"  
-#import "PhotoAppLinkMoreAppsTableCellView.h"
+#import "PALMoreAppsController.h"
+#import "PALManager.h"  
+#import "PALMoreAppsTableCellView.h"
 
 static const int ROWHEIGHT = 86;
 
-@implementation PhotoAppLinkMoreAppsViewController
+@implementation PALMoreAppsController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        PhotoAppLinkManager* palManager = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+        PALManager* palManager = [PALManager sharedPALManager];
         // TODO filter out apps for the wrong platform
         NSString* deviceType = [[UIDevice currentDevice] model];
         BOOL isIPad = [deviceType hasPrefix:@"iPad"];
@@ -108,14 +105,14 @@ static const int ROWHEIGHT = 86;
     static NSString *CellIdentifier = @"PALAppInfoCell";
     static const int APPINFOVIEW_TAG = 1042;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    PhotoAppLinkMoreAppsTableCellView* appInfoView;
+    PALMoreAppsTableCellView* appInfoView;
     UIButton* storeButton;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PAL_tablecell_background.png"]];
         CGRect cellFrame = CGRectMake(0.0, 0.0, tableView.frame.size.width, ROWHEIGHT);
-        appInfoView= [[PhotoAppLinkMoreAppsTableCellView alloc] initWithFrame:cellFrame];
+        appInfoView= [[PALMoreAppsTableCellView alloc] initWithFrame:cellFrame];
         appInfoView.tag = APPINFOVIEW_TAG;
         [cell.contentView addSubview:appInfoView];
         [appInfoView release];
@@ -133,7 +130,7 @@ static const int ROWHEIGHT = 86;
         [cell setAccessoryView:storeButton];
     }
     else {
-        appInfoView = (PhotoAppLinkMoreAppsTableCellView*) [cell.contentView viewWithTag:APPINFOVIEW_TAG];
+        appInfoView = (PALMoreAppsTableCellView*) [cell.contentView viewWithTag:APPINFOVIEW_TAG];
         appInfoView.frame = CGRectMake(0, 0, tableView.frame.size.width, ROWHEIGHT);
         storeButton = (UIButton*) cell.accessoryView;
     }

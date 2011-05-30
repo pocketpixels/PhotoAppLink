@@ -19,11 +19,11 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "PhotoAppLinkTestAppAppDelegate.h"
-#import "PhotoAppLinkTestAppViewController.h"
-#import "PhotoAppLinkManager.h"
+#import "TestAppDelegate.h"
+#import "TestAppRootViewController.h"
+#import "PALManager.h"
 
-@implementation PhotoAppLinkTestAppAppDelegate
+@implementation TestAppDelegate
 
 @synthesize rootViewController;
 @synthesize window;
@@ -83,7 +83,7 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
         // Retrieve the image that was passed from previous app.
         // You could (and likely should) instead access this image during a later stage of the launch process 
         // rather than doing it directly in this launch handler
-        PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+        PALManager* applink = [PALManager sharedPALManager];
         UIImage *image = [applink popPassedInImage];
         [self.rootViewController performSelector:@selector(setImage:) withObject:image afterDelay:0.0];
         return YES;
@@ -99,7 +99,7 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     // The updateSupportedAppsInBackground method should be called right after app launch. 
     // It goes out to the server and downloads the latest list of supported applications and 
     // their custom URL schemes.
-    PhotoAppLinkManager* applink = [PhotoAppLinkManager sharedPhotoAppLinkManager];
+    PALManager* applink = [PALManager sharedPALManager];
     [applink updateSupportedAppsInBackground];    
 }
 

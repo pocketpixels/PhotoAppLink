@@ -19,20 +19,24 @@
 //    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 #import <UIKit/UIKit.h>
+#import "PALSendToController.h"
 
-@class PhotoAppLinkTestAppViewController;
-
-@interface PhotoAppLinkTestAppAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    UINavigationController *navigationController;
-    PhotoAppLinkTestAppViewController* rootViewController;
+@interface TestAppRootViewController : UIViewController <PALSendToControllerDelegate> {
+    IBOutlet UIImageView* imageView;
 }
 
-@property (nonatomic, retain) IBOutlet PhotoAppLinkTestAppViewController *rootViewController;
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) UIImage *image;
+
+- (IBAction)showActionSheet;
+- (IBAction)showMoreAppsTable;
+- (IBAction)showSendToAppController;
 
 @end
+
+
+
+
 
 

@@ -1,13 +1,12 @@
 //
-//  PhotoAppLinkSendToController.m
-//  PhotoAppLinkTestApp
+//  PALSendToController.m
 //
 //  Created by Gustavo Ambrozio on 26/5/11.
 //
 
-#import "PhotoAppLinkSendToController.h"
-#import "PhotoAppLinkManager.h"
-#import "PhotoAppLinkMoreAppsViewController.h"
+#import "PALSendToController.h"
+#import "PALManager.h"
+#import "PALMoreAppsController.h"
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
@@ -20,7 +19,7 @@
 #define SCROLLVIEW_TOP_MARGIN 8.0f
 #define SCROLLVIEW_SIDE_MARGIN 8.0f
 
-@interface PhotoAppLinkSendToController (PrivateStuff)
+@interface PALSendToController (PrivateStuff)
 
 - (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position;
 - (void)fixIconsLayoutAnimated:(BOOL)animated;
@@ -28,7 +27,7 @@
 
 @end
 
-@implementation PhotoAppLinkSendToController
+@implementation PALSendToController
 
 @synthesize delegate = _delegate;
 @synthesize image = _image;
@@ -140,7 +139,7 @@
     }
     
     // Go though the list of available apps
-    NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
+    NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
     for (PALAppInfo *info in sharers)
     {
         [self addButtonWithTitle:info.appName
@@ -297,9 +296,9 @@
             if (_sharingActions)
                 position -= [_sharingActions count];
             
-            NSArray *sharers = [[PhotoAppLinkManager sharedPhotoAppLinkManager] destinationApps];
+            NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
             PALAppInfo *info = [sharers objectAtIndex:position];
-            [[PhotoAppLinkManager sharedPhotoAppLinkManager] invokeApplication:info withImage:imageToShare];
+            [[PALManager sharedPALManager] invokeApplication:info withImage:imageToShare];
         }
     }
     
@@ -323,7 +322,7 @@
 
 - (IBAction)moreApps:(id)sender
 {
-    PhotoAppLinkMoreAppsViewController *newView = [[[PhotoAppLinkMoreAppsViewController alloc] init] autorelease];
+    PALMoreAppsController *newView = [[[PALMoreAppsController alloc] init] autorelease];
     if (self.navigationController)
     {
         [self.navigationController pushViewController:newView animated:YES];
