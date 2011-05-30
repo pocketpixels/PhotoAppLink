@@ -44,14 +44,6 @@ static const int ROWHEIGHT = 86;
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -69,24 +61,43 @@ static const int ROWHEIGHT = 86;
     self.tableView.tableFooterView = bottomShadowView;
     self.tableView.tableHeaderView = topShadowView;
     [bottomShadowView release];
+    [topShadowView release];
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
-    self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
+    
+    if (self.navigationController)
+    {
+        self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
+    }
+    else
+    {
+        UINavigationBar *toolbar = [[UINavigationBar alloc] init];
+        [toolbar sizeToFit];
+        
+        UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:NSLocalizedString(@"Compatible Apps", @"PhotoAppLink")];
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
+                                         initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissView:)];
+        navigationItem.leftBarButtonItem = cancelButton;
+        [cancelButton release];
+        
+        [toolbar pushNavigationItem:navigationItem animated:NO];
+        [navigationItem release];
+
+        self.tableView.tableHeaderView = toolbar;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -20, 0);
+        [toolbar release];
+    }
 }
 
+- (void)dismissView:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return YES;
-//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
