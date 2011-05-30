@@ -26,6 +26,7 @@
 		B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */ = {isa = PBXBuildFile; fileRef = B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */; };
 		B1AE1E7F1393499A00A3C137 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AE1E7D1393499A00A3C137 /* PALSendToController.m */; };
 		B1AE1E82139365C000A3C137 /* PALAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AE1E81139365C000A3C137 /* PALAppInfo.m */; };
+		B1AE1E8413936ABB00A3C137 /* PAL_scrollview_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
 		ECF3453C138F42420025507B /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF3453A138F42420025507B /* PALSendToController.xib */; };
 		ECF3453F138F43AA0025507B /* PALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF3453E138F43AA0025507B /* PALManager.m */; };
@@ -60,6 +61,7 @@
 		B1AE1E7E1393499A00A3C137 /* PALSendToController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALSendToController.h; sourceTree = "<group>"; };
 		B1AE1E80139365C000A3C137 /* PALAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALAppInfo.h; sourceTree = "<group>"; };
 		B1AE1E81139365C000A3C137 /* PALAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PALAppInfo.m; sourceTree = "<group>"; };
+		B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_scrollview_background@2x.png"; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
 		ECF3453A138F42420025507B /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
 		ECF3453D138F43AA0025507B /* PALManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PALManager.h; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				B1413E2613933FC500A0F1FD /* PAL_scrollview_background.png */,
+				B1AE1E8313936ABB00A3C137 /* PAL_scrollview_background@2x.png */,
 				B1413E2013925EDF00A0F1FD /* PAL_brushed_metal.png */,
 				B1413E101391FB2C00A0F1FD /* PAL_button_background.png */,
 				B1413E111391FB2C00A0F1FD /* PAL_tablecell_background.png */,
@@ -235,6 +238,7 @@
 				B1413E191391FB2C00A0F1FD /* PAL_unknown_app_icon@2x.png in Resources */,
 				B1413E2113925EDF00A0F1FD /* PAL_brushed_metal.png in Resources */,
 				B1413E2713933FC500A0F1FD /* PAL_scrollview_background.png in Resources */,
+				B1AE1E8413936ABB00A3C137 /* PAL_scrollview_background@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
