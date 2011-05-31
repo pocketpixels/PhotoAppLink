@@ -72,8 +72,6 @@ static const int ROWHEIGHT = 86;
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 
@@ -81,7 +79,6 @@ static const int ROWHEIGHT = 86;
 {
     // Return YES for supported orientations
     return YES;
-//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
