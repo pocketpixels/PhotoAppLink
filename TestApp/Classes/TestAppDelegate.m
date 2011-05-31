@@ -116,10 +116,6 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     // if we are running on an iOS4 device that isn't multitasking enabled
     // we do the state saving in applicationWillTerminate
     if (![[UIDevice currentDevice] isMultitaskingSupported]) return;
-
-    // dismiss any modal views and such that you don't want to be on screen when 
-    // the user returns to the app (maybe much later)
-    [navigationController popToRootViewControllerAnimated:NO];
     
     [self saveApplicationState];
 }
