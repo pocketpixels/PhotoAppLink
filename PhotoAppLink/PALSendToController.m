@@ -26,6 +26,7 @@
 - (void)fixIconsLayoutAnimated:(BOOL)animated;
 - (void)buttonClicked:(id)sender;
 - (void)setupScrollViewContent;
+- (void)dismissWithLeavingApp:(BOOL)leavingApp;
 
 @end
 
@@ -38,8 +39,6 @@
 @synthesize scrollViewBackgroundView = _scrollViewBackgroundView;
 @synthesize iconsPageControl = _iconsPageControl;
 @synthesize moreAppsButton = _moreAppsButton;
-@synthesize myNavigationBar = _myNavigationBar;
-@synthesize myNavigationItem = _myNavigationItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,8 +58,6 @@
     [_scrollViewBackgroundView release];
     [_iconsPageControl release];
     [_moreAppsButton release];
-    [_myNavigationBar release];
-    [_myNavigationItem release];
     [super dealloc];
 }
 
@@ -69,6 +66,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSAssert(self.navigationController != nil, @"PALSendToController must be presented in a UINavigationController");
     
     UIImage* bgTexture = [UIImage imageNamed:@"PAL_brushed_metal.png"];
     UIColor* bgPattern = [UIColor colorWithPatternImage:bgTexture];
@@ -85,23 +84,26 @@
     UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
     [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
 
-    [self setupScrollViewContent];
-
-    if (self.navigationController)
-    {
-        // ALready comes with a navigation bar. Will hide mine
-        _myNavigationBar.hidden = YES;
-        
-        // I have to extend the size of my icons view because the
-        // navigation bar shrunk it...
-        CGRect scrollViewFrame = CGRectMake(_iconsScrollView.frame.origin.x,
-                                            _iconsScrollView.frame.origin.y - _myNavigationBar.frame.size.height,
-                                            _iconsScrollView.frame.size.width, 
-                                            _iconsScrollView.frame.size.height + _myNavigationBar.frame.size.height);
-        _iconsScrollView.frame = scrollViewFrame;
-        _scrollViewBackgroundView.frame = scrollViewFrame;
+    self.navigationItem.title = NSLocalizedString(@"Send image to", @"PhotoAppLink");
+    NSString* backButtonTitle = NSLocalizedString(@"back", @"PhotoAppLink");
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle
+                                                                   style:UIBarButtonItemStyleBordered 
+                                                                  target:nil action:nil];
+    [[self navigationItem] setBackBarButtonItem:backButton];
+    [backButton release];
+    
+    BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
+    BOOL weAreTheRootController = ([self.navigationController.viewControllers objectAtIndex:0] == self);
+    if (isPresentedModally && weAreTheRootController) {
+        UIBarButtonItem* cancelButton = 
+        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"PhotoAppLink")
+                                         style:UIBarButtonItemStyleBordered 
+                                        target:self action:@selector(cancel)];
+        [[self navigationItem] setLeftBarButtonItem:cancelButton];
+        [cancelButton release];        
     }
     
+    [self setupScrollViewContent];    
 }
 
 - (void)viewDidUnload
@@ -110,8 +112,6 @@
     [self setScrollViewBackgroundView:nil];
     [self setIconsPageControl:nil];
     [self setMoreAppsButton:nil];
-    [self setMyNavigationBar:nil];
-    [self setMyNavigationItem:nil];
     [super viewDidUnload];
 }
 
@@ -119,11 +119,6 @@
 {
     // Return YES for supported orientations
     return YES;
-}
-
-- (NSString*)title
-{
-    return self.myNavigationItem.title;
 }
 
 
@@ -166,6 +161,9 @@
 {
     if (_sharingActions == nil)
         _sharingActions = [[NSMutableArray alloc] init];
+    
+    NSAssert(title != nil, @"Title for sharing action can not be nil");
+    NSAssert(icon != nil, @"Sharing action must have a valid icon image");
     
     [_sharingActions addObject:[NSArray arrayWithObjects:title, icon, [NSNumber numberWithInt:identifier], nil]];
 }
@@ -282,7 +280,7 @@
     UIImage *imageToShare = self.image;
     if (imageToShare == nil && _delegate && [_delegate respondsToSelector:@selector(photoAppLinkImage)])
         imageToShare = [_delegate photoAppLinkImage];
-    
+    BOOL leavingApp = NO;
     if (imageToShare == nil)
     {
         NSLog(@"This should not happen! You have to either set this object's image or set a delegate and implement photoAppLinkImage");
@@ -303,19 +301,36 @@
             NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
             PALAppInfo *info = [sharers objectAtIndex:position];
             [[PALManager sharedPALManager] invokeApplication:info withImage:imageToShare];
+            leavingApp = YES;
         }
     }
-    
-    [self dismissView:nil];
+    [self dismissWithLeavingApp:leavingApp];
 }
 
-- (IBAction)dismissView:(id)sender 
+
+- (void)dismissWithLeavingApp:(BOOL)leavingApp
 {
-    if (self.navigationController)
-        [self.navigationController popViewControllerAnimated:YES];
-    else
-        [self dismissModalViewControllerAnimated:YES];
+    if ([_delegate respondsToSelector:@selector(finishedWithSendToController:leavingApp:)]) {
+        [_delegate finishedWithSendToController:self leavingApp:leavingApp];
+    }
+    else {
+        // default behavior
+        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
+        BOOL useAnimation = !leavingApp;
+        if (isPresentedModally) {
+            [self dismissModalViewControllerAnimated:useAnimation];            
+        }
+        else {
+            [self.navigationController popViewControllerAnimated:useAnimation];
+        }
+    }
 }
+
+- (void)cancel
+{
+    [self dismissWithLeavingApp:NO];
+}
+
 
 - (IBAction)pageChanged:(id)sender
 {
@@ -326,24 +341,27 @@
 
 - (IBAction)moreApps:(id)sender
 {
-    PALMoreAppsController *newView = [[[PALMoreAppsController alloc] init] autorelease];
-    if (self.navigationController)
-    {
-        [self.navigationController pushViewController:newView animated:YES];
-    }
-    else
-    {
-        [self presentModalViewController:newView animated:YES];
-    }
+    PALMoreAppsController *moreAppsView = [[[PALMoreAppsController alloc] init] autorelease];
+    [moreAppsView setDelegate:self];
+    [self.navigationController pushViewController:moreAppsView animated:YES];
+    
 }
 
-#pragma mark -
-#pragma UIScrollViewDelegate
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     // Fix my page control
     _iconsPageControl.currentPage = _iconsScrollView.contentOffset.x / _iconsScrollView.frame.size.width;
+}
+
+#pragma mark - PALMoreAppsControllerDelegate
+-(void)finishedWithMoreAppsController:(PALMoreAppsController *)controller leavingApp:(BOOL)leavingApp
+{
+    // first pop the more apps controller
+    [self.navigationController popViewControllerAnimated:NO];
+    // then dismiss this controller as appropriate
+    [self dismissWithLeavingApp:leavingApp];
 }
 
 @end

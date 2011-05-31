@@ -24,11 +24,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PALMoreAppsController.h"
+
+@class PALSendToController;
 
 @protocol PALSendToControllerDelegate <NSObject>
 
 @optional
-// Called if you add custm sharers
+// Called if you add custom sharers
 - (void)photoAppLinkImage:(UIImage*)image sendToItemWithIdentifier:(int)identifier;
 
 // If you want to defer providing an image you can use this delegate method
@@ -36,9 +39,17 @@
 // if the user cancels the action you didn't have to generate it.
 - (UIImage*)photoAppLinkImage;
 
+// This delegate method is called when the PALSendToController is 
+// ready to be dismissed. 
+// Use it to dismiss the controller in the appropriate way.
+// The leavingApp flag indicates whether the current app will be 
+// exited following this method call. 
+- (void)finishedWithSendToController:(PALSendToController*)controller 
+                          leavingApp:(BOOL)leavingApp;
+
 @end
 
-@interface PALSendToController : UIViewController <UIScrollViewDelegate> {
+@interface PALSendToController : UIViewController <UIScrollViewDelegate, PALMoreAppsControllerDelegate> {
     
     id<PALSendToControllerDelegate> _delegate;
     UIImage *_image;
@@ -47,8 +58,6 @@
     UIImageView *_scrollViewBackgroundView;
     UIPageControl *_iconsPageControl;
     UIButton *_moreAppsButton;
-    UINavigationBar *_myNavigationBar;
-    UINavigationItem *_myNavigationItem;
     
     NSMutableArray *_sharingActions;
 }
@@ -64,15 +73,12 @@
 
 @property (nonatomic, retain) IBOutlet UIPageControl *iconsPageControl;
 @property (nonatomic, retain) IBOutlet UIButton *moreAppsButton;
-@property (nonatomic, retain) IBOutlet UINavigationBar *myNavigationBar;
-@property (nonatomic, retain) IBOutlet UINavigationItem *myNavigationItem;
 
 // Called after initialization and before presenting to add custom sharers
 // If you do this you must provide a delegate that implements photoAppLinkImage:sendToItemWithIdentifier:
 - (void)addSharingActionWithTitle:(NSString*)title icon:(UIImage*)icon identifier:(int)identifier;
 
 // Actions
-- (IBAction)dismissView:(id)sender;
 - (IBAction)pageChanged:(id)sender;
 - (IBAction)moreApps:(id)sender;
 

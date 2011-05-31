@@ -10,7 +10,16 @@
 
 static const int ROWHEIGHT = 86;
 
+@interface PALMoreAppsController (PrivateStuff)
+
+- (void)dismissWithLeavingApp:(BOOL)leavingApp;
+
+@end
+
+
 @implementation PALMoreAppsController
+
+@synthesize delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -57,6 +66,9 @@ static const int ROWHEIGHT = 86;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSAssert(self.navigationController != nil, @"PALMoreAppsController must be presented in a UINavigationController");
+
     self.tableView.allowsSelection = NO;
     self.tableView.rowHeight = ROWHEIGHT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -72,6 +84,16 @@ static const int ROWHEIGHT = 86;
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 
+    BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
+    BOOL weAreTheRootController = ([self.navigationController.viewControllers objectAtIndex:0] == self);
+    if (isPresentedModally && weAreTheRootController) {
+        UIBarButtonItem* cancelButton = 
+        [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"PhotoAppLink")
+                                         style:UIBarButtonItemStyleBordered 
+                                        target:self action:@selector(cancel)];
+        [[self navigationItem] setLeftBarButtonItem:cancelButton];
+        [cancelButton release];        
+    }
 }
 
 
@@ -151,11 +173,34 @@ static const int ROWHEIGHT = 86;
 {
     UIButton* tappedButton = sender;
     PALAppInfo* appInfo = [additionalApps objectAtIndex:tappedButton.tag];
-    // TODO dismiss modal view controller?
     NSURL* appStoreURL = [appInfo appStoreLink];
     if (appStoreURL != nil) {
-        [[UIApplication sharedApplication] openURL:appStoreURL];        
+        [self dismissWithLeavingApp:YES];
+        [[UIApplication sharedApplication] performSelector:@selector(openURL:) withObject:appStoreURL afterDelay:0.0];
     }
+}
+
+- (void)dismissWithLeavingApp:(BOOL)leavingApp
+{
+    if ([delegate respondsToSelector:@selector(finishedWithMoreAppsController:leavingApp:)]) {
+        [delegate finishedWithMoreAppsController:self leavingApp:leavingApp];
+    }
+    else {
+        // default behavior
+        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
+        BOOL useAnimation = !leavingApp;
+        if (isPresentedModally) {
+            [self dismissModalViewControllerAnimated:useAnimation];            
+        }
+        else {
+            [self.navigationController popViewControllerAnimated:useAnimation];
+        }
+    }
+}
+
+- (void)cancel
+{
+    [self dismissWithLeavingApp:NO];
 }
 
 @end

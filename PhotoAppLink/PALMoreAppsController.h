@@ -21,8 +21,27 @@
 
 #import <UIKit/UIKit.h>
 
+@class PALMoreAppsController;
+
+@protocol PALMoreAppsControllerDelegate <NSObject>
+
+@optional
+// This delegate method is called when the PALMoreAppsController is 
+// ready to be dismissed. Use it to dismiss the controller in the appropriate way.
+// The leavingApp flag indicates whether the current app will be 
+// exited following this method call. 
+- (void)finishedWithMoreAppsController:(PALMoreAppsController*)controller 
+                            leavingApp:(BOOL)leavingApp;
+
+@end
+
+
 @interface PALMoreAppsController : UITableViewController {
     NSArray* additionalApps;
+    id<PALMoreAppsControllerDelegate> delegate;
 }
+
+@property (nonatomic, assign) id<PALMoreAppsControllerDelegate> delegate;
+
 
 @end
