@@ -39,6 +39,7 @@
 @synthesize scrollViewBackgroundView = _scrollViewBackgroundView;
 @synthesize iconsPageControl = _iconsPageControl;
 @synthesize moreAppsButton = _moreAppsButton;
+@synthesize moreAppsLabel = _moreAppsLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,6 +59,7 @@
     [_scrollViewBackgroundView release];
     [_iconsPageControl release];
     [_moreAppsButton release];
+    [_moreAppsLabel release];
     [super dealloc];
 }
 
@@ -83,7 +85,9 @@
     UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
     UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
     [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
-
+    [_moreAppsButton setTitle:NSLocalizedString(@"More apps", @"PhotoAppLink") forState:UIControlStateNormal];
+    [_moreAppsLabel setText:NSLocalizedString(@"Find more apps that can send and receive images", @"PhotoAppLink")];
+    
     self.navigationItem.title = NSLocalizedString(@"Send image to", @"PhotoAppLink");
     NSString* backButtonTitle = NSLocalizedString(@"back", @"PhotoAppLink");
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle
@@ -112,6 +116,7 @@
     [self setScrollViewBackgroundView:nil];
     [self setIconsPageControl:nil];
     [self setMoreAppsButton:nil];
+    [self setMoreAppsLabel:nil];
     [super viewDidUnload];
 }
 

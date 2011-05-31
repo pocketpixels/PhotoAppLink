@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10J4139</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
@@ -69,7 +69,6 @@
 								</object>
 								<bool key="IBUIShowsTouchWhenHighlighted">YES</bool>
 								<string key="IBUITitleShadowOffset">{0, -1}</string>
-								<string key="IBUINormalTitle">More apps</string>
 								<object class="NSColor" key="IBUIHighlightedTitleColor" id="8556597">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -86,13 +85,12 @@
 								<string key="NSFrame">{{134, 0}, {165, 37}}</string>
 								<reference key="NSSuperview" ref="599322467"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Find more apps that can send and receive images</string>
+								<string key="IBUIText"/>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">14</double>
@@ -283,6 +281,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<int key="connectionID">46</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">moreAppsLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="925066412"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -399,7 +405,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -411,13 +417,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>dismissView:</string>
 							<string>moreApps:</string>
 							<string>pageChanged:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -426,16 +430,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>dismissView:</string>
 							<string>moreApps:</string>
 							<string>pageChanged:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">dismissView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
 							<object class="IBActionInfo">
 								<string key="name">moreApps:</string>
 								<string key="candidateClassName">id</string>
@@ -453,8 +452,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>iconsPageControl</string>
 							<string>iconsScrollView</string>
 							<string>moreAppsButton</string>
-							<string>myNavigationBar</string>
-							<string>myNavigationItem</string>
+							<string>moreAppsLabel</string>
 							<string>scrollViewBackgroundView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -462,8 +460,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>UIPageControl</string>
 							<string>UIScrollView</string>
 							<string>UIButton</string>
-							<string>UINavigationBar</string>
-							<string>UINavigationItem</string>
+							<string>UILabel</string>
 							<string>UIImageView</string>
 						</object>
 					</object>
@@ -474,8 +471,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>iconsPageControl</string>
 							<string>iconsScrollView</string>
 							<string>moreAppsButton</string>
-							<string>myNavigationBar</string>
-							<string>myNavigationItem</string>
+							<string>moreAppsLabel</string>
 							<string>scrollViewBackgroundView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -493,12 +489,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">myNavigationBar</string>
-								<string key="candidateClassName">UINavigationBar</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">myNavigationItem</string>
-								<string key="candidateClassName">UINavigationItem</string>
+								<string key="name">moreAppsLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrollViewBackgroundView</string>
