@@ -48,12 +48,16 @@
     float totalWidth = self.frame.size.width;
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-    CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f), 3.0f);
+    // Workaround for (presumably) a bug in which the shadow direction is reversed
+    // betwen iOS 3.2+ and earlier iOS versions
+    
+    float shadowDirection = ([[[UIDevice currentDevice] systemVersion] floatValue] < 3.2f)? -1.0f : 1.0f;
+    CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f * shadowDirection), 3.0f);
     CGRect thumbnailRect = CGRectMake(thumbnailLeftMargin, thumbnailTopMargin, thumbnailSize, thumbnailSize);
     UIImage* thumbnail = [appInfo thumbnail];
     [thumbnail drawInRect:thumbnailRect];
     
-    CGContextSetShadowWithColor(context, CGSizeMake(0, 1), 0, [[UIColor whiteColor]CGColor]);
+    CGContextSetShadowWithColor(context, CGSizeMake(0, shadowDirection), 0, [[UIColor whiteColor]CGColor]);
     UIColor* titleColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.3 alpha:1.0];
     UIFont* titleFont = [UIFont boldSystemFontOfSize:16];
     [titleColor set];
