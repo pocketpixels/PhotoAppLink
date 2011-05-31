@@ -88,6 +88,24 @@
     [moreAppsVC release];
 }
 
+- (IBAction)modallyPresentSendToController
+{
+    PALSendToController *newView = [[PALSendToController alloc] init];
+    newView.image = self.image;
+    newView.delegate = self;
+    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:newView];
+    [nav autorelease];
+    [self presentModalViewController:nav animated:YES];
+}
+
+- (IBAction)modallyPresentMoreAppsController
+{
+    PALMoreAppsController* moreAppsVC = [[PALMoreAppsController alloc] init];
+    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:moreAppsVC];
+    [nav autorelease];
+    [self presentModalViewController:nav animated:YES];
+}
+
 
 #pragma mark -
 #pragma PhotoAppLinkSendToControllerDelegate

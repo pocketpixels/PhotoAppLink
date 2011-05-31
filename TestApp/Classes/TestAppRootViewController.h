@@ -32,6 +32,8 @@
 - (IBAction)showActionSheet;
 - (IBAction)showMoreAppsTable;
 - (IBAction)showSendToAppController;
+- (IBAction)modallyPresentSendToController;
+- (IBAction)modallyPresentMoreAppsController;
 
 @end
 
