@@ -274,6 +274,12 @@
     }
 }
 
+// Called below
+- (void)sendImageToDelegate:(NSArray*)options
+{
+    [_delegate photoAppLinkImage:[options objectAtIndex:0] sendToItemWithIdentifier:[[options objectAtIndex:1] intValue]];
+}
+
 - (void)buttonClicked:(id)sender
 {
     // Get the image from the property or from the delegate
@@ -291,7 +297,11 @@
         if (_sharingActions && position < [_sharingActions count])
         {
             NSArray *sharingAction = [_sharingActions objectAtIndex:position];
-            [_delegate photoAppLinkImage:imageToShare sendToItemWithIdentifier:[[sharingAction objectAtIndex:2] intValue]];
+            
+            // Post this in the running queue. This is done so that this view can be dismissed
+            // Before the delegate gets the call. Just in case the delegate wants to present
+            // another view controller modally.
+            [self performSelector:@selector(sendImageToDelegate:) withObject:[NSArray arrayWithObjects:imageToShare, [sharingAction objectAtIndex:2], nil] afterDelay:0.0f];
         }
         else
         {
