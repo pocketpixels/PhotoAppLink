@@ -38,12 +38,13 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
 
 
 
+// Handle the URL that this app was invoked with via its custom URL scheme.
+// This method is called by the different UIApplicationDelegate methods below.
+// Returns YES if the app knows how to handle the URL, NO otherwise.
 - (BOOL)handleURL:(NSURL *)url
 {
     if ([[url scheme] isEqualToString:APP_PHOTOAPPLINK_URL_SCHEME]) {
         // Retrieve the image that was passed from previous app.
-        // You could (and likely should) instead access this image during a later stage of the launch process 
-        // rather than doing it directly in this launch handler
         PALManager* applink = [PALManager sharedPALManager];
         UIImage *image = [applink popPassedInImage];
         [self.rootViewController performSelector:@selector(setImage:) withObject:image afterDelay:0.0];
@@ -53,6 +54,16 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
         return NO;
     }
 }
+
+// Save your app state so the app can resume where the user left it on the next launch.
+// We call this method before leaving the app. 
+- (void)saveApplicationState
+{
+    // save your application state here ... 
+}
+
+#pragma mark -
+#pragma UIApplicationDelegate methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
@@ -77,10 +88,16 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     return YES;
 }
 
+// This method will be called on iOS 4.2 or later when the app is invoked via its custom URL scheme 
+// If the app was not running already, application:didFinishLaunchingWithOptions: will be called first, 
+// followed by this method
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [self handleURL:url];
 }
 
+// This method will be called for iOS versions before 4.2 when the app is invoked via its custom URL scheme 
+// If the app was not running already, application:didFinishLaunchingWithOptions: will be called first, 
+// followed by this method
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [self handleURL:url];
 }
@@ -104,12 +121,12 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     // the user returns to the app (maybe much later)
     [navigationController popToRootViewControllerAnimated:NO];
     
-    // save your app state here
+    [self saveApplicationState];
 }
 
 - (void) applicationWillTerminate:(UIApplication *)application 
 {
-    // save your app state here
+    [self saveApplicationState];
 }
 
 - (void)dealloc {
