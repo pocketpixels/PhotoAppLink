@@ -81,6 +81,7 @@ static const int ROWHEIGHT = 86;
     self.tableView.tableFooterView = bottomShadowView;
     self.tableView.tableHeaderView = topShadowView;
     [bottomShadowView release];
+    [topShadowView release];
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 

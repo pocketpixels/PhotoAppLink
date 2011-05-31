@@ -94,16 +94,18 @@
     newView.image = self.image;
     newView.delegate = self;
     UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:newView];
-    [nav autorelease];
+    [newView release];
     [self presentModalViewController:nav animated:YES];
+    [nav release];
 }
 
 - (IBAction)modallyPresentMoreAppsController
 {
     PALMoreAppsController* moreAppsVC = [[PALMoreAppsController alloc] init];
     UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:moreAppsVC];
-    [nav autorelease];
+    [moreAppsVC release];
     [self presentModalViewController:nav animated:YES];
+    [nav release];
 }
 
 
