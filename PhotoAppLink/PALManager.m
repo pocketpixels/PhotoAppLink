@@ -135,6 +135,22 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     return [self.supportedApps filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=TRUE", @"installed"]];
 }
 
+- (NSArray*)moreApps
+{
+    NSString* deviceType = [[UIDevice currentDevice] model];
+    BOOL isIPad = [deviceType hasPrefix:@"iPad"];
+    NSPredicate* appsToShowPredicate;
+    // Only show apps that are not yet installed (as far as we can tell) and that are supported on the user's device
+    if (isIPad) {
+        appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPhone'"];
+    }
+    else {
+        appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPad'"];            
+    }
+    
+    return [self.supportedApps filteredArrayUsingPredicate:appsToShowPredicate];
+}
+
 - (void)invokeApplication:(PALAppInfo*) appInfo withImage:(UIImage*)image;
 {
     UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];

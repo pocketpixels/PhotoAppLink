@@ -38,6 +38,9 @@
 // a dictionary of PALAppInfo objects for all supported apps (installed and not)
 @property (nonatomic, copy, readonly) NSArray *supportedApps;
 
+// a dictionary of PALAppInfo objects for all supported apps that are NOT installed
+@property (nonatomic, copy, readonly) NSArray *moreApps;
+
 // Get the singleton instance
 + (PALManager*)sharedPALManager;
 
