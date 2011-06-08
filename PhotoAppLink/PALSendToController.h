@@ -59,6 +59,7 @@
     UIPageControl *_iconsPageControl;
     UIButton *_moreAppsButton;
     UILabel *_moreAppsLabel;
+    UIView *_moreAppsContainer;
     
     NSMutableArray *_sharingActions;
 }
@@ -75,6 +76,7 @@
 @property (nonatomic, retain) IBOutlet UIPageControl *iconsPageControl;
 @property (nonatomic, retain) IBOutlet UIButton *moreAppsButton;
 @property (nonatomic, retain) IBOutlet UILabel *moreAppsLabel;
+@property (nonatomic, retain) IBOutlet UIView *moreAppsContainer;
 
 // Called after initialization and before presenting to add custom sharers
 // If you do this you must provide a delegate that implements photoAppLinkImage:sendToItemWithIdentifier:

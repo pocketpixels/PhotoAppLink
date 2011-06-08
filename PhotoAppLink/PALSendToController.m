@@ -40,6 +40,7 @@
 @synthesize iconsPageControl = _iconsPageControl;
 @synthesize moreAppsButton = _moreAppsButton;
 @synthesize moreAppsLabel = _moreAppsLabel;
+@synthesize moreAppsContainer = _moreAppsContainer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,6 +61,7 @@
     [_iconsPageControl release];
     [_moreAppsButton release];
     [_moreAppsLabel release];
+    [_moreAppsContainer release];
     [super dealloc];
 }
 
@@ -81,12 +83,26 @@
     // make sure the view is positioned behind the scroll view and not in front of it   
     [self.view sendSubviewToBack:_scrollViewBackgroundView];
     
-    // Customization of the button to make it nicer.
-    UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
-    UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
-    [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
-    [_moreAppsButton setTitle:NSLocalizedString(@"More apps", @"PhotoAppLink") forState:UIControlStateNormal];
-    [_moreAppsLabel setText:NSLocalizedString(@"Find more apps that can send and receive images", @"PhotoAppLink")];
+    if ([[[PALManager sharedPALManager] moreApps] count] > 0) {
+        // Customization of the button to make it nicer.
+        UIImage* buttonBG = [UIImage imageNamed:@"PAL_button_background.png"];
+        UIImage* stretchableButtonBG = [buttonBG stretchableImageWithLeftCapWidth:5 topCapHeight:12];
+        [_moreAppsButton setBackgroundImage:stretchableButtonBG forState:UIControlStateNormal];
+        [_moreAppsButton setTitle:NSLocalizedString(@"More apps", @"PhotoAppLink") forState:UIControlStateNormal];
+        [_moreAppsLabel setText:NSLocalizedString(@"Find more apps that can send and receive images", @"PhotoAppLink")];
+    } else {
+        CGFloat offset = _moreAppsContainer.frame.size.height;
+        _moreAppsContainer.hidden = YES;
+        _scrollViewBackgroundView.frame = CGRectMake(_scrollViewBackgroundView.frame.origin.x, 
+                                                     _scrollViewBackgroundView.frame.origin.y, 
+                                                     _scrollViewBackgroundView.frame.size.width, 
+                                                     _scrollViewBackgroundView.frame.size.height + offset);
+        _iconsScrollView.frame = CGRectMake(_iconsScrollView.frame.origin.x, 
+                                            _iconsScrollView.frame.origin.y, 
+                                            _iconsScrollView.frame.size.width, 
+                                            _iconsScrollView.frame.size.height + offset);
+        _iconsPageControl.frame = CGRectOffset(_iconsPageControl.frame, 0.0f, offset);
+    }
     
     self.navigationItem.title = NSLocalizedString(@"Send image to", @"PhotoAppLink");
     NSString* backButtonTitle = NSLocalizedString(@"back", @"PhotoAppLink");
@@ -117,6 +133,7 @@
     [self setIconsPageControl:nil];
     [self setMoreAppsButton:nil];
     [self setMoreAppsLabel:nil];
+    [self setMoreAppsContainer:nil];
     [super viewDidUnload];
 }
 
