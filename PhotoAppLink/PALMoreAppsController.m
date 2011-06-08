@@ -25,20 +25,7 @@ static const int ROWHEIGHT = 86;
 {
     self = [super initWithStyle:style];
     if (self) {
-        PALManager* palManager = [PALManager sharedPALManager];
-        // TODO filter out apps for the wrong platform
-        NSString* deviceType = [[UIDevice currentDevice] model];
-        BOOL isIPad = [deviceType hasPrefix:@"iPad"];
-        NSPredicate* appsToShowPredicate;
-        // Only show apps that are not yet installed (as far as we can tell) and that are supported on the user's device
-        if (isIPad) {
-            appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPhone'"];
-        }
-        else {
-            appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPad'"];            
-        }
-        additionalApps =  [palManager.supportedApps filteredArrayUsingPredicate:appsToShowPredicate];
-        [additionalApps retain];
+        additionalApps = [[[PALManager sharedPALManager] moreApps] retain];
     }
     return self;
 }
