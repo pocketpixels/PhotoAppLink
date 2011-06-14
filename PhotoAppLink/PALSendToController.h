@@ -25,6 +25,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PALMoreAppsController.h"
+#import "PALAppInfo.h"
 
 @class PALSendToController;
 
@@ -37,7 +38,7 @@
 // If you want to defer providing an image you can use this delegate method
 // Useful if you need processing to generate the image. In this case
 // if the user cancels the action you didn't have to generate it.
-- (UIImage*)photoAppLinkImage;
+- (UIImage*)sendToControllerImage:(PALSendToController*)controller;
 
 // This delegate method is called when the PALSendToController is 
 // ready to be dismissed. 
@@ -46,6 +47,14 @@
 // exited following this method call. 
 - (void)finishedWithSendToController:(PALSendToController*)controller 
                           leavingApp:(BOOL)leavingApp;
+
+// This is called if the user cancelled the sendToController
+// If not implemented the view will be dismissed with animation
+- (void)canceledSendToController:(PALSendToController*)controller;
+
+- (BOOL)sendToControler:(PALSendToController*)controller willSendImage:(UIImage*)image toApp:(PALAppInfo*)appInfo;
+
+- (void)sendToControler:(PALSendToController*)controller didSendToApp:(PALAppInfo*)appInfo;
 
 @end
 
@@ -62,6 +71,7 @@
     UIView *_moreAppsContainer;
     
     NSMutableArray *_sharingActions;
+    NSInteger _chosenOption;
 }
 
 // Provide a delegate if you have custom actions and/or if you want to defer image creation
