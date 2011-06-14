@@ -52,8 +52,11 @@
 // If not implemented the view will be dismissed with animation
 - (void)canceledSendToController:(PALSendToController*)controller;
 
+// Send right before calling another app.
+// Return NO to cancel the action
 - (BOOL)sendToControler:(PALSendToController*)controller willSendImage:(UIImage*)image toApp:(PALAppInfo*)appInfo;
 
+// Sent right after calling another app.
 - (void)sendToControler:(PALSendToController*)controller didSendToApp:(PALAppInfo*)appInfo;
 
 @end
