@@ -7,7 +7,6 @@
 #import "PALSendToController.h"
 #import "PALManager.h"
 #import "PALMoreAppsController.h"
-#import "PALAppInfo.h"
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
@@ -23,7 +22,7 @@
 @interface PALSendToController (PrivateStuff)
 
 - (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position;
-- (void)fixIconsLayoutAnimated:(BOOL)animated;
+- (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration;
 - (void)buttonClicked:(id)sender;
 - (void)setupScrollViewContent;
 - (void)dismissWithLeavingApp:(BOOL)leavingApp;
@@ -71,6 +70,8 @@
 {
     [super viewDidLoad];
     
+    _chosenOption = -1;
+    
     NSAssert(self.navigationController != nil, @"PALSendToController must be presented in a UINavigationController");
     
     UIImage* bgTexture = [UIImage imageNamed:@"PAL_brushed_metal.png"];
@@ -104,8 +105,8 @@
         _iconsPageControl.frame = CGRectOffset(_iconsPageControl.frame, 0.0f, offset);
     }
     
-    self.navigationItem.title = NSLocalizedString(@"Send image to", @"PhotoAppLink");
-    NSString* backButtonTitle = NSLocalizedString(@"back", @"PhotoAppLink");
+    self.navigationItem.title = NSLocalizedString(@"Send Image To", @"PhotoAppLink");
+    NSString* backButtonTitle = NSLocalizedString(@"Back", @"PhotoAppLink");
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle
                                                                    style:UIBarButtonItemStyleBordered 
                                                                   target:nil action:nil];
@@ -137,16 +138,59 @@
     [super viewDidUnload];
 }
 
+- (void)viewDidDisappear:(BOOL)animated 
+{
+    [super viewDidDisappear:animated];
+    
+    if (_chosenOption >= 0)
+    {
+        if (_image == nil)
+        {
+            NSLog(@"This should not happen! You have to either set this object's image or set a delegate and implement photoAppLinkImage");
+        }
+        else
+        {
+            if (_sharingActions && _chosenOption < [_sharingActions count])
+            {
+                NSArray *sharingAction = [_sharingActions objectAtIndex:_chosenOption];
+                
+                // Post this in the running queue. This is done so that this view can be dismissed
+                // Before the delegate gets the call. Just in case the delegate wants to present
+                // another view controller modally.
+                [_delegate photoAppLinkImage:_image sendToItemWithIdentifier:[[sharingAction objectAtIndex:2] intValue]];
+            }
+            else
+            {
+                if (_sharingActions)
+                    _chosenOption -= [_sharingActions count];
+                
+                NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
+                PALAppInfo *info = [sharers objectAtIndex:_chosenOption];
+                
+                BOOL shouldSend = YES;
+                if ([_delegate respondsToSelector:@selector(sendToControler:willSendImage:toApp:)]) {
+                    shouldSend = [_delegate sendToControler:self willSendImage:_image toApp:info];
+                }
+                if (shouldSend) {
+                    [[PALManager sharedPALManager] invokeApplication:info withImage:_image];
+                    if ([_delegate respondsToSelector:@selector(sendToControler:didSendToApp:)]) {
+                        [_delegate sendToControler:self didSendToApp:info];
+                    }
+                }
+            }
+        }
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return YES;
 }
 
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [self fixIconsLayoutAnimated:YES];
+    [self fixIconsLayoutAnimated:0.1f];
 }
 
 - (void)setupScrollViewContent
@@ -174,7 +218,7 @@
     }
     
     _iconsPageControl.currentPage = 0;
-    [self fixIconsLayoutAnimated:NO];
+    [self fixIconsLayoutAnimated:0.0f];
 }
 
 // Called after initialization and before presenting to add custom sharers
@@ -224,15 +268,15 @@
 }
 
 // Fixes the layout base on the size of the UIScrollView
-- (void)fixIconsLayoutAnimated:(BOOL)animated
+- (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration
 {
     NSArray *subviews = [_iconsScrollView subviews];
     if ([subviews count] > 0)
     {
-        if (animated)
+        if (animationDuration > 0.0f)
         {
             [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.1f];
+            [UIView setAnimationDuration:animationDuration];
         }
         CGFloat fullW = _iconsScrollView.bounds.size.width;
         CGFloat fullH = _iconsScrollView.bounds.size.height;
@@ -289,54 +333,22 @@
                                                          fullW, fullH) 
                                      animated:NO];
         
-        if (animated)
+        if (animationDuration > 0.0f)
         {
             [UIView commitAnimations];
         }
     }
 }
 
-// Called below
-- (void)sendImageToDelegate:(NSArray*)options
-{
-    [_delegate photoAppLinkImage:[options objectAtIndex:0] sendToItemWithIdentifier:[[options objectAtIndex:1] intValue]];
-}
-
 - (void)buttonClicked:(id)sender
 {
+    _chosenOption = [sender tag] - 1;
+    
     // Get the image from the property or from the delegate
-    UIImage *imageToShare = self.image;
-    if (imageToShare == nil && _delegate && [_delegate respondsToSelector:@selector(photoAppLinkImage)])
-        imageToShare = [_delegate photoAppLinkImage];
-    BOOL leavingApp = NO;
-    if (imageToShare == nil)
-    {
-        NSLog(@"This should not happen! You have to either set this object's image or set a delegate and implement photoAppLinkImage");
-    }
-    else
-    {
-        int position = [sender tag] - 1;
-        if (_sharingActions && position < [_sharingActions count])
-        {
-            NSArray *sharingAction = [_sharingActions objectAtIndex:position];
-            
-            // Post this in the running queue. This is done so that this view can be dismissed
-            // Before the delegate gets the call. Just in case the delegate wants to present
-            // another view controller modally.
-            [self performSelector:@selector(sendImageToDelegate:) withObject:[NSArray arrayWithObjects:imageToShare, [sharingAction objectAtIndex:2], nil] afterDelay:0.0f];
-        }
-        else
-        {
-            if (_sharingActions)
-                position -= [_sharingActions count];
-            
-            NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
-            PALAppInfo *info = [sharers objectAtIndex:position];
-            [[PALManager sharedPALManager] invokeApplication:info withImage:imageToShare];
-            leavingApp = YES;
-        }
-    }
-    [self dismissWithLeavingApp:leavingApp];
+    if (_image == nil && [_delegate respondsToSelector:@selector(sendToControllerImage:)])
+        self.image = [_delegate sendToControllerImage:self];
+
+    [self dismissWithLeavingApp:(_sharingActions == nil || _chosenOption >= [_sharingActions count])];    
 }
 
 
@@ -360,9 +372,20 @@
 
 - (void)cancel
 {
-    [self dismissWithLeavingApp:NO];
+    if ([_delegate respondsToSelector:@selector(canceledSendToController:)]) {
+        [_delegate canceledSendToController:self];
+    }
+    else {
+        // default behavior
+        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
+        if (isPresentedModally) {
+            [self dismissModalViewControllerAnimated:YES];            
+        }
+        else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
 }
-
 
 - (IBAction)pageChanged:(id)sender
 {
@@ -388,12 +411,15 @@
 }
 
 #pragma mark - PALMoreAppsControllerDelegate
+
 -(void)finishedWithMoreAppsController:(PALMoreAppsController *)controller leavingApp:(BOOL)leavingApp
 {
     // first pop the more apps controller
-    [self.navigationController popViewControllerAnimated:NO];
-    // then dismiss this controller as appropriate
-    [self dismissWithLeavingApp:leavingApp];
+    [self.navigationController popViewControllerAnimated:YES];
+    if (leavingApp) {
+        // then dismiss this controller as appropriate
+        [self dismissWithLeavingApp:leavingApp];
+    }
 }
 
 @end
