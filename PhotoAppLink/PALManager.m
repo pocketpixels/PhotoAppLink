@@ -24,6 +24,8 @@
 #import "PALConfig.h"
 
 static NSString *const PLIST_DICT_USERPREF_KEY = @"PhotoAppLink_PListDictionary";
+static NSString *const PLIST_MDATE_USERPREF_KEY = @"PhotoAppLink_PlistLastModifiedDate";
+static NSString *const PLIST_ETAG_USERPREF_KEY = @"PhotoAppLink_PlistLastETag";
 static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const LAUNCH_DATE_KEY = @"launchDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
@@ -71,23 +73,59 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 - (void)requestSupportedAppURLSchemesUpdate
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
+
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
     NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
 #else
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
-    NSDictionary* plistDict = [NSDictionary dictionaryWithContentsOfURL:plistURL];
-    //NSLog(@"Received updated plist dict: %@", plistDict);
-    if (plistDict) {
-        [self performSelectorOnMainThread:@selector(storeUpdatedPlistContent:) 
-                               withObject:plistDict waitUntilDone:YES];        
+    
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:plistURL 
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:30.0];
+    NSString* previousLastModifiedDate = [userPrefs objectForKey:PLIST_MDATE_USERPREF_KEY];
+    NSString* previousEtag = [userPrefs objectForKey:PLIST_ETAG_USERPREF_KEY];
+    if (previousLastModifiedDate) {
+        [request setValue:previousLastModifiedDate forHTTPHeaderField:@"If-Modified-Since"];
+    }
+    if (previousEtag) {
+        [request setValue:previousEtag forHTTPHeaderField:@"If-None-Match"];
+    }
+    NSLog(@"Request: %@", [request allHTTPHeaderFields]);
+    NSHTTPURLResponse* response = nil;
+    NSError* error = nil;
+    NSData* receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    NSLog(@"Synchronous request: received status code %d", [response statusCode]);
+    NSLog(@"Received response: %@", [response allHeaderFields]);
+    if ([response statusCode] == 200) {
+        // We received an updated plist file
+        // Store the "Last-Modified" date to use for the next conditional HTTP GET
+        NSString* lastModifiedDate = [[response allHeaderFields] objectForKey:@"Last-Modified"];
+        NSString* eTag = [[response allHeaderFields] objectForKey:@"ETag"]; 
+        if (!eTag) eTag = [[response allHeaderFields] objectForKey:@"Etag"];
+        NSLog(@"Last modified: %@, ETag = %@", lastModifiedDate, eTag);
+        [userPrefs setObject:lastModifiedDate forKey:PLIST_MDATE_USERPREF_KEY];
+        [userPrefs setObject:eTag forKey:PLIST_ETAG_USERPREF_KEY];
+        [userPrefs synchronize];
+        
+        // decode the received plist data
+        CFPropertyListRef plist =  CFPropertyListCreateFromXMLData(kCFAllocatorDefault, (CFDataRef)receivedData,
+                                                                   kCFPropertyListImmutable,
+                                                                   NULL);
+        if ([(id)plist isKindOfClass:[NSDictionary class]]) {
+            [self performSelectorOnMainThread:@selector(storeUpdatedPlistContent:) 
+                                   withObject:plist waitUntilDone:YES];  
+        }
+        CFRelease(plist);
     }
     [pool release];
 }
 
 - (void)storeUpdatedPlistContent:(NSDictionary*)plistDict
 {
+    NSLog(@"Storing updated plist content");
     // store the new dictionary in the user preferences
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     [userPrefs setObject:plistDict forKey:PLIST_DICT_USERPREF_KEY];
