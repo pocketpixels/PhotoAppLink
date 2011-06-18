@@ -34,8 +34,8 @@ static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
 #else
-// update list of supported apps every 3 days at most (to avoid unneccessary network access)
-const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60; 
+// update list of supported apps every 4 hours at most (to avoid unneccessary network access)
+const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60; 
 #endif
 
 @interface PALManager() 
