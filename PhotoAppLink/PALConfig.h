@@ -6,7 +6,7 @@
 // Substitute this for testing with your own edited server side plist URL
 // (Make sure to set up your XCode project so that DEBUG is defined in debug builds, 
 //  otherwise the production plist file will be used)
-#define DEBUG_PLIST_URL     @"http://dl.dropbox.com/u/261469/photoapplink_debug.plist"
+#define DEBUG_PLIST_URL     @"http://www.photoapplink.com/photoapplink_debug.plist"
 
 
 // If you are not using app icons to display the list of supported apps in your UI 
