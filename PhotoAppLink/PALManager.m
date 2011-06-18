@@ -39,7 +39,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
 #endif
 
 @interface PALManager() 
-@property (nonatomic,  copy) NSArray *supportedApps;
+@property (nonatomic,copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
 - (void)downloadAndCacheIconsForAllApps;
 @end
@@ -82,64 +82,53 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
     NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
     
+    // performing a conditional HTTP GET in order to only download the server side plist data
+    // if it has been modified. 
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:plistURL 
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                        timeoutInterval:30.0];
     NSString* previousLastModifiedDate = [userPrefs objectForKey:PLIST_MDATE_USERPREF_KEY];
-    NSString* previousEtag = [userPrefs objectForKey:PLIST_ETAG_USERPREF_KEY];
-    if (previousLastModifiedDate) {
+    if (previousLastModifiedDate != nil) {
         [request setValue:previousLastModifiedDate forHTTPHeaderField:@"If-Modified-Since"];
     }
-    if (previousEtag) {
+    NSString* previousEtag = [userPrefs objectForKey:PLIST_ETAG_USERPREF_KEY];
+    if (previousEtag != nil) {
         [request setValue:previousEtag forHTTPHeaderField:@"If-None-Match"];
     }
-    NSLog(@"Request: %@", [request allHTTPHeaderFields]);
     NSHTTPURLResponse* response = nil;
-    NSError* error = nil;
-    NSData* receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSLog(@"Synchronous request: received status code %d", [response statusCode]);
-    NSLog(@"Received response: %@", [response allHeaderFields]);
+    // This method is executed on a background thread, so doing a synchronous request is fine and simplifies things.
+    NSData* receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:NULL];
     if ([response statusCode] == 200) {
         // We received an updated plist file
         // Store the "Last-Modified" date to use for the next conditional HTTP GET
         NSString* lastModifiedDate = [[response allHeaderFields] objectForKey:@"Last-Modified"];
         NSString* eTag = [[response allHeaderFields] objectForKey:@"ETag"]; 
-        if (!eTag) eTag = [[response allHeaderFields] objectForKey:@"Etag"];
-        NSLog(@"Last modified: %@, ETag = %@", lastModifiedDate, eTag);
+        if (eTag == nil) eTag = [[response allHeaderFields] objectForKey:@"Etag"];
         [userPrefs setObject:lastModifiedDate forKey:PLIST_MDATE_USERPREF_KEY];
         [userPrefs setObject:eTag forKey:PLIST_ETAG_USERPREF_KEY];
-        [userPrefs synchronize];
         
         // decode the received plist data
         CFPropertyListRef plist =  CFPropertyListCreateFromXMLData(kCFAllocatorDefault, (CFDataRef)receivedData,
-                                                                   kCFPropertyListImmutable,
-                                                                   NULL);
+                                                                   kCFPropertyListImmutable, NULL);
         if ([(id)plist isKindOfClass:[NSDictionary class]]) {
-            [self performSelectorOnMainThread:@selector(storeUpdatedPlistContent:) 
-                                   withObject:plist waitUntilDone:YES];  
+            NSDictionary* plistDict = (NSDictionary*) plist;
+            // store the new dictionary in the user preferences
+            [userPrefs setObject:plistDict forKey:PLIST_DICT_USERPREF_KEY];
+            // store time stamp of update
+            [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
+            // invalidate cached list of supported apps
+            self.supportedApps = nil;
         }
+        [userPrefs synchronize];
         CFRelease(plist);
+    }
+    if (USING_APP_ICONS) {
+        // download app icons for all apps in the list of supported apps
+        [self downloadAndCacheIconsForAllApps];
     }
     [pool release];
 }
 
-- (void)storeUpdatedPlistContent:(NSDictionary*)plistDict
-{
-    NSLog(@"Storing updated plist content");
-    // store the new dictionary in the user preferences
-    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-    [userPrefs setObject:plistDict forKey:PLIST_DICT_USERPREF_KEY];
-    // store time stamp of update
-    [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
-    [userPrefs synchronize];
-    
-    // invalidate list of supported apps
-    self.supportedApps = nil;
-    if (USING_APP_ICONS) {
-        // download app icons for all apps in the new list
-        [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];        
-    }
-}
 
 - (NSArray*)supportedApps
 {
@@ -164,7 +153,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
         }
         [appInfo release];
     }
-    supportedApps = [newSupportedApps copy];
+    self.supportedApps = newSupportedApps;
     return supportedApps;
 }
 
@@ -272,13 +261,16 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 3 * 24 * 60 * 60;
         PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
         NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
         if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
-            NSData* imageData = [NSData dataWithContentsOfURL:appInfo.thumbnailURL];
+            NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
             // verify that the data is actually an image
-            UIImage* image = [UIImage imageWithData:imageData];
+            UIImage* image = [[UIImage alloc] initWithData:imageData];
             if (image != nil) {
                 [imageData writeToFile:cachedIconPath atomically:YES];                
             }
+            [imageData release];
+            [image release];
         }
+        [appInfo release];
     }
     [pool release];
 }
