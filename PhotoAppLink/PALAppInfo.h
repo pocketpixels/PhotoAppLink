@@ -26,6 +26,7 @@
     BOOL        canSend;
     BOOL        canReceive;
     BOOL        installed;
+    BOOL        liveOnAppStore;
     NSString*   appDescription;
     NSURL*      scheme;
     NSString*   bundleID;
@@ -44,6 +45,8 @@
 // Flag indicating whether the app is installed on this device
 // (only valid for apps that can receive images, NO for other apps)
 @property (nonatomic, readonly) BOOL installed;   
+// Whether a version with PhotoAppLink support is live on the App Store
+@property (nonatomic, readonly) BOOL liveOnAppStore;   
 // Flag whether the app supports sending images to other apps
 @property (nonatomic, readonly) BOOL canSend;
 // Flag whether the app supports receiving images

@@ -6,12 +6,40 @@
 	<array>
 		<dict>
 			<key>appleID</key>
+			<string>287273856</string>
+			<key>bundleID</key>
+			<string>com.dummy.dummyApp</string>
+			<key>canReceive</key>
+			<true/>
+			<key>canSend</key>
+			<true/>
+			<key>liveOnAppStore</key>
+			<true/>
+			<key>description</key>
+			<string>An app that doesn&apos;t exist</string>
+			<key>freeApp</key>
+			<true/>
+			<key>name</key>
+			<string>DummyApp</string>
+			<key>platform</key>
+			<string>universal</string>
+			<key>scheme</key>
+			<string>dummyApp-photoapplink</string>
+			<key>thumbnail2xURL</key>
+			<string>http://server.com/dummy.png</string>
+			<key>thumbnailURL</key>
+			<string>http://server.com/dummy.png</string>
+		</dict>
+		<dict>
+			<key>appleID</key>
 			<string>304871603</string>
 			<key>bundleID</key>
 			<string>com.hkueck.colorsplash</string>
 			<key>canReceive</key>
 			<true/>
 			<key>canSend</key>
+			<true/>
+			<key>liveOnAppStore</key>
 			<true/>
 			<key>description</key>
 			<string>Fun and intuitive selective coloring app.</string>
@@ -37,6 +65,8 @@
 			<true/>
 			<key>canSend</key>
 			<true/>
+			<key>liveOnAppStore</key>
+			<true/>
 			<key>description</key>
 			<string>Add notes to your pictures!</string>
 			<key>freeApp</key>
@@ -60,6 +90,8 @@
 			<key>canReceive</key>
 			<true/>
 			<key>canSend</key>
+			<true/>
+			<key>liveOnAppStore</key>
 			<true/>
 			<key>description</key>
 			<string>Fun and intuitive selective coloring app.</string>
@@ -85,6 +117,8 @@
 			<true/>
 			<key>canSend</key>
 			<true/>
+			<key>liveOnAppStore</key>
+			<true/>
 			<key>description</key>
 			<string>App for testing the protocol</string>
 			<key>freeApp</key>
@@ -109,6 +143,8 @@
 			<true/>
 			<key>canSend</key>
 			<true/>
+			<key>liveOnAppStore</key>
+			<true/>
 			<key>description</key>
 			<string>Full featured photo editing app.</string>
 			<key>freeApp</key>
@@ -123,6 +159,30 @@
 			<string>http://photoapplinkicons.s3.amazonaws.com/Photogene@2x.png</string>
 			<key>thumbnailURL</key>
 			<string>http://photoapplinkicons.s3.amazonaws.com/Photogene.png</string>
+		</dict>
+		<dict>
+			<key>appleID</key>
+			<string>318944927</string>
+			<key>bundleID</key>
+			<string>unknown.autostitch</string>
+			<key>canReceive</key>
+			<false/>
+			<key>canSend</key>
+			<true/>
+			<key>liveOnAppStore</key>
+			<true/>
+			<key>description</key>
+			<string>Generate high quality panoramas automatically</string>
+			<key>freeApp</key>
+			<false/>
+			<key>name</key>
+			<string>Autostitch</string>
+			<key>platform</key>
+			<string>iPhone</string>
+			<key>thumbnail2xURL</key>
+			<string>http://photoapplinkicons.s3.amazonaws.com/Autostitch@2x.png</string>
+			<key>thumbnailURL</key>
+			<string>http://photoapplinkicons.s3.amazonaws.com/Autostitch.png</string>
 		</dict>
 	</array>
 </dict>

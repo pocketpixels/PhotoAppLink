@@ -10,7 +10,7 @@
 
 @synthesize name, scheme, appDescription, bundleID, appleID;
 @synthesize platform, freeApp;
-@synthesize thumbnailURL, installed, canSend, canReceive;
+@synthesize thumbnailURL, installed, liveOnAppStore, canSend, canReceive;
 @synthesize thumbnail;
 
 - (id)initWithPropertyDict:(NSDictionary*)properties {
@@ -20,6 +20,7 @@
         name = [[properties objectForKey:@"name"] copy];
         canSend = [[properties objectForKey:@"canSend"] boolValue];
         canReceive = [[properties objectForKey:@"canReceive"] boolValue];
+        liveOnAppStore = [[properties objectForKey:@"liveOnAppStore"] boolValue];
         NSString* schemeStr = [[properties objectForKey:@"scheme"] stringByAppendingString:@"://"];
         if (schemeStr != nil) scheme = [[NSURL alloc] initWithString:schemeStr];
         appleID = [[properties objectForKey:@"appleID"] copy];

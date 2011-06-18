@@ -169,10 +169,12 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSPredicate* appsToShowPredicate;
     // Only show apps that are not yet installed (as far as we can tell) and that are supported on the user's device
     if (isIPad) {
-        appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPhone'"];
+        appsToShowPredicate = [NSPredicate predicateWithFormat:
+                               @"installed=FALSE AND liveOnAppStore=TRUE AND NOT platform BEGINSWITH[cd] 'iPhone'"];
     }
     else {
-        appsToShowPredicate = [NSPredicate predicateWithFormat:@"installed=FALSE AND NOT platform BEGINSWITH[cd] 'iPad'"];            
+        appsToShowPredicate = [NSPredicate predicateWithFormat:
+                               @"installed=FALSE AND liveOnAppStore=TRUE AND NOT platform BEGINSWITH[cd] 'iPad'"];            
     }
     
     return [self.supportedApps filteredArrayUsingPredicate:appsToShowPredicate];
