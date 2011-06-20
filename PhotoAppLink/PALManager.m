@@ -159,7 +159,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 
 - (NSArray*)destinationApps
 {
-    return [self.supportedApps filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=TRUE", @"installed"]];
+    return [self.supportedApps filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"installed=TRUE"]];
 }
 
 - (NSArray*)moreApps
