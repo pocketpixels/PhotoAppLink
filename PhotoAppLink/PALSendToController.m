@@ -138,6 +138,11 @@
     [super viewDidUnload];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    _chosenOption = -1;
+}
+
 - (void)viewDidDisappear:(BOOL)animated 
 {
     [super viewDidDisappear:animated];
