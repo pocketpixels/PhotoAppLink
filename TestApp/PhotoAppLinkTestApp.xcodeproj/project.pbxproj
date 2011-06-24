@@ -31,6 +31,8 @@
 		B1B8052213936FBE00960283 /* PALSendToController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B8051413936FBE00960283 /* PALSendToController.m */; };
 		B1B8052313936FBE00960283 /* PALSendToController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B8051513936FBE00960283 /* PALSendToController.xib */; };
 		B1FB990310AAA32A00C56AE2 /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB990210AAA32A00C56AE2 /* TestImage.png */; };
+		EC1AE9A913B4067800E02BD3 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC1AE9A713B4067800E02BD3 /* Icon.png */; };
+		EC1AE9AA13B4067800E02BD3 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC1AE9A813B4067800E02BD3 /* Icon@2x.png */; };
 		ECFD373C139406C100804007 /* twitter-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD3738139406C100804007 /* twitter-icon@2x.png */; };
 		ECFD373D139406C100804007 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD3739139406C100804007 /* twitter-icon.png */; };
 		ECFD373E139406C100804007 /* facebook-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFD373A139406C100804007 /* facebook-icon@2x.png */; };
@@ -73,6 +75,8 @@
 		B1B8051413936FBE00960283 /* PALSendToController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PALSendToController.m; sourceTree = "<group>"; };
 		B1B8051513936FBE00960283 /* PALSendToController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PALSendToController.xib; sourceTree = "<group>"; };
 		B1FB990210AAA32A00C56AE2 /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
+		EC1AE9A713B4067800E02BD3 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		EC1AE9A813B4067800E02BD3 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		ECFD3738139406C100804007 /* twitter-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon@2x.png"; sourceTree = "<group>"; };
 		ECFD3739139406C100804007 /* twitter-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon.png"; sourceTree = "<group>"; };
 		ECFD373A139406C100804007 /* facebook-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon@2x.png"; sourceTree = "<group>"; };
@@ -138,6 +142,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EC1AE9A713B4067800E02BD3 /* Icon.png */,
+				EC1AE9A813B4067800E02BD3 /* Icon@2x.png */,
 				B1FB990210AAA32A00C56AE2 /* TestImage.png */,
 				ECFD3738139406C100804007 /* twitter-icon@2x.png */,
 				ECFD3739139406C100804007 /* twitter-icon.png */,
@@ -266,6 +272,8 @@
 				ECFD373E139406C100804007 /* facebook-icon@2x.png in Resources */,
 				ECFD373F139406C100804007 /* facebook-icon.png in Resources */,
 				B13CC57B1395C05400CA11AE /* PAL_button_background@2x.png in Resources */,
+				EC1AE9A913B4067800E02BD3 /* Icon.png in Resources */,
+				EC1AE9AA13B4067800E02BD3 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
