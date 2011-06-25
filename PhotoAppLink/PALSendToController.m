@@ -350,8 +350,8 @@
     _chosenOption = [sender tag] - 1;
     
     // Get the image from the property or from the delegate
-    if (_image == nil && [_delegate respondsToSelector:@selector(sendToControllerImage:)])
-        self.image = [_delegate sendToControllerImage:self];
+    if (_image == nil && [_delegate respondsToSelector:@selector(imageForSendToController:)])
+        self.image = [_delegate imageForSendToController:self];
 
     [self dismissWithLeavingApp:(_sharingActions == nil || _chosenOption >= [_sharingActions count])];    
 }

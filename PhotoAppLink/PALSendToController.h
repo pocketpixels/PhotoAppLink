@@ -38,7 +38,7 @@
 // If you want to defer providing an image you can use this delegate method
 // Useful if you need processing to generate the image. In this case
 // if the user cancels the action you didn't have to generate it.
-- (UIImage*)sendToControllerImage:(PALSendToController*)controller;
+- (UIImage*)imageForSendToController:(PALSendToController*)controller;
 
 // This delegate method is called when the PALSendToController is 
 // ready to be dismissed. 
