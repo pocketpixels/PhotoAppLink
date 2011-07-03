@@ -75,57 +75,57 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     @try {
-    // Download dictionary from plist stored on server
+        // Download dictionary from plist stored on server
 #ifdef DEBUG 
-    NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
+        NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
 #else
-    NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
+        NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
-    
-    // performing a conditional HTTP GET in order to only download the server side plist data
-    // if it has been modified. 
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:plistURL 
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:30.0];
-    NSString* previousLastModifiedDate = [userPrefs objectForKey:PLIST_MDATE_USERPREF_KEY];
-    if (previousLastModifiedDate != nil) {
-        [request setValue:previousLastModifiedDate forHTTPHeaderField:@"If-Modified-Since"];
-    }
-    NSString* previousEtag = [userPrefs objectForKey:PLIST_ETAG_USERPREF_KEY];
-    if (previousEtag != nil) {
-        [request setValue:previousEtag forHTTPHeaderField:@"If-None-Match"];
-    }
-    NSHTTPURLResponse* response = nil;
-    // This method is executed on a background thread, so doing a synchronous request is fine and simplifies things.
-    NSData* receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:NULL];
-    if ([response statusCode] == 200) {
-        // We received an updated plist file
-        // Store the "Last-Modified" date to use for the next conditional HTTP GET
-        NSString* lastModifiedDate = [[response allHeaderFields] objectForKey:@"Last-Modified"];
-        NSString* eTag = [[response allHeaderFields] objectForKey:@"ETag"]; 
-        if (eTag == nil) eTag = [[response allHeaderFields] objectForKey:@"Etag"];
-        [userPrefs setObject:lastModifiedDate forKey:PLIST_MDATE_USERPREF_KEY];
-        [userPrefs setObject:eTag forKey:PLIST_ETAG_USERPREF_KEY];
         
-        // decode the received plist data
-        CFPropertyListRef plist =  CFPropertyListCreateFromXMLData(kCFAllocatorDefault, (CFDataRef)receivedData,
-                                                                   kCFPropertyListImmutable, NULL);
-        if ([(id)plist isKindOfClass:[NSDictionary class]]) {
-            NSDictionary* plistDict = (NSDictionary*) plist;
-            // store the new dictionary in the user preferences
-            [userPrefs setObject:plistDict forKey:PLIST_DICT_USERPREF_KEY];
-            // store time stamp of update
-            [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
-            // invalidate cached list of supported apps
-            self.supportedApps = nil;
+        // performing a conditional HTTP GET in order to only download the server side plist data
+        // if it has been modified. 
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:plistURL 
+                                                               cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                           timeoutInterval:30.0];
+        NSString* previousLastModifiedDate = [userPrefs objectForKey:PLIST_MDATE_USERPREF_KEY];
+        if (previousLastModifiedDate != nil) {
+            [request setValue:previousLastModifiedDate forHTTPHeaderField:@"If-Modified-Since"];
         }
-        [userPrefs synchronize];
-        CFRelease(plist);
-    }
-    if (USING_APP_ICONS) {
-        // download app icons for all apps in the list of supported apps
-        [self downloadAndCacheIconsForAllApps];
-    }
+        NSString* previousEtag = [userPrefs objectForKey:PLIST_ETAG_USERPREF_KEY];
+        if (previousEtag != nil) {
+            [request setValue:previousEtag forHTTPHeaderField:@"If-None-Match"];
+        }
+        NSHTTPURLResponse* response = nil;
+        // This method is executed on a background thread, so doing a synchronous request is fine and simplifies things.
+        NSData* receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:NULL];
+        if ([response statusCode] == 200) {
+            // We received an updated plist file
+            // Store the "Last-Modified" date to use for the next conditional HTTP GET
+            NSString* lastModifiedDate = [[response allHeaderFields] objectForKey:@"Last-Modified"];
+            NSString* eTag = [[response allHeaderFields] objectForKey:@"ETag"]; 
+            if (eTag == nil) eTag = [[response allHeaderFields] objectForKey:@"Etag"];
+            [userPrefs setObject:lastModifiedDate forKey:PLIST_MDATE_USERPREF_KEY];
+            [userPrefs setObject:eTag forKey:PLIST_ETAG_USERPREF_KEY];
+            
+            // decode the received plist data
+            CFPropertyListRef plist =  CFPropertyListCreateFromXMLData(kCFAllocatorDefault, (CFDataRef)receivedData,
+                                                                       kCFPropertyListImmutable, NULL);
+            if ([(id)plist isKindOfClass:[NSDictionary class]]) {
+                NSDictionary* plistDict = (NSDictionary*) plist;
+                // store the new dictionary in the user preferences
+                [userPrefs setObject:plistDict forKey:PLIST_DICT_USERPREF_KEY];
+                // store time stamp of update
+                [userPrefs setObject:[NSDate date] forKey:LASTUPDATE_USERPREF_KEY];
+                // invalidate cached list of supported apps
+                self.supportedApps = nil;
+            }
+            [userPrefs synchronize];
+            CFRelease(plist);
+        }
+        if (USING_APP_ICONS) {
+            // download app icons for all apps in the list of supported apps
+            [self downloadAndCacheIconsForAllApps];
+        }
     }
     @catch (NSException * e) {
         NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
@@ -256,34 +256,34 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     @try {
-    // ensure that the cache directory exists
-    [self createAppIconCacheDirectory];
-    
-    NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-    NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];    
-    NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
-    if (plistApps == nil) return;
-    
-    for (NSDictionary* plistAppInfo in plistApps) {
-        PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
-        NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
-        if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
-            NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
-            // verify that the data is actually an image
-            UIImage* image = [[UIImage alloc] initWithData:imageData];
-            if (image != nil) {
-                [imageData writeToFile:cachedIconPath atomically:YES];                
+        // ensure that the cache directory exists
+        [self createAppIconCacheDirectory];
+        
+        NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
+        NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];    
+        NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
+        if (plistApps == nil) return;
+        
+        for (NSDictionary* plistAppInfo in plistApps) {
+            PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
+            NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
+            if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
+                NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
+                // verify that the data is actually an image
+                UIImage* image = [[UIImage alloc] initWithData:imageData];
+                if (image != nil) {
+                    [imageData writeToFile:cachedIconPath atomically:YES];                
+                }
+                [imageData release];
+                [image release];
             }
-            [imageData release];
-            [image release];
+            [appInfo release];
         }
-        [appInfo release];
-    }
     }
     @catch (NSException * e) {
         NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
     }
-
+    
     [pool release];
 }
 
