@@ -74,7 +74,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-
+    @try {
     // Download dictionary from plist stored on server
 #ifdef DEBUG 
     NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
@@ -125,6 +125,10 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     if (USING_APP_ICONS) {
         // download app icons for all apps in the list of supported apps
         [self downloadAndCacheIconsForAllApps];
+    }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
     }
     [pool release];
 }
@@ -251,6 +255,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 - (void)downloadAndCacheIconsForAllApps
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    @try {
     // ensure that the cache directory exists
     [self createAppIconCacheDirectory];
     
@@ -274,6 +279,11 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         }
         [appInfo release];
     }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
+    }
+
     [pool release];
 }
 
