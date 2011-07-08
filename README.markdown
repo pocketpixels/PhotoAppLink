@@ -1,5 +1,5 @@
 # PhotoAppLink
-### A library that's gonna change the way you use image app on your iOS device.
+### A library that's gonna change the way you use image apps on your iOS device.
 
 ## Usage
 
