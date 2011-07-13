@@ -110,6 +110,49 @@
     [nav release];
 }
 
+- (IBAction)pictureFromCamera
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.delegate = self;
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentModalViewController:imagePickerController animated:YES];
+        [imagePickerController release];
+    }
+    else
+    {
+        UIAlertView *newView = [[UIAlertView alloc] initWithTitle:nil 
+                                                          message:@"Camera not alaivable"
+                                                         delegate:nil 
+                                                cancelButtonTitle:@"OK" 
+                                                otherButtonTitles:nil];
+        [newView show];
+        [newView release];
+    }
+}
+
+- (IBAction)pictureFromRoll
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.delegate = self;
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentModalViewController:imagePickerController animated:YES];
+        [imagePickerController release];
+    }
+    else
+    {
+        UIAlertView *newView = [[UIAlertView alloc] initWithTitle:nil 
+                                                          message:@"Photo Library not alaivable"
+                                                         delegate:nil 
+                                                cancelButtonTitle:@"OK" 
+                                                otherButtonTitles:nil];
+        [newView show];
+        [newView release];
+    }
+}
 
 #pragma mark -
 #pragma PhotoAppLinkSendToControllerDelegate
@@ -129,18 +172,26 @@
 - (void)setImage:(UIImage*)newImage
 {
     self.imageView.image = newImage;
-    if (newImage) {
-        float imageWidth = newImage.size.width;
-        float imageHeight = newImage.size.height;
-        float maxDim = MAX(imageWidth, imageHeight);
-        float scaleFactor = MIN(280.0 / maxDim, 1.0);
-        self.imageView.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);            
-    }
 }
 
 - (UIImage*) image
 {
     return self.imageView.image;
+}
+
+#pragma mark -
+#pragma UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [self setImage:image];
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

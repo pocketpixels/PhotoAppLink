@@ -23,7 +23,7 @@
 #import <UIKit/UIKit.h>
 #import "PALSendToController.h"
 
-@interface TestAppRootViewController : UIViewController <PALSendToControllerDelegate> {
+@interface TestAppRootViewController : UIViewController <PALSendToControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     IBOutlet UIImageView* imageView;
 }
 
@@ -34,6 +34,8 @@
 - (IBAction)showSendToAppController;
 - (IBAction)modallyPresentSendToController;
 - (IBAction)modallyPresentMoreAppsController;
+- (IBAction)pictureFromCamera;
+- (IBAction)pictureFromRoll;
 
 @end
 
