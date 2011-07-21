@@ -76,6 +76,29 @@ static const int ROWHEIGHT = 86;
     }
 }
 
+// Called by the notification center if the app becomes active and this view is still visible
+// This is necessary to reload the list of compatible apps as it can change when the app
+// becomes active again (user might buy another compatible app, for example)
+- (void)applicationDidBecomeActive
+{
+    [additionalApps release];
+    additionalApps = [[[PALManager sharedPALManager] moreApps] retain];
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated 
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

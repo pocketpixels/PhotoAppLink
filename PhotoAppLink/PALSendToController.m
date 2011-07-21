@@ -123,8 +123,6 @@
         [[self navigationItem] setLeftBarButtonItem:cancelButton];
         [cancelButton release];        
     }
-    
-    [self setupScrollViewContent];    
 }
 
 - (void)viewDidUnload
@@ -138,14 +136,29 @@
     [super viewDidUnload];
 }
 
--(void)viewDidAppear:(BOOL)animated
+// Called by the notification center if the app becomes active and this view is still visible
+// This is necessary to reload the list of compatible apps as it can change when the app
+// becomes active again (user might buy another compatible app, for example)
+- (void)applicationDidBecomeActive
 {
+    [self setupScrollViewContent];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self setupScrollViewContent];
     _chosenOption = -1;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationDidBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
 {
     [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (_chosenOption >= 0)
     {
@@ -200,6 +213,10 @@
 
 - (void)setupScrollViewContent
 {
+    for (UIView *view in [_iconsScrollView subviews]) {
+        [view removeFromSuperview];
+    }
+    
     int pos = 0;
     
     // First add the custom sharing options
