@@ -54,6 +54,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 // This update is only performed once every few days
 - (void)updateSupportedAppsInBackground
 {
+    // invalidate cached list of supported apps
+    self.supportedApps = nil;
+
     // check if we already updated recently
     NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
     NSDate* lastUpdateDate = [userPrefs objectForKey:LASTUPDATE_USERPREF_KEY];
