@@ -3,3 +3,6 @@ build
 *.pbxuser
 *.perspectivev3
 Photoshop
+
+xcuserdata
+project.xcworkspace
