@@ -443,6 +443,10 @@
         // then dismiss this controller as appropriate
         [self dismissWithLeavingApp:leavingApp];
     }
+    else {
+        // pop the more apps controller
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end
