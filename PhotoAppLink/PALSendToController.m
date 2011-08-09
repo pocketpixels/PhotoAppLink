@@ -437,7 +437,8 @@
 -(void)finishedWithMoreAppsController:(PALMoreAppsController *)controller leavingApp:(BOOL)leavingApp
 {
     // first pop the more apps controller
-    [self.navigationController popViewControllerAnimated:YES];
+    BOOL animatedPopping = !leavingApp;
+    [self.navigationController popViewControllerAnimated:animatedPopping];
     if (leavingApp) {
         // then dismiss this controller as appropriate
         [self dismissWithLeavingApp:leavingApp];
