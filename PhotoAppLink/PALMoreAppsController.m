@@ -133,7 +133,7 @@ static const int ROWHEIGHT = 86;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PAL_tablecell_background.png"]];
+        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PAL_tablecell_background.png"]] autorelease];
         CGRect cellFrame = CGRectMake(0.0, 0.0, tableView.frame.size.width, ROWHEIGHT);
         appInfoView= [[PALMoreAppsTableCellView alloc] initWithFrame:cellFrame];
         appInfoView.tag = APPINFOVIEW_TAG;
