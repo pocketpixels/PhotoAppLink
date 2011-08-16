@@ -12,12 +12,12 @@
 #define BUTTONS_HEIGHT  77.0f
 #define BUTTONLABEL_WIDTH  79.0f
 
-#define BUTTONS_MIN_WIDTH   82.0f
-#define BUTTONS_MIN_HEIGHT  82.0f
+#define BUTTONS_MIN_WIDTH   81.0f
+#define BUTTONS_MIN_HEIGHT  84.0f
 
-#define SCROLLVIEW_BOTTOM_MARGIN 18.0f
-#define SCROLLVIEW_TOP_MARGIN 8.0f
-#define SCROLLVIEW_SIDE_MARGIN 8.0f
+#define SCROLLVIEW_BOTTOM_MARGIN 28.0f
+#define SCROLLVIEW_TOP_MARGIN 22.0f
+#define SCROLLVIEW_SIDE_MARGIN 23.0f
 
 @interface PALSendToController (PrivateStuff)
 
@@ -352,12 +352,15 @@
         int iconsY = (int)floor(h / BUTTONS_MIN_HEIGHT);
         
         // The spacing between icons
-        CGFloat dx = floor(w / iconsX);
-        CGFloat dy = floor(h / iconsY);
+        CGFloat buttonGapX = (w - iconsX * BUTTONS_WIDTH) / (iconsX - 1);
+        CGFloat buttonGapY = (h - iconsY * BUTTONS_HEIGHT) / (iconsY - 1);
+        
+        CGFloat dx = floor(BUTTONS_WIDTH + buttonGapX);
+        CGFloat dy = floor(BUTTONS_HEIGHT + buttonGapY);
         
         // The left/top margin
-        CGFloat x0 = floor((dx - BUTTONS_WIDTH) / 2.0f) + SCROLLVIEW_SIDE_MARGIN;
-        CGFloat y0 = floor((dy - BUTTONS_HEIGHT) / 2.0f) + SCROLLVIEW_TOP_MARGIN;
+        CGFloat x0 = SCROLLVIEW_SIDE_MARGIN;
+        CGFloat y0 = SCROLLVIEW_TOP_MARGIN;
         
         int posX = 0;
         int posY = 0;
