@@ -13,6 +13,7 @@ static const int ROWHEIGHT = 86;
 @interface PALMoreAppsController (PrivateStuff)
 
 - (void)dismissWithLeavingApp:(BOOL)leavingApp;
+- (BOOL)isPresentedModally;
 
 @end
 
@@ -64,9 +65,8 @@ static const int ROWHEIGHT = 86;
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 
-    BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
     BOOL weAreTheRootController = ([self.navigationController.viewControllers objectAtIndex:0] == self);
-    if (isPresentedModally && weAreTheRootController) {
+    if ([self isPresentedModally] && weAreTheRootController) {
         UIBarButtonItem* cancelButton = 
         [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"PhotoAppLink")
                                          style:UIBarButtonItemStyleBordered 
@@ -109,6 +109,15 @@ static const int ROWHEIGHT = 86;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self.tableView reloadData];
+}
+
+- (BOOL)isPresentedModally
+{
+    if ([self respondsToSelector:@selector(presentingViewController)]) {
+        return ([self presentingViewController] != nil);
+    } else {
+        return (self.navigationController.parentViewController.modalViewController == self.navigationController);
+    }
 }
 
 #pragma mark - Table view data source
@@ -190,9 +199,8 @@ static const int ROWHEIGHT = 86;
     }
     else {
         // default behavior
-        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
         BOOL useAnimation = !leavingApp;
-        if (isPresentedModally) {
+        if ([self isPresentedModally]) {
             [self dismissModalViewControllerAnimated:useAnimation];            
         }
         else {

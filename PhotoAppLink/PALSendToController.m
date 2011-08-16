@@ -26,7 +26,7 @@
 - (void)buttonClicked:(id)sender;
 - (void)setupScrollViewContent;
 - (void)dismissWithLeavingApp:(BOOL)leavingApp;
-
+- (BOOL)isPresentedModally;
 @end
 
 @implementation PALSendToController
@@ -113,9 +113,8 @@
     [[self navigationItem] setBackBarButtonItem:backButton];
     [backButton release];
     
-    BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
     BOOL weAreTheRootController = ([self.navigationController.viewControllers objectAtIndex:0] == self);
-    if (isPresentedModally && weAreTheRootController) {
+    if ([self isPresentedModally] && weAreTheRootController) {
         UIBarButtonItem* cancelButton = 
         [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"PhotoAppLink")
                                          style:UIBarButtonItemStyleBordered 
@@ -209,6 +208,15 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self fixIconsLayoutAnimated:0.1f];
+}
+
+- (BOOL)isPresentedModally
+{
+    if ([self respondsToSelector:@selector(presentingViewController)]) {
+        return ([self presentingViewController] != nil);
+    } else {
+        return (self.navigationController.parentViewController.modalViewController == self.navigationController);
+    }
 }
 
 - (void)setupScrollViewContent
@@ -381,9 +389,8 @@
     }
     else {
         // default behavior
-        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
         BOOL useAnimation = !leavingApp;
-        if (isPresentedModally) {
+        if ([self isPresentedModally]) {
             [self dismissModalViewControllerAnimated:useAnimation];            
         }
         else {
@@ -399,8 +406,7 @@
     }
     else {
         // default behavior
-        BOOL isPresentedModally = (self.navigationController.parentViewController.modalViewController == self.navigationController);
-        if (isPresentedModally) {
+        if ([self isPresentedModally]) {
             [self dismissModalViewControllerAnimated:YES];            
         }
         else {
