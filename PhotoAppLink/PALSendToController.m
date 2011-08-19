@@ -212,11 +212,15 @@
 
 - (BOOL)isPresentedModally
 {
+#ifdef __IPHONE_5_0
     if ([self respondsToSelector:@selector(presentingViewController)]) {
         return ([self presentingViewController] != nil);
     } else {
         return (self.navigationController.parentViewController.modalViewController == self.navigationController);
     }
+#else
+    return (self.navigationController.parentViewController.modalViewController == self.navigationController);
+#endif
 }
 
 - (void)setupScrollViewContent
