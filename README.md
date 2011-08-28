@@ -284,18 +284,18 @@ Most of the entries in the plist dictionary for an app are fairly self-explanato
 *	__liveOnAppStore:__ Whether a version of your app with PhotoAppLink support is live on the App Store already. This only affects whether your app will be listed in the “More apps” UI (because we don't want to list apps there that don't yet have PhotoAppLink support). 
 *	__freeApp:__ Whether your app is a free app. If yes, then the button on the “More Apps” list will say “FREE” instead of "Store".
 *	__platform:__  Can be “iPhone”, “iPad” or “universal”. This is used to filter the “More Apps” list to only show apps supported on the user's device.
-*	__scheme:__ The URL scheme you registered for your app (something like “yourapp-photoapplink”). If your app doesn't support receiving images you can ignore this field.
+*	__scheme:__ The URL scheme you registered for launching your app (as discussed above, something like “yourapp-photoapplink”). If your app doesn't support receiving images you can ignore this field.
 *	__thumbnailURL:__ The URL for your app’s 57×57 icon image.
 *	__thumbnail2xURL:__ The URL for your app’s 114×114 icon image.
 
 Register your app
 =================
 
-Once you have successfully integrated PhotoAppLink into your app and are ready to submit it to the App Store you should send us the plist entry for your app so that we can add it to the plist on our server. To do this, just send us an email to admins@photoapplink.com. Just make a copy of the `photoapplink_debug.plist` you modified above, delete all the other lines of the array leaving only your dictionary and send us this file. Then it’s just a matter of copy/pasting this info into the production plist that gets downloaded by every PhotoAppLink compatible app. 
+Once you have successfully integrated PhotoAppLink into your app and are ready to submit it to the App Store you should send us the plist entry for your app so that we can add it to the plist on our server. Just make a copy of the `photoapplink_debug.plist` you modified above, delete all the other lines of the array leaving only your dictionary and send us this file to admins@photoapplink.com. Then it’s just a matter of us copy/pasting this info into the production plist that gets downloaded by every PhotoAppLink compatible app. 
 
 Please also email us the 512 pixel icon of your app along with the info whether it has the default App Store shine applied or not so that we can create the appropriate 57 and 114 pixel icons for your app. 
 
-Finally send us another email as soon as the PhotoAppLink compatible version of your app goes live on the App Store so we can change the status of your app’s `liveOnAppStore` field to true so that it can be discovered in other participating apps.
+Finally please send us another email as soon as the PhotoAppLink compatible version of your app goes live on the App Store. We can then change the status of your app’s `liveOnAppStore` field to true so that your app can be discovered in other participating apps.
 
 Questions and Bug Reports
 ===========================
