@@ -6,9 +6,9 @@ PhotoAppLink is an open source library allowing your iOS photo app to launch oth
 This will allow users to easily process an image using a combination of multiple photo apps without having to save intermediate images to the camera roll, quitting one app, launching the next, loading up the intermediate image....  
 Instead the user simply selects a "Send to app" option which presents all compatible apps in a nice interface. The selected app is then launched and the current image is passed along so that the user can keep editing it in that app immediately. This provides a more fluid user interface to the user and encourages the use of compatible apps.  
 
-![](http://i689.photobucket.com/albums/vv254/jaheku/photoapplink/pal_sendto.png)     ![](http://i689.photobucket.com/albums/vv254/jaheku/photoapplink/pal_moreApps.png)  
+   ![](http://i689.photobucket.com/albums/vv254/jaheku/photoapplink/pal_sendto_sim.png)     ![](http://i689.photobucket.com/albums/vv254/jaheku/photoapplink/pal_more_sim.png)  
 
-The library manages the discovery of compatible apps automatically and also has an interface that allows the user to find more compatible apps. This will provide promotion of your app through other compatible apps and will also give you another revenue source through the use of Linkshare links. That is if a user buys a compatible app discovered through PhotoAppLink in your app then you will get the commission for the sale. 
+The library manages the discovery of compatible apps installed on the user's device. Furthermore it also provides a nice user interface for discovering and purchasing additional compatible apps. This will provide promotion of your app through other compatible apps and will also give you another revenue source through the use of Linkshare links. That is if a user buys a compatible app discovered through PhotoAppLink in your app then you will get the commission for the sale. 
 
 
 How it works under the hood
@@ -262,7 +262,7 @@ To be able to test sending images to your app, you will have to add your app's i
 1. 	Open the included file `photoapplink_debug.plist` in XCode. This is a sample plist that describes a few PhotoAppList compatible apps, including the test app.
 2. 	This plist contains an array of dictionaries representing the supported apps. Duplicate one of these dictionaries and customize it for your app (see below for a description of the fields).
 3.	Save this file, copy it to your Dropbox public folder and get it’s URL (via the Dropbox context menu in the Finder).
-4. 	Open PALConfig.h in the project for the sending app and change the URL of the `#define DEBUG_PLIST_URL` to your own edited plist’s URL.
+4. 	Open PALConfig.h in the project for the sending app and change the URL of the `#define DEBUG_PLIST_URL` by pasting in the Dropbox URL for your edited plist file.
 
 The debug plist is used only if `DEBUG` is defined in the preprocessor. To set this definition, add the following setting to your XCode build setting:
 
