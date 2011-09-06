@@ -75,6 +75,7 @@
     
     NSMutableArray *_sharingActions;
     NSInteger _chosenOption;
+    BOOL _addedKVOObserver;
 }
 
 // Provide a delegate if you have custom actions and/or if you want to defer image creation

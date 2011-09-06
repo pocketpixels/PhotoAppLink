@@ -52,6 +52,9 @@
 
 - (void)dealloc
 {
+    if (_addedKVOObserver) {
+        [_iconsScrollView removeObserver:self forKeyPath:@"frame"];
+    }
     _delegate = nil;
     [_image release];
     [_sharingActions release];
@@ -70,6 +73,9 @@
 {
     [super viewDidLoad];
     
+    if ([self respondsToSelector:@selector(setContentSizeForViewInPopover:)]) {
+        self.contentSizeForViewInPopover = CGSizeMake(320, 400);
+    }
     _chosenOption = -1;
     
     NSAssert(self.navigationController != nil, @"PALSendToController must be presented in a UINavigationController");
@@ -152,6 +158,24 @@
                                              selector:@selector(applicationDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    [super viewWillAppear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (!_addedKVOObserver) {
+        [_iconsScrollView addObserver:self forKeyPath:@"frame" options:0  context:NULL];
+        _addedKVOObserver = YES;        
+    }
+    [super viewDidAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    if (_addedKVOObserver) {
+        [_iconsScrollView removeObserver:self forKeyPath:@"frame"];
+        _addedKVOObserver = NO;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
@@ -221,6 +245,12 @@
 #else
     return (self.navigationController.parentViewController.modalViewController == self.navigationController);
 #endif
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"frame"]) {
+        [self fixIconsLayoutAnimated:0.0f];
+    }
 }
 
 - (void)setupScrollViewContent
