@@ -331,6 +331,28 @@
     [encapsulator release];
 }
 
+- (void)addNoAppsAvailableLabel
+{
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+    label.text = NSLocalizedString(@"No PhotoAppLink\ncompatible apps installed", @"PhotoAppLink");
+    label.font = [UIFont boldSystemFontOfSize:18.0f];
+    label.numberOfLines = 0;
+    label.textColor = [UIColor lightGrayColor];
+    label.shadowColor = [UIColor blackColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    label.backgroundColor = [UIColor clearColor];
+    [label sizeToFit];
+    int posX = _iconsScrollView.center.x - _iconsScrollView.frame.origin.x;
+    int posY = _iconsScrollView.center.y - _iconsScrollView.frame.origin.y;
+    label.center = CGPointMake(posX, posY);
+    // to avoid blurriness due to fractional position
+    label.frame = CGRectMake((int) label.frame.origin.x, (int) label.frame.origin.y, 
+                             (int) label.frame.size.width, (int) label.frame.size.height);
+    [_iconsScrollView addSubview:label];
+    _iconsPageControl.hidden = YES;
+}
+
 // Fixes the layout base on the size of the UIScrollView
 - (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration
 {
@@ -404,6 +426,9 @@
         {
             [UIView commitAnimations];
         }
+    }
+    else {
+        [self addNoAppsAvailableLabel];
     }
 }
 
