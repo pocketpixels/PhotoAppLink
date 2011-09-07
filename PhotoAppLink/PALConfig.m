@@ -62,18 +62,18 @@ static PALConfig *sharedInstance = nil;
 
 - (id)configurationValue:(NSString*)selector
 {
-	NSLog(@"Looking for a configuration value for %@.", selector);
+//	NSLog(@"Looking for a configuration value for %@.", selector);
 	
 	SEL sel = NSSelectorFromString(selector);
 	if ([delegate respondsToSelector:sel]) {
 		id value = [delegate performSelector:sel];
 		if (value) {
-			NSLog(@"Found configuration value for %@: %@", selector, value);
+//			NSLog(@"Found configuration value for %@: %@", selector, value);
 			return value;
 		}
 	}
 	
-	NSLog(@"Didn't find a configuration value for %@.", selector);
+//	NSLog(@"Didn't find a configuration value for %@.", selector);
 	return nil;
 }
 
