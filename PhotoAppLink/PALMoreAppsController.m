@@ -9,6 +9,8 @@
 #import "PALAppInfo.h"
 
 static const int ROWHEIGHT = 86;
+static const int INSET_HEIGHT = 20;
+static const int MIN_POPOVER_HEIGHT = 400;
 
 @interface PALMoreAppsController (PrivateStuff)
 
@@ -62,7 +64,7 @@ static const int ROWHEIGHT = 86;
     self.tableView.tableHeaderView = topShadowView;
     [bottomShadowView release];
     [topShadowView release];
-    self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, -20, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(-INSET_HEIGHT, 0, -INSET_HEIGHT, 0);
     self.navigationItem.title = NSLocalizedString(@"Compatible Apps", @"PhotoAppLink");
 
     BOOL weAreTheRootController = ([self.navigationController.viewControllers objectAtIndex:0] == self);
@@ -88,6 +90,12 @@ static const int ROWHEIGHT = 86;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if ([self respondsToSelector:@selector(setContentSizeForViewInPopover:)]) {
+        CGSize measuredSize = [self.tableView sizeThatFits:CGSizeMake(320.0, 850.0)];
+        float popoverWidth = 320;
+        float popoverHeight = MAX(MIN_POPOVER_HEIGHT, measuredSize.height - 2 * INSET_HEIGHT);
+        self.contentSizeForViewInPopover = CGSizeMake(popoverWidth, popoverHeight);        
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification

@@ -12,12 +12,12 @@
 #define BUTTONS_HEIGHT  77.0f
 #define BUTTONLABEL_WIDTH  79.0f
 
-#define BUTTONS_MIN_WIDTH   82.0f
-#define BUTTONS_MIN_HEIGHT  82.0f
+#define BUTTONS_MIN_WIDTH   81.0f
+#define BUTTONS_MIN_HEIGHT  84.0f
 
-#define SCROLLVIEW_BOTTOM_MARGIN 18.0f
-#define SCROLLVIEW_TOP_MARGIN 8.0f
-#define SCROLLVIEW_SIDE_MARGIN 8.0f
+#define SCROLLVIEW_BOTTOM_MARGIN 28.0f
+#define SCROLLVIEW_TOP_MARGIN 22.0f
+#define SCROLLVIEW_SIDE_MARGIN 23.0f
 
 @interface PALSendToController (PrivateStuff)
 
@@ -52,6 +52,9 @@
 
 - (void)dealloc
 {
+    if (_addedKVOObserver) {
+        [_iconsScrollView removeObserver:self forKeyPath:@"frame"];
+    }
     _delegate = nil;
     [_image release];
     [_sharingActions release];
@@ -70,6 +73,9 @@
 {
     [super viewDidLoad];
     
+    if ([self respondsToSelector:@selector(setContentSizeForViewInPopover:)]) {
+        self.contentSizeForViewInPopover = CGSizeMake(320, 400);
+    }
     _chosenOption = -1;
     
     NSAssert(self.navigationController != nil, @"PALSendToController must be presented in a UINavigationController");
@@ -152,6 +158,24 @@
                                              selector:@selector(applicationDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    [super viewWillAppear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (!_addedKVOObserver) {
+        [_iconsScrollView addObserver:self forKeyPath:@"frame" options:0  context:NULL];
+        _addedKVOObserver = YES;        
+    }
+    [super viewDidAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    if (_addedKVOObserver) {
+        [_iconsScrollView removeObserver:self forKeyPath:@"frame"];
+        _addedKVOObserver = NO;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
@@ -221,6 +245,12 @@
 #else
     return (self.navigationController.parentViewController.modalViewController == self.navigationController);
 #endif
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"frame"]) {
+        [self fixIconsLayoutAnimated:0.0f];
+    }
 }
 
 - (void)setupScrollViewContent
@@ -301,6 +331,28 @@
     [encapsulator release];
 }
 
+- (void)addNoAppsAvailableLabel
+{
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+    label.text = NSLocalizedString(@"No PhotoAppLink\ncompatible apps installed", @"PhotoAppLink");
+    label.font = [UIFont boldSystemFontOfSize:18.0f];
+    label.numberOfLines = 0;
+    label.textColor = [UIColor lightGrayColor];
+    label.shadowColor = [UIColor blackColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    label.backgroundColor = [UIColor clearColor];
+    [label sizeToFit];
+    int posX = _iconsScrollView.center.x - _iconsScrollView.frame.origin.x;
+    int posY = _iconsScrollView.center.y - _iconsScrollView.frame.origin.y;
+    label.center = CGPointMake(posX, posY);
+    // to avoid blurriness due to fractional position
+    label.frame = CGRectMake((int) label.frame.origin.x, (int) label.frame.origin.y, 
+                             (int) label.frame.size.width, (int) label.frame.size.height);
+    [_iconsScrollView addSubview:label];
+    _iconsPageControl.hidden = YES;
+}
+
 // Fixes the layout base on the size of the UIScrollView
 - (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration
 {
@@ -322,12 +374,15 @@
         int iconsY = (int)floor(h / BUTTONS_MIN_HEIGHT);
         
         // The spacing between icons
-        CGFloat dx = floor(w / iconsX);
-        CGFloat dy = floor(h / iconsY);
+        CGFloat buttonGapX = (w - iconsX * BUTTONS_WIDTH) / (iconsX - 1);
+        CGFloat buttonGapY = (h - iconsY * BUTTONS_HEIGHT) / (iconsY - 1);
+        
+        CGFloat dx = floor(BUTTONS_WIDTH + buttonGapX);
+        CGFloat dy = floor(BUTTONS_HEIGHT + buttonGapY);
         
         // The left/top margin
-        CGFloat x0 = floor((dx - BUTTONS_WIDTH) / 2.0f) + SCROLLVIEW_SIDE_MARGIN;
-        CGFloat y0 = floor((dy - BUTTONS_HEIGHT) / 2.0f) + SCROLLVIEW_TOP_MARGIN;
+        CGFloat x0 = SCROLLVIEW_SIDE_MARGIN;
+        CGFloat y0 = SCROLLVIEW_TOP_MARGIN;
         
         int posX = 0;
         int posY = 0;
@@ -371,6 +426,9 @@
         {
             [UIView commitAnimations];
         }
+    }
+    else {
+        [self addNoAppsAvailableLabel];
     }
 }
 

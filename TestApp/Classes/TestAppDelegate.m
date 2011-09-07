@@ -76,8 +76,12 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     [window makeKeyAndVisible];
 
     NSURL* launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-    if (launchURL && [[[UIDevice currentDevice] systemVersion] floatValue] < 4.0f) {
-        return [self handleURL:launchURL];
+    if (launchURL != nil) {
+        // In iOS4 and later application:handleOpenURL: or application:openURL:sourceApplication:annotation are invoked
+        // after this method returns. However in iOS3 this does not happen, so we have to call our URL handler manually here.
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.0f) {
+            return [self handleURL:launchURL];
+        }
     }
     else {
         // normal launch from Springboard
@@ -95,7 +99,7 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
     return [self handleURL:url];
 }
 
-// This method will be called for iOS versions before 4.2 when the app is invoked via its custom URL scheme 
+// This method will be called for iOS versions 4.0 and 4.1 when the app is invoked via its custom URL scheme 
 // If the app was not running already, application:didFinishLaunchingWithOptions: will be called first, 
 // followed by this method
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
