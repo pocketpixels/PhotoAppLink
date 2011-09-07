@@ -350,6 +350,7 @@
     label.frame = CGRectMake((int) label.frame.origin.x, (int) label.frame.origin.y, 
                              (int) label.frame.size.width, (int) label.frame.size.height);
     [_iconsScrollView addSubview:label];
+    [label release];
     _iconsPageControl.hidden = YES;
 }
 
