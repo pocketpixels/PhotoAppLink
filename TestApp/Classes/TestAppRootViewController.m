@@ -92,8 +92,6 @@
 {
     PALSendToController *newView = [[PALSendToController alloc] init];
     newView.image = self.image;
-    newView.delegate = self;
-    [newView addSharingActionWithTitle:@"Facebook" icon:[UIImage imageNamed:@"facebook-icon.png"] identifier:1];
 
     UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:newView];
     [newView release];
