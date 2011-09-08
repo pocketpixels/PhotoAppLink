@@ -55,7 +55,7 @@
     if (self.appleID == nil) return nil;
     // This creates a LinkShare affiliate link, but without any redirection. It does straight to the app store item.
     NSString* affiliateLink = [NSString stringWithFormat:@"http://itunes.apple.com/app/id%@?mt=8&partnerId=30&tduid=%@",
-                               self.appleID, LINKSHARE_SITE_ID];
+                               self.appleID, PALCONFIG(linkShareSiteID)];
     return [NSURL URLWithString:affiliateLink];
 }
 
@@ -64,7 +64,7 @@
     if (thumbnail) return thumbnail;
     thumbnail = [[[PALManager sharedPALManager] cachedIconForApp:self] retain];
     if (thumbnail) return thumbnail;
-    else return [UIImage imageNamed:GENERIC_APP_ICON];
+    else return [UIImage imageNamed:PALCONFIG(genericAppIcon)];
 }
 
 @end

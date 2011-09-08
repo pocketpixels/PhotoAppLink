@@ -64,7 +64,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     if (!lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
         [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
     }
-    else if (USING_APP_ICONS){
+    else if ([PALCONFIG(usingAppIcons) boolValue]){
         // still check for any missing app icons and download them
         [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];            
     }
@@ -80,7 +80,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     @try {
         // Download dictionary from plist stored on server
 #ifdef DEBUG 
-        NSURL* plistURL = [NSURL URLWithString:DEBUG_PLIST_URL];
+        NSURL* plistURL = [NSURL URLWithString:PALCONFIG(debugPListURL)];
 #else
         NSURL* plistURL = [NSURL URLWithString:@"http://www.photoapplink.com/photoapplink.plist"];
 #endif
@@ -125,7 +125,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
             [userPrefs synchronize];
             CFRelease(plist);
         }
-        if (USING_APP_ICONS) {
+        if ([PALCONFIG(usingAppIcons) boolValue]) {
             // download app icons for all apps in the list of supported apps
             [self downloadAndCacheIconsForAllApps];
         }
