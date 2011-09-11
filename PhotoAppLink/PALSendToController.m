@@ -113,7 +113,7 @@
     }
     
     self.navigationItem.title = NSLocalizedString(@"Send Image To", @"PhotoAppLink");
-    NSString* backButtonTitle = NSLocalizedString(@"back", @"PhotoAppLink");
+    NSString* backButtonTitle = NSLocalizedString(@"Back", @"PhotoAppLink");
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle
                                                                    style:UIBarButtonItemStyleBordered 
                                                                   target:nil action:nil];
