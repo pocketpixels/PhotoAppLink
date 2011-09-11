@@ -12,12 +12,13 @@
 #define BUTTONS_HEIGHT  77.0f
 #define BUTTONLABEL_WIDTH  79.0f
 
-#define BUTTONS_MIN_WIDTH   81.0f
-#define BUTTONS_MIN_HEIGHT  84.0f
+#define BUTTONS_MIN_WIDTH   80.0f
+#define BUTTONS_MIN_HEIGHT  80.0f
 
-#define SCROLLVIEW_BOTTOM_MARGIN 28.0f
-#define SCROLLVIEW_TOP_MARGIN 22.0f
-#define SCROLLVIEW_SIDE_MARGIN 23.0f
+#define SCROLLVIEW_MARGIN_NORMAL 23
+#define SCROLLVIEW_MARGIN_TIGHT_W 18
+#define SCROLLVIEW_MARGIN_TIGHT_H 12
+#define SCROLLVIEW_PAGECONTROLSPACE 8
 
 @interface PALSendToController (PrivateStuff)
 
@@ -358,7 +359,8 @@
 - (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration
 {
     NSArray *subviews = [_iconsScrollView subviews];
-    if ([subviews count] > 0)
+    int numIcons = [subviews count];
+    if ( numIcons > 0)
     {
         if (animationDuration > 0.0f)
         {
@@ -367,23 +369,26 @@
         }
         CGFloat fullW = _iconsScrollView.bounds.size.width;
         CGFloat fullH = _iconsScrollView.bounds.size.height;
-        CGFloat w = fullW - 2.0 * SCROLLVIEW_SIDE_MARGIN;
-        CGFloat h = fullH - SCROLLVIEW_BOTTOM_MARGIN - SCROLLVIEW_TOP_MARGIN;
+        BOOL lowHeightScrollView = (fullH < 220);
+        int marginW = lowHeightScrollView ? SCROLLVIEW_MARGIN_TIGHT_W : SCROLLVIEW_MARGIN_NORMAL;
+        int marginH = lowHeightScrollView ? SCROLLVIEW_MARGIN_TIGHT_H : SCROLLVIEW_MARGIN_NORMAL;
+        CGFloat w = fullW - 2.0 * marginW;
+        CGFloat h = fullH - 2.0 * marginH - SCROLLVIEW_PAGECONTROLSPACE;
         
         // Number of rows and columns of icons
         int iconsX = (int)floor(w / BUTTONS_MIN_WIDTH);
         int iconsY = (int)floor(h / BUTTONS_MIN_HEIGHT);
-        
+                
         // The spacing between icons
-        CGFloat buttonGapX = (w - iconsX * BUTTONS_WIDTH) / (iconsX - 1);
-        CGFloat buttonGapY = (h - iconsY * BUTTONS_HEIGHT) / (iconsY - 1);
+        CGFloat buttonGapX = (w - iconsX * BUTTONS_WIDTH) / MAX((iconsX - 1),1);
+        CGFloat buttonGapY = (h - iconsY * BUTTONS_HEIGHT) / MAX((iconsY - 1),1);
         
-        CGFloat dx = floor(BUTTONS_WIDTH + buttonGapX);
-        CGFloat dy = floor(BUTTONS_HEIGHT + buttonGapY);
+        int dx = floor(BUTTONS_WIDTH + buttonGapX);
+        int dy = floor(BUTTONS_HEIGHT + buttonGapY);
         
         // The left/top margin
-        CGFloat x0 = SCROLLVIEW_SIDE_MARGIN;
-        CGFloat y0 = SCROLLVIEW_TOP_MARGIN;
+        int x0 = marginW;
+        int y0 = marginH;
         
         int posX = 0;
         int posY = 0;
