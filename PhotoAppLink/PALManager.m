@@ -191,8 +191,19 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 {
     UIPasteboard* pasteboard = [UIPasteboard pasteboardWithName:PASTEBOARD_NAME create:YES];
     [pasteboard setPersistent:YES];
-    NSData* jpegData = UIImageJPEGRepresentation(image, 0.99);
-    [pasteboard setData:jpegData forPasteboardType:@"public.jpeg"];
+    
+	CGImageAlphaInfo alpha = CGImageGetAlphaInfo(image.CGImage);
+	BOOL hasAlpha = (alpha == kCGImageAlphaFirst ||
+                     alpha == kCGImageAlphaLast ||
+                     alpha == kCGImageAlphaPremultipliedFirst ||
+                     alpha == kCGImageAlphaPremultipliedLast);
+	if (hasAlpha) {
+		[pasteboard setData:UIImagePNGRepresentation(image) forPasteboardType:@"public.png"];
+	} else {
+		[pasteboard setData:UIImageJPEGRepresentation(image, 0.99) forPasteboardType:@"public.jpeg"];
+	}
+
+
     [[UIApplication sharedApplication] openURL:appInfo.scheme];
 }
 
