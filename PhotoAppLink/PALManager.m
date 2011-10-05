@@ -377,7 +377,7 @@ static PALManager *s_sharedPhotoAppLinkManager = nil;
     return NSUIntegerMax;  //denotes an object that cannot be released
 }
 
-- (void)release
+- (oneway void)release
 {
     //do nothing
 }
