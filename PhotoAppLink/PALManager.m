@@ -123,7 +123,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
                 self.supportedApps = nil;
             }
             [userPrefs synchronize];
-            CFRelease(plist);
+            if (plist) CFRelease(plist);
         }
         if (USING_APP_ICONS) {
             // download app icons for all apps in the list of supported apps
