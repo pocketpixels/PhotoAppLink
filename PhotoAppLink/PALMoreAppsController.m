@@ -90,6 +90,7 @@ static const int MIN_POPOVER_HEIGHT = 400;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     if ([self respondsToSelector:@selector(setContentSizeForViewInPopover:)]) {
         CGSize measuredSize = [self.tableView sizeThatFits:CGSizeMake(320.0, 850.0)];
         float popoverWidth = 320;
