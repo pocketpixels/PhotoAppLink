@@ -302,6 +302,39 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 }
 
 
+- (void)asyncIconForApp:(PALAppInfo *)appInfo
+         withCompletion:(PALImageRequestHandler)completion
+{
+    dispatch_queue_t handlerQueue = dispatch_get_current_queue();
+    
+    // get the image in the background
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+        // try the cache first
+        UIImage* image = [self cachedIconForApp:appInfo];
+
+        if (image==nil) {
+            // not in the cache, let's download it
+            NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
+            image = [[UIImage alloc] initWithData:imageData];
+            
+            if (image == nil) {
+                image = [UIImage imageNamed:GENERIC_APP_ICON];
+            }
+            else {
+                NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
+                [imageData writeToFile:cachedIconPath atomically:YES];
+            }
+            [imageData release];
+        }
+        
+        // switch back to the queue we were called on to execute completion block
+        dispatch_sync(handlerQueue, ^{
+            completion(image, nil);
+        });
+    });
+}
+
 #pragma mark -
 #pragma mark Action Sheet
 

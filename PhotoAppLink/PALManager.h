@@ -22,7 +22,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class PALAppInfo; 
+typedef void(^PALImageRequestHandler)(UIImage* image, NSError* error);
+
+@class PALAppInfo;
 
 @interface PALManager : NSObject <UIActionSheetDelegate> {
     NSArray* supportedApps;
@@ -60,5 +62,7 @@
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
 
 - (UIImage*)cachedIconForApp:(PALAppInfo*)app;
+
+- (void)asyncIconForApp:(PALAppInfo*)app withCompletion:(PALImageRequestHandler)completion;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07D085D315ADE82600860201 /* PAL_default_app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D085D115ADE82600860201 /* PAL_default_app_icon.png */; };
+		07D085D415ADE82600860201 /* PAL_default_app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07D085D215ADE82600860201 /* PAL_default_app_icon@2x.png */; };
 		1D3623260D0F684500981E51 /* TestAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* TestAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -40,6 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07D085D115ADE82600860201 /* PAL_default_app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PAL_default_app_icon.png; sourceTree = "<group>"; };
+		07D085D215ADE82600860201 /* PAL_default_app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PAL_default_app_icon@2x.png"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* TestAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* TestAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAppDelegate.m; sourceTree = "<group>"; };
@@ -191,6 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				B1B8050913936FBE00960283 /* PAL_unknown_app_icon.png */,
+				07D085D115ADE82600860201 /* PAL_default_app_icon.png */,
+				07D085D215ADE82600860201 /* PAL_default_app_icon@2x.png */,
 				B1B8050A13936FBE00960283 /* PAL_unknown_app_icon@2x.png */,
 				B1B8050313936FBE00960283 /* PAL_brushed_metal.png */,
 				B1B8050413936FBE00960283 /* PAL_button_background.png */,
@@ -274,6 +280,8 @@
 				B13CC57B1395C05400CA11AE /* PAL_button_background@2x.png in Resources */,
 				EC1AE9A913B4067800E02BD3 /* Icon.png in Resources */,
 				EC1AE9AA13B4067800E02BD3 /* Icon@2x.png in Resources */,
+				07D085D315ADE82600860201 /* PAL_default_app_icon.png in Resources */,
+				07D085D415ADE82600860201 /* PAL_default_app_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

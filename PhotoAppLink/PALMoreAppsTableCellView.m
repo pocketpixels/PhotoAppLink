@@ -6,6 +6,8 @@
 #import "PALMoreAppsTableCellView.h"
 #import "PALManager.h"
 #import "PALAppInfo.h"
+#import "PALConfig.h"
+
 
 @implementation PALMoreAppsTableCellView
 @synthesize appInfo;
@@ -25,6 +27,31 @@
     if (appInfo != anAppInfo) {
         [appInfo release];
         appInfo = [anAppInfo retain];
+        
+        icon = [[UIImage imageNamed:PLACEHOLDER_APP_ICON] retain];
+
+        NSURL* requestorThumbnailURL = [appInfo thumbnailURL];
+        [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {
+            
+            // if this object's content has changed (because it's been reused), or if the new
+            // icon is the same as the current one, don't update
+            if (![self.appInfo.thumbnailURL isEqual:requestorThumbnailURL]) return;
+            if ([icon isEqual:image]) return;
+            
+            [icon release];
+            
+            if (error != nil) {
+                NSLog(@"error getting icon: %@", [error localizedDescription]);
+                icon = [UIImage imageNamed:GENERIC_APP_ICON];
+            }
+            else {
+                icon = image;
+            }
+            [icon retain];
+            
+            // icon has changed, so we have to redraw the cell
+            [self setNeedsDisplay];
+        }];
     }
     [self setNeedsDisplay];
 }
@@ -53,9 +80,8 @@
     
     float shadowDirection = ([[[UIDevice currentDevice] systemVersion] floatValue] < 3.2f)? -1.0f : 1.0f;
     CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f * shadowDirection), 3.0f);
-    CGRect thumbnailRect = CGRectMake(thumbnailLeftMargin, thumbnailTopMargin, thumbnailSize, thumbnailSize);
-    UIImage* thumbnail = [appInfo thumbnail];
-    [thumbnail drawInRect:thumbnailRect];
+    CGRect iconRect = CGRectMake(thumbnailLeftMargin, thumbnailTopMargin, thumbnailSize, thumbnailSize);
+    [icon drawInRect:iconRect];
     
     CGContextSetShadowWithColor(context, CGSizeMake(0, shadowDirection), 0, [[UIColor whiteColor]CGColor]);
     UIColor* titleColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.3 alpha:1.0];

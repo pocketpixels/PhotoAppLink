@@ -11,7 +11,7 @@
 @synthesize name, scheme, appDescription, bundleID, appleID;
 @synthesize platform, freeApp;
 @synthesize thumbnailURL, installed, liveOnAppStore, canSend, canReceive;
-@synthesize thumbnail;
+
 
 - (id)initWithPropertyDict:(NSDictionary*)properties {
     self = [super init];
@@ -45,7 +45,6 @@
 	[bundleID release];
     [appleID release];
 	[thumbnailURL release];
-    [thumbnail release];
     [platform release];
     [super dealloc];
 }
@@ -57,14 +56,6 @@
     NSString* affiliateLink = [NSString stringWithFormat:@"http://itunes.apple.com/app/id%@?mt=8&partnerId=30&tduid=%@",
                                self.appleID, LINKSHARE_SITE_ID];
     return [NSURL URLWithString:affiliateLink];
-}
-
-- (UIImage*)thumbnail
-{
-    if (thumbnail) return thumbnail;
-    thumbnail = [[[PALManager sharedPALManager] cachedIconForApp:self] retain];
-    if (thumbnail) return thumbnail;
-    else return [UIImage imageNamed:GENERIC_APP_ICON];
 }
 
 @end
