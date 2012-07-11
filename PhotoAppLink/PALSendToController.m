@@ -7,6 +7,8 @@
 #import "PALSendToController.h"
 #import "PALManager.h"
 #import "PALMoreAppsController.h"
+#import "PALConfig.h"
+
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
@@ -21,8 +23,8 @@
 #define SCROLLVIEW_PAGECONTROLSPACE 8
 
 @interface PALSendToController (PrivateStuff)
-
 - (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position;
+- (void)addButtonForAppInfo:(PALAppInfo*)appInfo inPosition:(int)position;
 - (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration;
 - (void)buttonClicked:(id)sender;
 - (void)setupScrollViewContent;
@@ -277,9 +279,8 @@
     NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
     for (PALAppInfo *info in sharers)
     {
-        [self addButtonWithTitle:info.name
-                            icon:info.thumbnail
-                      inPosition:pos++];
+        [self addButtonForAppInfo:info
+                       inPosition:pos++];
     }
     
     _iconsPageControl.currentPage = 0;
@@ -301,7 +302,7 @@
 
 // Creates a UIView with the button and label
 // Makes it easier to layout.
-- (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position 
+- (void)addButtonWithTitle:(NSString *)title icon:(UIImage *)icon inPosition:(int)position
 {
     UIView *encapsulator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_HEIGHT)];
     encapsulator.tag = position + 1;
@@ -309,6 +310,7 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.tag = position + 1;
     btn.frame = CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_WIDTH);
+    
     [btn setBackgroundImage:icon forState:UIControlStateNormal];
     btn.showsTouchWhenHighlighted = YES;
     btn.adjustsImageWhenHighlighted = YES;
@@ -318,6 +320,64 @@
     float buttonOffset = (BUTTONS_WIDTH - BUTTONLABEL_WIDTH) / 2.0;
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(buttonOffset, BUTTONS_WIDTH, BUTTONLABEL_WIDTH, 20.0f)];
     lbl.text = title;
+    lbl.font = [UIFont boldSystemFontOfSize:12.0f];
+    lbl.lineBreakMode = UILineBreakModeMiddleTruncation;
+    lbl.textAlignment = UITextAlignmentCenter;
+    lbl.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    lbl.backgroundColor = [UIColor clearColor];
+    lbl.shadowColor = [UIColor blackColor];
+    lbl.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    [encapsulator addSubview:lbl];
+    [lbl release];
+    
+    [_iconsScrollView addSubview:encapsulator];
+    [encapsulator release];
+}
+
+// similar to addButtonWithTitle, but handles asynchronous icon downloading as well
+- (void)addButtonForAppInfo:(PALAppInfo *)appInfo inPosition:(int)position
+{
+    UIView *encapsulator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_HEIGHT)];
+    encapsulator.tag = position + 1;
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.tag = position + 1;
+    btn.frame = CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_WIDTH);
+    
+    // try to get the icon from the cache.  if not available, fetch it and set completion block to redraw
+    UIImage* icon = [[PALManager sharedPALManager] cachedIconForApp:appInfo];
+    if (icon != nil) {
+        [btn setBackgroundImage:icon forState:UIControlStateNormal];
+    }
+    else {
+        [btn setBackgroundImage:[UIImage imageNamed:PLACEHOLDER_APP_ICON] forState:UIControlStateNormal];
+        [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {
+            
+            if (error != nil) {
+                NSLog(@"error getting icon: %@", [error localizedDescription]);
+                [btn setBackgroundImage:[UIImage imageNamed:GENERIC_APP_ICON] forState:UIControlStateNormal];
+            }
+            else {
+                [btn setBackgroundImage:image forState:UIControlStateNormal];
+            }
+            
+            // icon has changed, so we have to redraw the cell
+            [UIView transitionWithView:btn
+                              duration:0.2
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{ [btn setNeedsDisplay]; }  // invalidate view to trigger redraw with new icon
+                            completion:NULL];
+        }];
+    }
+    
+    btn.showsTouchWhenHighlighted = YES;
+    btn.adjustsImageWhenHighlighted = YES;
+    [btn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [encapsulator addSubview:btn];
+    
+    float buttonOffset = (BUTTONS_WIDTH - BUTTONLABEL_WIDTH) / 2.0;
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(buttonOffset, BUTTONS_WIDTH, BUTTONLABEL_WIDTH, 20.0f)];
+    lbl.text = appInfo.name;
     lbl.font = [UIFont boldSystemFontOfSize:12.0f];
     lbl.lineBreakMode = UILineBreakModeMiddleTruncation;
     lbl.textAlignment = UITextAlignmentCenter;
