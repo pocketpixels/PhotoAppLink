@@ -30,6 +30,10 @@ static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const LAUNCH_DATE_KEY = @"launchDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
 static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
+static NSString *const RECEIVED_DATA_KEY = @"ReceivedDataKey";
+static NSString *const COMPLETION_BLOCK_KEY = @"CompletionBlockKey";
+static NSString *const APPINFO_KEY = @"AppInfoKey";
+
 
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
@@ -261,38 +265,70 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 - (void)asyncIconForApp:(PALAppInfo *)appInfo
          withCompletion:(PALImageRequestHandler)completion
 {
-    dispatch_queue_t handlerQueue = dispatch_get_current_queue();
-    
-    // get the image in the background
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-        // try the cache first
-        UIImage* image = [self cachedIconForApp:appInfo];
-
-        if (image==nil) {
-            // not in the cache, let's download it
-            NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
-            image = [[UIImage alloc] initWithData:imageData];
-            
-            if (image == nil) {
-                image = [UIImage imageNamed:GENERIC_APP_ICON];
-            }
-            else {
-                NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
-                [imageData writeToFile:cachedIconPath atomically:YES];
-            }
-            [imageData release];
-        }
-        
-        // switch back to the queue we were called on to execute completion block
-        dispatch_sync(handlerQueue, ^{
-            completion(image, nil);
-        });
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // This will map NSURLConnections to downloaded data using the connection as the key.  We can't use NSMutableDictionary
+        // because NSURLConnection does not support copy.
+        connectionToData = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     });
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:appInfo.thumbnailURL
+                                                  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                              timeoutInterval:60.0];
+    NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [connection start];
+   
+    CFDictionaryAddValue(connectionToData, connection, [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableData data], RECEIVED_DATA_KEY,
+                                                        [completion copy], COMPLETION_BLOCK_KEY,
+                                                        appInfo, APPINFO_KEY, nil]);
 }
 
 
 
+#pragma mark -
+#pragma mark NSURLConnectionDelegate
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    [[connectionInfo objectForKey:RECEIVED_DATA_KEY] appendData:data];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    PALImageRequestHandler completion = [connectionInfo objectForKey:COMPLETION_BLOCK_KEY];
+    NSData* imageData = [connectionInfo objectForKey:RECEIVED_DATA_KEY];
+    PALAppInfo* appInfo = [connectionInfo objectForKey:APPINFO_KEY];
+    
+    UIImage* image = [[UIImage alloc] initWithData:imageData];
+    
+    if (image == nil) {
+        image = [UIImage imageNamed:GENERIC_APP_ICON];
+    }
+    else {
+        NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
+        [imageData writeToFile:cachedIconPath atomically:YES];
+    }
+
+    completion(image, nil);
+    
+    CFDictionaryRemoveValue(connectionToData, connection);
+}
+
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSMutableDictionary* connectionInfo;
+    connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    PALImageRequestHandler completion = [connectionInfo objectForKey:COMPLETION_BLOCK_KEY];
+    
+    completion(nil, error);
+    
+    CFDictionaryRemoveValue(connectionToData, connection);
+}
 
 #pragma mark -
 #pragma mark Action Sheet

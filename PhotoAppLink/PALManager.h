@@ -26,9 +26,11 @@ typedef void(^PALImageRequestHandler)(UIImage* image, NSError* error);
 
 @class PALAppInfo;
 
-@interface PALManager : NSObject <UIActionSheetDelegate> {
+@interface PALManager : NSObject <UIActionSheetDelegate, NSURLConnectionDelegate> {
     NSArray* supportedApps;
     UIImage* imageToSend;
+    
+    CFMutableDictionaryRef connectionToData;
 }
 
 // the PALAppInfo objects of the photo editing apps that are installed on the user's device
