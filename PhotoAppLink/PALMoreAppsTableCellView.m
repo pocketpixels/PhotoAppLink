@@ -26,32 +26,45 @@
 {
     if (appInfo != anAppInfo) {
         [appInfo release];
+        [icon release];
+
         appInfo = [anAppInfo retain];
         
-        icon = [[UIImage imageNamed:PLACEHOLDER_APP_ICON] retain];
+        // if the icon's in the cache, use it, otherwise we will fetch it from the URL
+        UIImage* cachedIcon = [[PALManager sharedPALManager] cachedIconForApp:appInfo];
+        if (cachedIcon != nil) {
+            icon = [cachedIcon retain];
+        }
+        else {
+            icon = [[UIImage imageNamed:PLACEHOLDER_APP_ICON] retain];
 
-        NSURL* requestorThumbnailURL = [appInfo thumbnailURL];
-        [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {
-            
-            // if this object's content has changed (because it's been reused), or if the new
-            // icon is the same as the current one, don't update
-            if (![self.appInfo.thumbnailURL isEqual:requestorThumbnailURL]) return;
-            if ([icon isEqual:image]) return;
-            
-            [icon release];
-            
-            if (error != nil) {
-                NSLog(@"error getting icon: %@", [error localizedDescription]);
-                icon = [UIImage imageNamed:GENERIC_APP_ICON];
-            }
-            else {
-                icon = image;
-            }
-            [icon retain];
-            
-            // icon has changed, so we have to redraw the cell
-            [self setNeedsDisplay];
-        }];
+            NSURL* requestorThumbnailURL = [appInfo thumbnailURL];
+            [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {
+                
+                // if this object's content has changed (because it's been reused), or if the new
+                // icon is the same as the current one, don't update
+                if (![self.appInfo.thumbnailURL isEqual:requestorThumbnailURL]) return;
+                if ([icon isEqual:image]) return;
+                
+                [icon release];
+                
+                if (error != nil) {
+                    NSLog(@"error getting icon: %@", [error localizedDescription]);
+                    icon = [UIImage imageNamed:GENERIC_APP_ICON];
+                }
+                else {
+                    icon = image;
+                }
+                [icon retain];
+                
+                // icon has changed, so we have to redraw the cell
+                [UIView transitionWithView:self
+                                  duration:0.2
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{ [self setNeedsDisplay]; }  // invalidate view to trigger redraw with new icon
+                                completion:NULL];
+            }];
+        }
     }
     [self setNeedsDisplay];
 }
