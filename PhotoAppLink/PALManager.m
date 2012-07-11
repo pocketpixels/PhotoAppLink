@@ -41,7 +41,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 @interface PALManager() 
 @property (nonatomic,copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
-- (void)downloadAndCacheIconsForAllApps;
 @end
 
 @implementation PALManager
@@ -63,10 +62,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
     if (!lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
         [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
-    }
-    else if (USING_APP_ICONS){
-        // still check for any missing app icons and download them
-        [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];            
     }
 }
 
@@ -124,10 +119,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
             }
             [userPrefs synchronize];
             if (plist) CFRelease(plist);
-        }
-        if (USING_APP_ICONS) {
-            // download app icons for all apps in the list of supported apps
-            [self downloadAndCacheIconsForAllApps];
         }
     }
     @catch (NSException * e) {
@@ -266,41 +257,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     }
 }
 
-- (void)downloadAndCacheIconsForAllApps
-{
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    @try {
-        // ensure that the cache directory exists
-        [self createAppIconCacheDirectory];
-        
-        NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-        NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];    
-        NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
-        if (plistApps == nil) return;
-        
-        for (NSDictionary* plistAppInfo in plistApps) {
-            PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
-            NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
-            if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
-                NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
-                // verify that the data is actually an image
-                UIImage* image = [[UIImage alloc] initWithData:imageData];
-                if (image != nil) {
-                    [imageData writeToFile:cachedIconPath atomically:YES];                
-                }
-                [imageData release];
-                [image release];
-            }
-            [appInfo release];
-        }
-    }
-    @catch (NSException * e) {
-        NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
-    }
-    
-    [pool release];
-}
-
 
 - (void)asyncIconForApp:(PALAppInfo *)appInfo
          withCompletion:(PALImageRequestHandler)completion
@@ -334,6 +290,9 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         });
     });
 }
+
+
+
 
 #pragma mark -
 #pragma mark Action Sheet
