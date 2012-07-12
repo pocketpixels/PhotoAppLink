@@ -31,6 +31,8 @@ typedef void(^PALImageRequestHandler)(UIImage* image, NSError* error);
     UIImage* imageToSend;
     
     CFMutableDictionaryRef connectionToData;
+    
+    NSMutableDictionary*    loadedIcons;
 }
 
 // the PALAppInfo objects of the photo editing apps that are installed on the user's device

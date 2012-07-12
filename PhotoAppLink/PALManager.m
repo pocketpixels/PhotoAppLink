@@ -248,7 +248,26 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 
 - (UIImage*)cachedIconForApp:(PALAppInfo*)app
 {
-    UIImage* icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        loadedIcons = [NSMutableDictionary new];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedMemoryWarning)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+    });
+    
+    UIImage* icon = [loadedIcons objectForKey:app.thumbnailURL];
+    
+    if (icon == nil) {
+        icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
+        
+        // if we pulled an icons from the cache, keep it in memory
+        if (icon) {
+            [loadedIcons setObject:icon forKey:app.thumbnailURL];
+        }
+    }
+    
     if (icon == nil) return nil;
     BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
     if (!isRetina || [icon scale] > 1.0) return icon;
@@ -285,6 +304,12 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 }
 
 
+- (void)receivedMemoryWarning
+{
+    if (loadedIcons != nil) [loadedIcons removeAllObjects];
+}
+
+
 
 #pragma mark -
 #pragma mark NSURLConnectionDelegate
@@ -311,6 +336,10 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     else {
         NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
         [imageData writeToFile:cachedIconPath atomically:YES];
+        
+        if (loadedIcons != nil) {
+            [loadedIcons setObject:image forKey:appInfo.thumbnailURL];
+        }
     }
 
     completion(image, nil);
