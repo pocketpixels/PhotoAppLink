@@ -9,12 +9,6 @@
 #define DEBUG_PLIST_URL     @"http://www.photoapplink.com/photoapplink_debug.plist"
 
 
-// If you are not using app icons to display the list of supported apps in your UI 
-// (for example because you only use the action sheet displaying the app names)
-// you can set this to NO to disable downloading of these app icons
-#define USING_APP_ICONS     YES
-
-
 // Substitute your own Linkshare Site ID here if you like.
 // This Linkshare ID is used to create affiliate links to 
 // supported apps on the App Store
