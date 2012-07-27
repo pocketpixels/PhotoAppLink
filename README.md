@@ -46,7 +46,7 @@ To be able to send the current image to other participating apps, the library fi
 *  At the beginning of your app delegate's `applicationDidBecomeActive:` method add:  
 	`[[PALManager sharedPALManager] updateSupportedAppsInBackground];`
 
-This will start a background thread to download the latest version of the plist mentioned above. It will perform such an update at most every 4 hours and will only download the plist file if it has actually changed since the last successful download to avoid unnecessary bandwidth use. Icons for participating apps will also be downloaded and cached if needed.
+This will start a background thread to download the latest version of the plist mentioned above. It will perform such an update at most every 4 hours and will only download the plist file if it has actually changed since the last successful download to avoid unnecessary bandwidth use. 
 
 Next you will have to add the "Send to app" feature into your app's UI. We recommend using the following test and only offer the "Sent to app" option in your UI if it is true: 
 
@@ -134,7 +134,7 @@ Alternative "Send to app" UIs
 While we recommend using the `PALSendToController` you can also implement your own custom UI for presenting the available apps to the user: 
 
 *	First check the array returned by `[[PALManager sharedPALManager] destinationApps]`. If it’s not empty, then there are compatible apps installed that can receive images.  
-*	Use the array to iterate through all the `PALAppInfo` objects and build your own UI. The `PALAppInfo` objects contain the apps' name, icon, description and more.   
+*	Use the array to iterate through all the `PALAppInfo` objects and build your own UI. The `PALAppInfo` objects contain the apps' name, description and more.   
 *	Once the user selects one of the apps, call `[[PALManager sharedPALManager] invokeApplication:appInfo withImage:currentImage]` to launch the selected app.
 
 
@@ -155,8 +155,6 @@ Before presenting such an action sheet you must always check though that there a
 ```objective-c
 BOOL destinationAppsAvailable = [[[PALManager sharedPALManager] destinationApps] count] > 0;
 ```
-
-If you are using the action sheet or a custom UI that does not use icons to represent the apps, then you should set the `USING_APP_ICONS` definition in `PALConfig.h` to `NO` to avoid unnecessary downloading of the icons for all supported apps.
 
 
 Cross promotion via the PALMoreAppsController
