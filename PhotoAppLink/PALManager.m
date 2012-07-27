@@ -72,6 +72,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
                                                  selector:@selector(receivedMemoryWarning)
                                                      name:UIApplicationDidReceiveMemoryWarningNotification
                                                    object:nil];
+        [self createAppIconCacheDirectory];
     }
     return self;
 }
@@ -253,12 +254,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         [[NSFileManager defaultManager] createDirectoryAtPath:[self appIconCacheDirectory] 
                                   withIntermediateDirectories:YES attributes:nil error:nil];
     }
-}
-
-- (void)clearAppIconCache
-{
-    [[NSFileManager defaultManager] removeItemAtPath:[self appIconCacheDirectory] error:nil];
-    [self createAppIconCacheDirectory];
 }
 
 - (NSString*)cachedIconPathForApp:(PALAppInfo*)app
