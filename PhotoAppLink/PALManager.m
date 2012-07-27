@@ -308,10 +308,12 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [connection start];
+    [request release];
    
-    CFDictionaryAddValue(connectionToData, connection, [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableData data], RECEIVED_DATA_KEY,
-                                                        [completion copy], COMPLETION_BLOCK_KEY,
-                                                        appInfo, APPINFO_KEY, nil]);
+    NSMutableDictionary* connectionInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableData data], RECEIVED_DATA_KEY,
+                                           [[completion copy] autorelease], COMPLETION_BLOCK_KEY,
+                                           appInfo, APPINFO_KEY, nil];
+    CFDictionaryAddValue(connectionToData, connection, connectionInfo);
 }
 
 
@@ -339,7 +341,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSData* imageData = [connectionInfo objectForKey:RECEIVED_DATA_KEY];
     PALAppInfo* appInfo = [connectionInfo objectForKey:APPINFO_KEY];
     
-    UIImage* image = [[UIImage alloc] initWithData:imageData];
+    UIImage* image = [UIImage imageWithData:imageData];
     
     if (image == nil) {
         NSError* downloadError = [NSError errorWithDomain:@"com.photoapplink" code:kImageDownloadErrorCode userInfo:nil];
@@ -357,6 +359,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     }
     
     CFDictionaryRemoveValue(connectionToData, connection);
+    [connection release];
 }
 
 
@@ -369,6 +372,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     completion(nil, error);
     
     CFDictionaryRemoveValue(connectionToData, connection);
+    [connection release];
 }
 
 #pragma mark -
