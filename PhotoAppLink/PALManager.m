@@ -42,7 +42,11 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 0;
 const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60; 
 #endif
 
-@interface PALManager() 
+@interface PALManager()
+{
+    CFMutableDictionaryRef connectionToData;
+    NSMutableDictionary*   loadedIcons;
+}
 @property (nonatomic,copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
 @end
@@ -52,6 +56,24 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 @synthesize supportedApps;
 @synthesize imageToSend;
 
+// Since the PALManager class is a singleton, the init method will only ever be called once
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        loadedIcons = [NSMutableDictionary new];
+        
+        // This will map NSURLConnections to downloaded data using the connection as the key.  We can't use NSMutableDictionary
+        // because NSURLConnection does not support copy.
+        connectionToData = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedMemoryWarning)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+    }
+    return self;
+}
 
 // trigger background update of the list of supported apps
 // This update is only performed once every few days
@@ -248,26 +270,16 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 
 - (UIImage*)cachedIconForApp:(PALAppInfo*)app
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        loadedIcons = [NSMutableDictionary new];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(receivedMemoryWarning)
-                                                     name:UIApplicationDidReceiveMemoryWarningNotification
-                                                   object:nil];
-    });
-    
     UIImage* icon = [loadedIcons objectForKey:app.thumbnailURL];
     
     if (icon == nil) {
         icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
         
         // if we pulled an icons from the cache, keep it in memory
-        if (icon) {
+        if (icon != nil) {
             [loadedIcons setObject:icon forKey:app.thumbnailURL];
         }
     }
-    
     if (icon == nil) return nil;
     BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
     if (!isRetina || [icon scale] > 1.0) return icon;
@@ -284,13 +296,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 - (void)asyncIconForApp:(PALAppInfo *)appInfo
          withCompletion:(PALImageRequestHandler)completion
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        // This will map NSURLConnections to downloaded data using the connection as the key.  We can't use NSMutableDictionary
-        // because NSURLConnection does not support copy.
-        connectionToData = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    });
-    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:appInfo.thumbnailURL
                                                   cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                               timeoutInterval:60.0];
