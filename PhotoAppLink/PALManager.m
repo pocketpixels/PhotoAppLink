@@ -282,14 +282,19 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         }
     }
     if (icon == nil) return nil;
+    return [self screenScaleImageForImage:icon];
+}
+
+- (UIImage*)screenScaleImageForImage:(UIImage*)image
+{
     BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
-    if (!isRetina || [icon scale] > 1.0) return icon;
+    if (!isRetina || [image scale] > 1.0) return image;
     else {
         // need to create image with appropriate scale
         float scale = [[UIScreen mainScreen] scale];
-        UIImageOrientation orientation = [icon imageOrientation];
-        UIImage* retinaIcon = [UIImage imageWithCGImage:icon.CGImage scale:scale orientation:orientation];
-        return retinaIcon;
+        UIImageOrientation orientation = [image imageOrientation];
+        UIImage* retinaImage = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:orientation];
+        return retinaImage;
     }
 }
 
@@ -341,6 +346,7 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         completion(nil, downloadError);
     }
     else {
+        image = [self screenScaleImageForImage:image];
         NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
         [imageData writeToFile:cachedIconPath atomically:YES];
         
