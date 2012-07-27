@@ -34,6 +34,7 @@ static NSString *const RECEIVED_DATA_KEY = @"ReceivedDataKey";
 static NSString *const COMPLETION_BLOCK_KEY = @"CompletionBlockKey";
 static NSString *const APPINFO_KEY = @"AppInfoKey";
 
+static const int kImageDownloadErrorCode = 2001;
 
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
@@ -336,7 +337,8 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     UIImage* image = [[UIImage alloc] initWithData:imageData];
     
     if (image == nil) {
-        image = [UIImage imageNamed:GENERIC_APP_ICON];
+        NSError* downloadError = [NSError errorWithDomain:@"com.photoapplink" code:kImageDownloadErrorCode userInfo:nil];
+        completion(nil, downloadError);
     }
     else {
         NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
@@ -345,9 +347,8 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
         if (loadedIcons != nil) {
             [loadedIcons setObject:image forKey:appInfo.thumbnailURL];
         }
+        completion(image, nil);
     }
-
-    completion(image, nil);
     
     CFDictionaryRemoveValue(connectionToData, connection);
 }
