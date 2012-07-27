@@ -6,6 +6,8 @@
 #import "PALMoreAppsTableCellView.h"
 #import "PALManager.h"
 #import "PALAppInfo.h"
+#import "PALConfig.h"
+
 
 @implementation PALMoreAppsTableCellView
 @synthesize appInfo;
@@ -24,7 +26,45 @@
 {
     if (appInfo != anAppInfo) {
         [appInfo release];
+        [icon release];
+
         appInfo = [anAppInfo retain];
+        
+        // if the icon's in the cache, use it, otherwise we will fetch it from the URL
+        UIImage* cachedIcon = [[PALManager sharedPALManager] cachedIconForApp:appInfo];
+        if (cachedIcon != nil) {
+            icon = [cachedIcon retain];
+        }
+        else {
+            icon = [[UIImage imageNamed:PLACEHOLDER_APP_ICON] retain];
+
+            NSURL* requestorThumbnailURL = [appInfo thumbnailURL];
+            [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {
+                
+                // if this object's content has changed (because it's been reused), or if the new
+                // icon is the same as the current one, don't update
+                if (![self.appInfo.thumbnailURL isEqual:requestorThumbnailURL]) return;
+                if ([icon isEqual:image]) return;
+                
+                [icon release];
+                
+                if (error != nil) {
+                    NSLog(@"error getting icon: %@", [error localizedDescription]);
+                    icon = [UIImage imageNamed:GENERIC_APP_ICON];
+                }
+                else {
+                    icon = image;
+                }
+                [icon retain];
+                
+                // icon has changed, so we have to redraw the cell
+                [UIView transitionWithView:self
+                                  duration:0.2
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{ [self setNeedsDisplay]; }  // invalidate view to trigger redraw with new icon
+                                completion:NULL];
+            }];
+        }
     }
     [self setNeedsDisplay];
 }
@@ -48,16 +88,12 @@
     float totalWidth = self.frame.size.width;
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-    // Workaround for (presumably) a bug in which the shadow direction is reversed
-    // betwen iOS 3.2+ and earlier iOS versions
+
+    CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f), 3.0f);
+    CGRect iconRect = CGRectMake(thumbnailLeftMargin, thumbnailTopMargin, thumbnailSize, thumbnailSize);
+    [icon drawInRect:iconRect];
     
-    float shadowDirection = ([[[UIDevice currentDevice] systemVersion] floatValue] < 3.2f)? -1.0f : 1.0f;
-    CGContextSetShadow(context, CGSizeMake(1.0f, 3.0f * shadowDirection), 3.0f);
-    CGRect thumbnailRect = CGRectMake(thumbnailLeftMargin, thumbnailTopMargin, thumbnailSize, thumbnailSize);
-    UIImage* thumbnail = [appInfo thumbnail];
-    [thumbnail drawInRect:thumbnailRect];
-    
-    CGContextSetShadowWithColor(context, CGSizeMake(0, shadowDirection), 0, [[UIColor whiteColor]CGColor]);
+    CGContextSetShadowWithColor(context, CGSizeMake(0, 1), 0, [[UIColor whiteColor]CGColor]);
     UIColor* titleColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.3 alpha:1.0];
     UIFont* titleFont = [UIFont boldSystemFontOfSize:16];
     [titleColor set];
