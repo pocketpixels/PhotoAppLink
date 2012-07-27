@@ -7,6 +7,8 @@
 #import "PALSendToController.h"
 #import "PALManager.h"
 #import "PALMoreAppsController.h"
+#import "PALConfig.h"
+
 
 #define BUTTONS_WIDTH   57.0f
 #define BUTTONS_HEIGHT  77.0f
@@ -19,16 +21,6 @@
 #define SCROLLVIEW_MARGIN_TIGHT_W 18
 #define SCROLLVIEW_MARGIN_TIGHT_H 12
 #define SCROLLVIEW_PAGECONTROLSPACE 8
-
-@interface PALSendToController (PrivateStuff)
-
-- (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position;
-- (void)fixIconsLayoutAnimated:(NSTimeInterval)animationDuration;
-- (void)buttonClicked:(id)sender;
-- (void)setupScrollViewContent;
-- (void)dismissWithLeavingApp:(BOOL)leavingApp;
-- (BOOL)isPresentedModally;
-@end
 
 @implementation PALSendToController
 
@@ -277,9 +269,8 @@
     NSArray *sharers = [[PALManager sharedPALManager] destinationApps];
     for (PALAppInfo *info in sharers)
     {
-        [self addButtonWithTitle:info.name
-                            icon:info.thumbnail
-                      inPosition:pos++];
+        [self addButtonForAppInfo:info
+                       inPosition:pos++];
     }
     
     _iconsPageControl.currentPage = 0;
@@ -301,7 +292,7 @@
 
 // Creates a UIView with the button and label
 // Makes it easier to layout.
-- (void)addButtonWithTitle:(NSString*)title icon:(UIImage*)icon inPosition:(int)position 
+- (UIButton*)addButtonWithTitle:(NSString *)title icon:(UIImage *)icon inPosition:(int)position
 {
     UIView *encapsulator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_HEIGHT)];
     encapsulator.tag = position + 1;
@@ -309,6 +300,7 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.tag = position + 1;
     btn.frame = CGRectMake(0.0f, 0.0f, BUTTONS_WIDTH, BUTTONS_WIDTH);
+    
     [btn setBackgroundImage:icon forState:UIControlStateNormal];
     btn.showsTouchWhenHighlighted = YES;
     btn.adjustsImageWhenHighlighted = YES;
@@ -330,6 +322,35 @@
     
     [_iconsScrollView addSubview:encapsulator];
     [encapsulator release];
+    return btn;
+}
+
+// similar to addButtonWithTitle, but handles asynchronous icon downloading as well
+- (void)addButtonForAppInfo:(PALAppInfo *)appInfo inPosition:(int)position
+{
+    // try to get the icon from the cache.  if not available, fetch it and set completion block to redraw
+    UIImage* icon = [[PALManager sharedPALManager] cachedIconForApp:appInfo];
+    BOOL needToDownloadIcon = (icon == nil);
+    if (needToDownloadIcon) icon = [UIImage imageNamed:PLACEHOLDER_APP_ICON];
+    UIButton* button = [self addButtonWithTitle:appInfo.name icon:icon inPosition:position];
+    if (needToDownloadIcon) {
+        [[PALManager sharedPALManager] asyncIconForApp:appInfo withCompletion:^(UIImage *image, NSError *error) {            
+            if (error != nil) {
+                NSLog(@"error getting icon: %@", [error localizedDescription]);
+                [button setBackgroundImage:[UIImage imageNamed:GENERIC_APP_ICON] forState:UIControlStateNormal];
+            }
+            else {
+                [button setBackgroundImage:image forState:UIControlStateNormal];
+            }
+            
+            // icon has changed, so we have to redraw the cell
+            [UIView transitionWithView:button
+                              duration:0.2
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{ [button setNeedsDisplay]; }  // invalidate view to trigger redraw with new icon
+                            completion:NULL];
+        }];
+    }
 }
 
 - (void)addNoAppsAvailableLabel

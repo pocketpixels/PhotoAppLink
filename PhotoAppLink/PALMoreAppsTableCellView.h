@@ -24,6 +24,7 @@
 
 @interface PALMoreAppsTableCellView : UIView {
     PALAppInfo* appInfo;
+    UIImage*    icon;
 }
 
 @property (nonatomic, retain) PALAppInfo *appInfo;

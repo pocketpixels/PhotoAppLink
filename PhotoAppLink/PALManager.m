@@ -30,6 +30,11 @@ static NSString *const LASTUPDATE_USERPREF_KEY = @"PhotoAppLink_LastUpdateDate";
 static NSString *const LAUNCH_DATE_KEY = @"launchDate";
 static NSString *const SUPPORTED_APPS_PLIST_KEY = @"supportedApps";
 static NSString *const PASTEBOARD_NAME = @"com.photoapplink.pasteboard";
+static NSString *const RECEIVED_DATA_KEY = @"ReceivedDataKey";
+static NSString *const COMPLETION_BLOCK_KEY = @"CompletionBlockKey";
+static NSString *const APPINFO_KEY = @"AppInfoKey";
+
+static const int kImageDownloadErrorCode = 2001;
 
 #ifdef DEBUG 
 const int MINIMUM_SECS_BETWEEN_UPDATES = 0; 
@@ -38,10 +43,13 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 0;
 const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60; 
 #endif
 
-@interface PALManager() 
+@interface PALManager()
+{
+    CFMutableDictionaryRef connectionToData;
+    NSMutableDictionary*   loadedIcons;
+}
 @property (nonatomic,copy) NSArray *supportedApps;
 @property (nonatomic,retain) UIImage *imageToSend;
-- (void)downloadAndCacheIconsForAllApps;
 @end
 
 @implementation PALManager
@@ -49,6 +57,25 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 @synthesize supportedApps;
 @synthesize imageToSend;
 
+// Since the PALManager class is a singleton, the init method will only ever be called once
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        loadedIcons = [NSMutableDictionary new];
+        
+        // This will map NSURLConnections to downloaded data using the connection as the key.  We can't use NSMutableDictionary
+        // because NSURLConnection does not support copy.
+        connectionToData = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedMemoryWarning)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+        [self createAppIconCacheDirectory];
+    }
+    return self;
+}
 
 // trigger background update of the list of supported apps
 // This update is only performed once every few days
@@ -63,10 +90,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     NSTimeInterval secondsSinceLastUpdate = [[NSDate date] timeIntervalSinceDate:lastUpdateDate];
     if (!lastUpdateDate || secondsSinceLastUpdate > MINIMUM_SECS_BETWEEN_UPDATES) {
         [self performSelectorInBackground:@selector(requestSupportedAppURLSchemesUpdate) withObject:nil];            
-    }
-    else if (USING_APP_ICONS){
-        // still check for any missing app icons and download them
-        [self performSelectorInBackground:@selector(downloadAndCacheIconsForAllApps) withObject:nil];            
     }
 }
 
@@ -124,10 +147,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
             }
             [userPrefs synchronize];
             if (plist) CFRelease(plist);
-        }
-        if (USING_APP_ICONS) {
-            // download app icons for all apps in the list of supported apps
-            [self downloadAndCacheIconsForAllApps];
         }
     }
     @catch (NSException * e) {
@@ -237,12 +256,6 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
     }
 }
 
-- (void)clearAppIconCache
-{
-    [[NSFileManager defaultManager] removeItemAtPath:[self appIconCacheDirectory] error:nil];
-    [self createAppIconCacheDirectory];
-}
-
 - (NSString*)cachedIconPathForApp:(PALAppInfo*)app
 {
     NSString* lastPathComponent = [[[app.thumbnailURL path] componentsSeparatedByString:@"/"] lastObject];
@@ -253,54 +266,109 @@ const int MINIMUM_SECS_BETWEEN_UPDATES = 4 * 60 * 60;
 
 - (UIImage*)cachedIconForApp:(PALAppInfo*)app
 {
-    UIImage* icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
+    UIImage* icon = [loadedIcons objectForKey:app.thumbnailURL];
+    
+    if (icon == nil) {
+        icon = [UIImage imageWithContentsOfFile:[self cachedIconPathForApp:app]];
+        
+        // if we pulled an icons from the cache, keep it in memory
+        if (icon != nil) {
+            [loadedIcons setObject:icon forKey:app.thumbnailURL];
+        }
+    }
     if (icon == nil) return nil;
+    return [self screenScaleImageForImage:icon];
+}
+
+- (UIImage*)screenScaleImageForImage:(UIImage*)image
+{
     BOOL isRetina = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f;
-    if (!isRetina || [icon scale] > 1.0) return icon;
+    if (!isRetina || [image scale] > 1.0) return image;
     else {
         // need to create image with appropriate scale
         float scale = [[UIScreen mainScreen] scale];
-        UIImageOrientation orientation = [icon imageOrientation];
-        UIImage* retinaIcon = [UIImage imageWithCGImage:icon.CGImage scale:scale orientation:orientation];
-        return retinaIcon;
+        UIImageOrientation orientation = [image imageOrientation];
+        UIImage* retinaImage = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:orientation];
+        return retinaImage;
     }
 }
 
-- (void)downloadAndCacheIconsForAllApps
+
+- (void)asyncIconForApp:(PALAppInfo *)appInfo
+         withCompletion:(PALImageRequestHandler)completion
 {
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    @try {
-        // ensure that the cache directory exists
-        [self createAppIconCacheDirectory];
-        
-        NSUserDefaults* userPrefs = [NSUserDefaults standardUserDefaults];
-        NSDictionary* plistDict = [userPrefs dictionaryForKey:PLIST_DICT_USERPREF_KEY];    
-        NSArray* plistApps = [plistDict objectForKey:SUPPORTED_APPS_PLIST_KEY];
-        if (plistApps == nil) return;
-        
-        for (NSDictionary* plistAppInfo in plistApps) {
-            PALAppInfo* appInfo = [[PALAppInfo alloc] initWithPropertyDict:plistAppInfo];
-            NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
-            if (![[NSFileManager defaultManager] isReadableFileAtPath:cachedIconPath]) {
-                NSData* imageData = [[NSData alloc] initWithContentsOfURL:appInfo.thumbnailURL];
-                // verify that the data is actually an image
-                UIImage* image = [[UIImage alloc] initWithData:imageData];
-                if (image != nil) {
-                    [imageData writeToFile:cachedIconPath atomically:YES];                
-                }
-                [imageData release];
-                [image release];
-            }
-            [appInfo release];
-        }
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:appInfo.thumbnailURL
+                                                  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                              timeoutInterval:60.0];
+    NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [connection start];
+    [request release];
+   
+    NSMutableDictionary* connectionInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableData data], RECEIVED_DATA_KEY,
+                                           [[completion copy] autorelease], COMPLETION_BLOCK_KEY,
+                                           appInfo, APPINFO_KEY, nil];
+    CFDictionaryAddValue(connectionToData, connection, connectionInfo);
+}
+
+
+- (void)receivedMemoryWarning
+{
+    if (loadedIcons != nil) [loadedIcons removeAllObjects];
+}
+
+
+
+#pragma mark -
+#pragma mark NSURLConnectionDelegate
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    [[connectionInfo objectForKey:RECEIVED_DATA_KEY] appendData:data];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    PALImageRequestHandler completion = [connectionInfo objectForKey:COMPLETION_BLOCK_KEY];
+    NSData* imageData = [connectionInfo objectForKey:RECEIVED_DATA_KEY];
+    PALAppInfo* appInfo = [connectionInfo objectForKey:APPINFO_KEY];
+    
+    UIImage* image = [UIImage imageWithData:imageData];
+    
+    if (image == nil) {
+        NSError* downloadError = [NSError errorWithDomain:@"com.photoapplink" code:kImageDownloadErrorCode userInfo:nil];
+        completion(nil, downloadError);
     }
-    @catch (NSException * e) {
-        NSLog(@"Caught exception in -[PALManager requestSupportedAppURLSchemesUpdate]: %@", e);
+    else {
+        image = [self screenScaleImageForImage:image];
+        NSString* cachedIconPath = [self cachedIconPathForApp:appInfo];
+        [imageData writeToFile:cachedIconPath atomically:YES];
+        
+        if (loadedIcons != nil) {
+            [loadedIcons setObject:image forKey:appInfo.thumbnailURL];
+        }
+        completion(image, nil);
     }
     
-    [pool release];
+    CFDictionaryRemoveValue(connectionToData, connection);
+    [connection release];
 }
 
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSMutableDictionary* connectionInfo;
+    connectionInfo = CFDictionaryGetValue(connectionToData, connection);
+    PALImageRequestHandler completion = [connectionInfo objectForKey:COMPLETION_BLOCK_KEY];
+    
+    completion(nil, error);
+    
+    CFDictionaryRemoveValue(connectionToData, connection);
+    [connection release];
+}
 
 #pragma mark -
 #pragma mark Action Sheet

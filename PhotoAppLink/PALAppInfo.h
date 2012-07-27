@@ -33,7 +33,6 @@
     NSString*   appleID;
     NSString*   platform;
     BOOL        freeApp;
-    UIImage*    thumbnail;
     NSURL*      thumbnailURL;
 }
 
@@ -63,8 +62,6 @@
 @property (nonatomic, copy) NSString *platform;
 // whether the app is free or paid
 @property (nonatomic) BOOL freeApp;
-// The image thumbnail (with appropriate scale for the device)
-@property (nonatomic, readonly) UIImage* thumbnail;
 // URL to thumbnail image
 @property (nonatomic, readonly) NSURL* thumbnailURL;
 

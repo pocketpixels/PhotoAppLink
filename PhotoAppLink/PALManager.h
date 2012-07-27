@@ -22,12 +22,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class PALAppInfo; 
+typedef void(^PALImageRequestHandler)(UIImage* image, NSError* error);
 
-@interface PALManager : NSObject <UIActionSheetDelegate> {
-    NSArray* supportedApps;
-    UIImage* imageToSend;
-}
+@class PALAppInfo;
+
+@interface PALManager : NSObject <UIActionSheetDelegate, NSURLConnectionDelegate>
 
 // the PALAppInfo objects of the photo editing apps that are installed on the user's device
 // and support receiving images via the photo app link protocol
@@ -60,5 +59,7 @@
 - (UIActionSheet*)actionSheetToSendImage:(UIImage*)image;
 
 - (UIImage*)cachedIconForApp:(PALAppInfo*)app;
+
+- (void)asyncIconForApp:(PALAppInfo*)app withCompletion:(PALImageRequestHandler)completion;
 
 @end
