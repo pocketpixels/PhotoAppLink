@@ -77,8 +77,8 @@ static NSString* const APP_PHOTOAPPLINK_URL_SCHEME = @"photoapplinktestapp-photo
 
     NSURL* launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
     if (launchURL != nil) {
-        // application:handleOpenURL: or application:openURL:sourceApplication:annotation are invoked afterward
-        // this method returns to handle the URL and perform additional setup
+        // application:handleOpenURL: or application:openURL:sourceApplication:annotation are invoked
+        // after this method returns to handle the URL and perform additional setup
     }
     else {
         // normal launch from Springboard

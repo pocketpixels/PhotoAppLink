@@ -190,8 +190,7 @@ Next you need to implement the handling of your app being launched via the custo
 3. Get the passed in `UIImage*` by calling `[[PALManager sharedPALManager] popPassedInImage]`
 4. Display the image in your app and proceed to your app's main editor UI.
 
-Because the way that custom URL launches are handled has changed multiple times throughout the history of iOS, getting things to work right on all versions of iOS can be a little tricky. 
-We recommend using the following structure, which should do the right thing for iOS 3.0 and later:
+We recommend using the following structure in your app delegate, which should do the right thing for iOS 4.0 and later:
 
 ```objective-c
 // Handle the URL that this app was invoked with via its custom URL scheme.
@@ -217,12 +216,8 @@ We recommend using the following structure, which should do the right thing for 
 
     NSURL* launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
     if (launchURL != nil) {
-        // In iOS4 and later application:handleOpenURL: or application:openURL:sourceApplication:annotation 
-        // are invoked after this method returns. 
-        // However in iOS3 this does not happen, so we have to call our URL handler manually here.
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.0f) {
-            return [self handleURL:launchURL];
-        }
+        // application:handleOpenURL: or application:openURL:sourceApplication:annotation are invoked
+        // after this method returns to handle the URL and perform additional setup
     }
     else {
         // normal launch from Springboard
