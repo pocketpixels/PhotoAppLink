@@ -1,6 +1,14 @@
 PhotoAppLink
 ===================
 
+__We are sorry to announce that PhotoAppLink is being phased out.__
+
+__iOS7 removed support for shared named pasteboards, which breaks PhotoAppLink. We recommend that developers add support for photo sharing via the [UIDocumentInteractionController](http://goo.gl/74bCk) instead.__
+
+__PhotoAppLink will still continue to work in supported apps on iOS 6 and earlier until the end of the year, when we will stop serving the server side plist. However we will not accept any new applications any more.__
+
+-------------------
+
 PhotoAppLink is an open source library allowing your iOS photo app to launch other participating photo apps while passing along the current image.  
 
 This will allow users to easily process an image using a combination of multiple photo apps without having to save intermediate images to the camera roll, quitting one app, launching the next, loading up the intermediate image....  
